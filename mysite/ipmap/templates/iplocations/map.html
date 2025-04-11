@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IP Address World Map</title>
+    <!-- Leaflet CSS/JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map { height: 600px; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        // 初始化地图
+        const map = L.map('map').setView([20, 0], 2);  // 初始中心点和缩放级别
+
+        // 添加 OpenStreetMap 底图
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 添加 IP 标记
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for location in locations %}
+                L.marker([{{ location.latitude }}, {{ location.longitude }}])
+                    .addTo(map)
+                    .bindPopup(`
+                        <b>IP:</b> {{ location.ip_address }}<br>
+                        <b>Country:</b> {{ location.country }}<br>
+                        <b>City:</b> {{ location.city }}
+                    `);
+            {% endfor %}
+        });
+    </script>
+</body>
+</html>
