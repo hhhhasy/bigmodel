@@ -1,9 +1,8 @@
-# ipmap/urls.py
-from django.contrib import admin
 from django.urls import path
-from iplocations import views
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('map/', views.map_view, name='map'),
+    path('', views.index, name='index'),
+    path('get_world_data/', views.get_world_data, name='get_world_data'),
+    path('get_china_data/', views.get_china_data, name='get_china_data'),
 ]

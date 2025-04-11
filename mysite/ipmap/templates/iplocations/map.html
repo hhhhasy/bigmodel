@@ -5,34 +5,88 @@
     <!-- Leaflet CSS/JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <style>
-        #map { height: 600px; }
-    </style>
+    <!-- Echarts -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.2/echarts.common.js"></script>
 </head>
 <body>
-    <div id="map"></div>
+    <div id="world-chart" style="width: 100%; height: 400px;"></div>
+    <div id="china-chart" style="width: 100%; height: 400px;"></div>
 
     <script>
-        // 初始化地图
-        const map = L.map('map').setView([20, 0], 2);  // 初始中心点和缩放级别
+        
+        // 初始化全球柱状图
+        const worldChart = echarts.init(document.getElementById('world-chart'));
+        const worldOption = {
+            title: {
+                text: '全球 IP 分布',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [],
+                type: 'bar'
+            }]
+        };
 
-        // 添加 OpenStreetMap 底图
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+        // 初始化中国柱状图
+        const chinaChart = echarts.init(document.getElementById('china-chart'));
+        const chinaOption = {
+            title: {
+                text: '中国 IP 分布',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [],
+                type: 'bar'
+            }]
+        };
 
-        // 添加 IP 标记
-        document.addEventListener('DOMContentLoaded', function() {
-            {% for location in locations %}
-                L.marker([{{ location.latitude }}, {{ location.longitude }}])
-                    .addTo(map)
-                    .bindPopup(`
-                        <b>IP:</b> {{ location.ip_address }}<br>
-                        <b>Country:</b> {{ location.country }}<br>
-                        <b>City:</b> {{ location.city }}
-                    `);
-            {% endfor %}
-        });
+        // 获取全球数据
+        fetch('/get_world_data/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status) {
+                    worldOption.xAxis.data = data.data.countries;
+                    worldOption.series[0].data = data.data.counts;
+                    worldChart.setOption(worldOption);
+                }
+            });
+
+        // 获取中国数据
+        fetch('/get_china_data/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status) {
+                    chinaOption.xAxis.data = data.data.cities;
+                    chinaOption.series[0].data = data.data.counts;
+                    chinaChart.setOption(chinaOption);
+                }
+            });
     </script>
 </body>
 </html>

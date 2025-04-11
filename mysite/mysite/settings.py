@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ipsearch',  # 添加你的应用
+    'ipmap'
 ]
 
 # 中间件配置
