@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from .models import IPInfo
+from ipsearch.models import IPInfo
 from django.db.models import Count
 
 def index(request):
