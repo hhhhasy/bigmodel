@@ -1,52 +1,207 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>搜索结果</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>威胁情报分析报告</title>
+    <style>
+        :root {
+            --primary-bg: #0a192f;
+            --accent-color: #64ffda;
+            --text-primary: #ccd6f6;
+            --glass-bg: rgba(17, 34, 64, 0.8);
+        }
+
+        body {
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .cyber-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .cyber-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .cyber-title h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--accent-color) 30%, #45b649 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cyber-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .cyber-table {
+            --table-border: 1px solid rgba(100, 255, 218, 0.1);
+            width: 100%;
+            border-collapse: collapse;
+            position: relative;
+        }
+
+        .cyber-table thead {
+            background: linear-gradient(90deg, rgba(100, 255, 218, 0.1) 0%, transparent 100%);
+        }
+
+        .cyber-table th {
+            padding: 18px;
+            font-weight: 600;
+            text-align: left;
+            border-bottom: var(--table-border);
+        }
+
+        .cyber-table td {
+            padding: 16px;
+            border-bottom: var(--table-border);
+        }
+
+        .cyber-table tbody tr:hover {
+            background: rgba(100, 255, 218, 0.03);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.05);
+        }
+
+        .cyber-table-wrapper {
+            max-height: 600px;
+            overflow: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        /* 自定义滚动条 */
+        .cyber-table-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .cyber-table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* 搜索表单样式 */
+        .cyber-search-box {
+            padding: 30px;
+            border-bottom: var(--table-border);
+        }
+
+        .cyber-input-group {
+            display: flex;
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #id_query {
+            flex: 1;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .cyber-search-btn {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #45b649 100%);
+            border: none;
+            padding: 12px 35px;
+            border-radius: 8px;
+            color: var(--primary-bg);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .cyber-container {
+                padding: 20px;
+            }
+            
+            .cyber-input-group {
+                flex-direction: column;
+            }
+            
+            .cyber-search-btn {
+                width: 100%;
+            }
+            
+            .cyber-table th, 
+            .cyber-table td {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">搜索结果</h1>
-        <div class="card">
-            <div class="card-body">
-                <form method="get" action="{% url 'search' %}" class="form-inline mb-3">
-                    <div class="input-group">
-                        {{ form.query }}
-                        <button class="btn btn-primary" type="submit">搜索</button>
+    <div class="cyber-container">
+        <div class="cyber-title">
+            <h1>威胁情报分析报告</h1>
+        </div>
+
+        <div class="cyber-card">
+            <!-- 搜索框 -->
+            <div class="cyber-search-box">
+                <form method="get" action="{% url 'search' %}">
+                    <div class="cyber-input-group">
+                        <input type="text" id="id_query" name="query" 
+                               placeholder="输入IP/域名进行威胁分析..." 
+                               value="{{ request.GET.query }}">
+                        <button type="submit" class="cyber-search-btn">
+                            🔍 深度检索
+                        </button>
                     </div>
                 </form>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>IP地址</th>
-                                <th>国家</th>
-                                <th>城市</th>
-                                <th>纬度</th>
-                                <th>经度</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for result in results %}
-                            <tr>
-                                <td>{{ result.ip_address }}</td>
-                                <td>{{ result.country }}</td>
-                                <td>{{ result.city }}</td>
-                                <td>{{ result.latitude }}</td>
-                                <td>{{ result.longitude }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="6" class="text-center">没有找到匹配的记录</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+            </div>
+
+            <!-- 结果表格 -->
+            <div class="cyber-table-wrapper">
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th>IP地址</th>
+                            <th>国家</th>
+                            <th>城市</th>
+                            <th>纬度</th>
+                            <th>经度</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>{{ result.ip_address }}</td>
+                            <td>{{ result.country|default:"-" }}</td>
+                            <td>{{ result.city|default:"-" }}</td>
+                            <td>{{ result.latitude|floatformat:4 }}</td>
+                            <td>{{ result.longitude|floatformat:4 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px;">
+                                <img src="{% static 'images/no-data.svg' %}" 
+                                     alt="无结果" 
+                                     style="height: 100px; margin-bottom: 20px;">
+                                <div style="color: #8892b0;">
+                                    未发现匹配的威胁情报
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

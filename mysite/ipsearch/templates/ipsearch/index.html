@@ -1,26 +1,190 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP检索系统</title>
+    <title>CyberIP 威胁情报系统</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        :root {
+            --primary-bg: #0a192f;
+            --accent-color: #64ffda;
+            --text-primary: #ccd6f6;
+            --glass-bg: rgba(17, 34, 64, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .cyber-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .cyber-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .cyber-title h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-color) 30%, #45b649 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .cyber-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .cyber-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .cyber-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .cyber-form {
+            padding: 30px;
+        }
+
+        .cyber-input-group {
+            position: relative;
+            display: flex;
+            gap: 10px;
+        }
+
+        #id_query {
+            flex: 1;
+            height: 56px;
+            padding: 0 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        #id_query:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+            background: rgba(17, 34, 64, 0.6);
+        }
+
+        .cyber-btn {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #45b649 100%);
+            border: none;
+            padding: 0 35px;
+            border-radius: 8px;
+            color: var(--primary-bg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cyber-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.4);
+        }
+
+        .cyber-btn:active {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            .cyber-container {
+                padding: 30px 15px;
+            }
+            
+            .cyber-input-group {
+                flex-direction: column;
+            }
+            
+            .cyber-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">IP检索系统</h1>
-        <div class="card">
-            <div class="card-body">
-                <form method="get" action="{% url 'search' %}" class="form-inline">
-                    <div class="input-group">
+    <div class="cyber-container">
+        <!-- 标题部分 -->
+        <div class="cyber-title">
+            <h1>
+                <span style="font-family: 'Arial Black'">CyberIP</span> 威胁情报系统
+            </h1>
+        </div>
+
+        <!-- 搜索卡片 -->
+        <div class="cyber-card">
+            <div class="cyber-form">
+                <form method="get" action="{% url 'search' %}">
+                    <div class="cyber-input-group">
                         {{ form.query }}
-                        <button class="btn btn-primary" type="submit">搜索</button>
+                        <button type="submit" class="cyber-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                            威胁扫描
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        // 输入框动态效果
+        const queryInput = document.getElementById('id_query');
+        queryInput.placeholder = '请输入IP地址/域名/网络资产特征...';
+        
+        // 按钮悬停动画
+        const cyberBtn = document.querySelector('.cyber-btn');
+        cyberBtn.addEventListener('mousemove', (e) => {
+            const rect = cyberBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            cyberBtn.style.setProperty('--x', `${x}px`);
+            cyberBtn.style.setProperty('--y', `${y}px`);
+        });
+    </script>
 </body>
 </html>

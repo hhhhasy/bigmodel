@@ -1,92 +1,249 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>IP Address World Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Leaflet CSS/JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <!-- Echarts -->
     <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.2/echarts.common.js"></script>
+    
+    <style>
+        /* 保留原有基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: #0a192f;
+            color: #ccd6f6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .chart-container {
+            background: rgba(17, 34, 64, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #64ffda;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* 修改布局部分 */
+        .grid-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .chart-wrapper {
+            height: 60vh;  /* 使用视窗高度单位 */
+            min-height: 500px;
+            overflow: auto;
+            padding: 10px;
+        }
+
+        /* 调整图表容器尺寸 */
+        #world-chart, 
+        #china-chart {
+            width: 100% !important;  /* 重要：覆盖行内样式 */
+            height: 100% !important;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .chart-wrapper {
+                height: 50vh;
+                min-height: 400px;
+            }
+            
+            .chart-title {
+                font-size: 20px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+
+        /* 保留滚动条样式 */
+        .chart-wrapper::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .chart-wrapper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .chart-wrapper::-webkit-scrollbar-thumb {
+            background: #64ffda;
+            border-radius: 4px;
+        }
+    </style>
 </head>
+
 <body>
-    <div id="world-chart" style="width: 100%; height: 400px;"></div>
-    <div id="china-chart" style="width: 100%; height: 400px;"></div>
+    <div class="container">
+        <div class="grid-container">
+            <!-- 全球图表 -->
+            <div class="chart-container">
+                <div class="chart-title">🌍 Global IP Distribution</div>
+                <div class="chart-wrapper">
+                    <div id="world-chart"></div>
+                </div>
+            </div>
+
+            <!-- 中国图表 -->
+            <div class="chart-container">
+                <div class="chart-title">🇨🇳 China IP Distribution</div>
+                <div class="chart-wrapper">
+                    <div id="china-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        
-        // 初始化全球柱状图
+        // 优化后的通用配置
+        const createChartOption = (title) => ({
+            title: {
+                text: title,
+                textStyle: {
+                    color: '#64ffda',
+                    fontSize: 18,
+                    fontWeight: 'bold'
+                },
+                left: 'center'
+            },
+            grid: {
+                containLabel: true,
+                top: '10%',
+                left: '5%',
+                right: '5%',
+                bottom: '15%'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' },
+                backgroundColor: 'rgba(17, 34, 64, 0.95)',
+                borderColor: '#64ffda',
+                textStyle: { color: '#ccd6f6' }
+            },
+            xAxis: {
+                type: 'category',
+                axisLabel: {
+                    color: '#8892b0',
+                    rotate: 45,
+                    fontSize: 12
+                },
+                axisLine: {
+                    lineStyle: { color: '#233554' }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    color: '#8892b0',
+                    fontSize: 12
+                },
+                axisLine: {
+                    lineStyle: { color: '#233554' }
+                },
+                splitLine: {
+                    lineStyle: { color: '#233554' }
+                }
+            },
+            dataZoom: [{
+                type: 'slider',
+                show: true,
+                xAxisIndex: 0,
+                height: 20,
+                bottom: 30,
+                fillerColor: 'rgba(100, 255, 218, 0.2)',
+                borderColor: 'transparent',
+                textStyle: { color: '#ccd6f6' }
+            }],
+            series: [{
+                type: 'bar',
+                barWidth: '60%',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: '#64ffda' },
+                        { offset: 1, color: '#233554' }
+                    ]),
+                    shadowColor: 'rgba(100, 255, 218, 0.5)',
+                    shadowBlur: 10
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: '#64ffda' },
+                            { offset: 1, color: '#64ffda' }
+                        ])
+                    }
+                }
+            }]
+        });
+
+        // 初始化图表
         const worldChart = echarts.init(document.getElementById('world-chart'));
-        const worldOption = {
-            title: {
-                text: '全球 IP 分布',
-                left: 'center'
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                }
-            },
-            xAxis: {
-                type: 'category',
-                data: []
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{
-                data: [],
-                type: 'bar'
-            }]
-        };
-
-        // 初始化中国柱状图
         const chinaChart = echarts.init(document.getElementById('china-chart'));
-        const chinaOption = {
-            title: {
-                text: '中国 IP 分布',
-                left: 'center'
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                }
-            },
-            xAxis: {
-                type: 'category',
-                data: []
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{
-                data: [],
-                type: 'bar'
-            }]
-        };
 
-        // 获取全球数据
-        fetch('/get_world_data/')
-            .then(response => response.json())
-            .then(data => {
-                if (data.status) {
-                    worldOption.xAxis.data = data.data.countries;
-                    worldOption.series[0].data = data.data.counts;
-                    worldChart.setOption(worldOption);
-                }
-            });
+        // 配置选项
+        worldChart.setOption(createChartOption('Global IP Distribution'));
+        chinaChart.setOption(createChartOption('China IP Distribution'));
 
-        // 获取中国数据
-        fetch('/get_china_data/')
-            .then(response => response.json())
-            .then(data => {
-                if (data.status) {
-                    chinaOption.xAxis.data = data.data.cities;
-                    chinaOption.series[0].data = data.data.counts;
-                    chinaChart.setOption(chinaOption);
-                }
-            });
+        // 加载数据（保持不变）
+        Promise.all([
+            fetch('get_world_data/').then(r => r.json()),
+            fetch('get_china_data/').then(r => r.json())
+        ]).then(([worldData, chinaData]) => {
+            if (worldData.status) {
+                worldChart.setOption({
+                    xAxis: { data: worldData.data.countries },
+                    series: [{ data: worldData.data.counts }]
+                });
+            }
+            if (chinaData.status) {
+                chinaChart.setOption({
+                    xAxis: { data: chinaData.data.cities },
+                    series: [{ data: chinaData.data.counts }]
+                });
+            }
+        });
+
+        // 增强的响应式处理
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                worldChart.resize();
+                chinaChart.resize();
+            }, 200); // 增加防抖处理
+        });
     </script>
 </body>
 </html>
