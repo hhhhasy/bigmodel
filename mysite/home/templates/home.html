@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ModelGuard - 大模型部署风险评估</title>
+
+    <!-- 字体 & 图标库 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
         :root {
-            --bg-main: #0d1220;
-            --cyber-blue: #00f3ff;
-            --neon-purple: #a855f7;
-            --glass-bg: rgba(21, 30, 47, 0.8);
-            --text-primary: #e2e8f0;
+            --bg-main: #eaf4fb;
+            --primary-blue: #00aaff;
+            --accent-green: #00ffc3;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --text-primary: #0b0f1c;
+            --border-light: rgba(0, 170, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background: var(--bg-main);
             font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
             color: var(--text-primary);
-            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* 动态星空背景 */
-        .stellar-bg {
+        #earthCanvas {
             position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background: 
-                radial-gradient(circle at 50% 50%, 
-                    rgba(0, 243, 255, 0.1) 0%, 
-                    transparent 60%),
-                linear-gradient(135deg, #0d1220 0%, #1a1f2e 100%);
+            top: 0;
+            left: 0;
             z-index: -1;
-            animation: starry 20s linear infinite;
         }
 
-        @keyframes starry {
-            0% { background-position: 0 0; }
-            100% { background-position: 1000px 1000px; }
-        }
-
-        /* 导航栏 */
         .cyber-nav {
             padding: 1.5rem 5%;
+            background: var(--glass-bg);
             backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            border-bottom: 1px solid var(--border-light);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -54,93 +53,77 @@
             align-items: center;
         }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .nav-brand i {
-            color: var(--cyber-blue);
-            font-size: 2.2rem;
-            filter: drop-shadow(0 0 8px rgba(0, 243, 255, 0.3));
-        }
-
         .nav-brand h1 {
             font-size: 1.8rem;
-            background: linear-gradient(45deg, var(--cyber-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--primary-blue);
+            font-weight: 700;
         }
 
-        /* 主视觉区 */
+        .nav-links .nav-item {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links .nav-item:hover {
+            color: var(--primary-blue);
+        }
+
         .hero-section {
-            min-height: 80vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
             padding: 4rem 2rem;
+            text-align: center;
             position: relative;
-            overflow: hidden;
         }
 
         .hero-title {
-            font-size: 4rem;
-            margin-bottom: 2rem;
-            background: linear-gradient(45deg, var(--cyber-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            position: relative;
-        }
-
-        .hero-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--cyber-blue), transparent);
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
         }
 
         .hero-desc {
             font-size: 1.2rem;
-            color: #94a3b8;
             max-width: 800px;
-            margin: 0 auto 3rem;
+            color: #4a4a4a;
         }
 
-        /* 数据仪表 */
         .metric-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
             width: 80%;
-            margin: 2rem auto;
+            margin: 4rem auto 2rem;
         }
 
         .metric-card {
-            padding: 2rem;
             background: var(--glass-bg);
-            border-radius: 12px;
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 170, 255, 0.05);
             text-align: center;
-            transition: transform 0.3s ease;
         }
 
         .metric-value {
             font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--cyber-blue);
-            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--primary-blue);
         }
 
-        /* 部署方案卡片 */
+        .metric-label {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
         .deployment-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -154,82 +137,69 @@
             background: var(--glass-bg);
             border-radius: 16px;
             padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0, 243, 255, 0.2);
-        }
-
-        .deploy-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, 
-                transparent, 
-                rgba(0, 243, 255, 0.1), 
-                transparent);
-            transform: rotate(45deg);
-            transition: 0.8s ease;
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 170, 255, 0.05);
+            text-decoration: none;
+            color: inherit;
         }
 
         .deploy-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.1);
-        }
-
-        .deploy-card:hover::before {
-            top: 50%;
-            left: 50%;
+            box-shadow: 0 8px 30px rgba(0, 170, 255, 0.15);
         }
 
         .platform-header {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
-        .platform-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(168, 85, 247, 0.1);
-            border-radius: 12px;
-            display: grid;
-            place-items: center;
+        .platform-icon i {
             font-size: 2rem;
-            color: var(--neon-purple);
+            color: var(--primary-blue);
         }
 
         .risk-indicator {
-            display: inline-flex;
+            font-weight: bold;
+            display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
         }
 
-        .risk-low { background: rgba(74, 222, 128, 0.1); color: #4ade80; }
-        .risk-medium { background: rgba(250, 204, 21, 0.1); color: #facc15; }
-        .risk-high { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .risk-medium {
+            color: #f59e0b;
+        }
 
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem; }
-            .deployment-grid { grid-template-columns: 1fr; }
-            .platform-icon { width: 50px; height: 50px; }
+        .risk-high {
+            color: #ef4444;
+        }
+        #bgVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.9;
+            
         }
     </style>
 </head>
 <body>
-    <div class="stellar-bg"></div>
+    <!-- 替换canvas为video -->
+    <video id="bgVideo" autoplay muted loop playsinline>
+        <source src="http://127.0.0.1:8000/get-earth/" type="video/mp4">
+        您的浏览器不支持视频标签。
+    </video>
 
     <nav class="cyber-nav">
         <div class="nav-brand">
-            <i class="fas fa-shield-alt"></i>
             <h1>ModelGuard</h1>
         </div>
         <div class="nav-links">
@@ -242,8 +212,8 @@
     <section class="hero-section">
         <h1 class="hero-title">大模型部署风险可视化平台</h1>
         <p class="hero-desc">
-            专业评估Ollama、AnyLLM、Jan等大模型部署方案的安全性风险，提供实时监控、漏洞预警和最佳实践指南，
-            助力企业构建安全可靠的人工智能基础设施
+            专业评估 Ollama、AnyLLM、Jan 等大模型部署方案的安全性风险，提供实时监控、漏洞预警和最佳实践指南，
+            助力企业构建安全可靠的人工智能基础设施。
         </p>
 
         <div class="metric-grid">
@@ -263,7 +233,6 @@
     </section>
 
     <section class="deployment-grid">
-        <!-- Ollama 部署卡片 -->
         <a href="/Ollama" class="deploy-card">
             <div class="platform-header">
                 <div class="platform-icon">
@@ -271,9 +240,9 @@
                 </div>
                 <h2>Ollama</h2>
             </div>
-            <p class="platform-desc">
+            <p>
                 本地化大模型部署框架，支持快速模型切换与版本管理，
-                当前发现12个潜在安全漏洞，涉及容器逃逸风险
+                当前发现12个潜在安全漏洞，涉及容器逃逸风险。
             </p>
             <div class="platform-footer" style="margin-top: 2rem;">
                 <div class="risk-indicator risk-medium">
@@ -286,7 +255,6 @@
             </div>
         </a>
 
-        <!-- AnyLLM 部署卡片 -->
         <a href="/anyllm" class="deploy-card">
             <div class="platform-header">
                 <div class="platform-icon">
@@ -294,9 +262,9 @@
                 </div>
                 <h2>AnyLLM</h2>
             </div>
-            <p class="platform-desc">
+            <p>
                 多云架构部署解决方案，检测到7个配置缺陷，
-                存在API密钥泄露和过度权限分配风险
+                存在API密钥泄露和过度权限分配风险。
             </p>
             <div class="platform-footer" style="margin-top: 2rem;">
                 <div class="risk-indicator risk-high">
@@ -308,8 +276,18 @@
                 </div>
             </div>
         </a>
-
-        <!-- 更多部署方案卡片... -->
     </section>
+
+    <script>
+        // 确保视频自动播放
+        document.getElementById('bgVideo').play();
+        
+        // 窗口调整时保持视频比例
+        window.addEventListener('resize', () => {
+            const video = document.getElementById('bgVideo');
+            video.style.width = window.innerWidth + 'px';
+            video.style.height = window.innerHeight + 'px';
+        });
+    </script>
 </body>
 </html>
