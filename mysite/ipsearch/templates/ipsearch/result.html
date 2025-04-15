@@ -7,95 +7,90 @@
     <title>威胁情报分析报告</title>
     <style>
         :root {
-            --primary-bg: #0a192f;
-            --accent-color: #64ffda;
-            --text-primary: #ccd6f6;
-            --glass-bg: rgba(17, 34, 64, 0.8);
+            --primary-bg: #f8fbfe;
+            --accent-blue: #4ab4f4;
+            --accent-green: #45e6b3;
+            --text-primary: #2a4a8b;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --border-light: rgba(74, 180, 244, 0.2);
         }
 
         body {
-            background: var(--primary-bg);
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f4fe 100%);
             color: var(--text-primary);
             min-height: 100vh;
+            font-family: 'Inter', system-ui, sans-serif;
         }
 
         .cyber-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 20px;
         }
 
         .cyber-title {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             position: relative;
-            padding-bottom: 15px;
         }
 
         .cyber-title h1 {
-            font-size: 2.2rem;
-            background: linear-gradient(135deg, var(--accent-color) 30%, #45b649 100%);
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            padding: 0 30px;
+            display: inline-block;
         }
+
+        .cyber-title h1::before,
+        .cyber-title h1::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            transform: translateY(-50%);
+        }
+
+        .cyber-title h1::before { left: -80px; }
+        .cyber-title h1::after { right: -80px; }
 
         .cyber-card {
             background: var(--glass-bg);
-            border: 1px solid rgba(100, 255, 218, 0.2);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .cyber-table {
-            --table-border: 1px solid rgba(100, 255, 218, 0.1);
-            width: 100%;
-            border-collapse: collapse;
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(74, 180, 244, 0.1);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
             position: relative;
         }
 
-        .cyber-table thead {
-            background: linear-gradient(90deg, rgba(100, 255, 218, 0.1) 0%, transparent 100%);
+        /* 动态边框动画 */
+        .cyber-card::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px;
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            background: linear-gradient(45deg, 
+                var(--accent-blue), 
+                var(--accent-green),
+                var(--accent-blue));
+            z-index: -1;
+            animation: borderRotate 6s linear infinite;
         }
 
-        .cyber-table th {
-            padding: 18px;
-            font-weight: 600;
-            text-align: left;
-            border-bottom: var(--table-border);
+        @keyframes borderRotate {
+            100% { transform: rotate(360deg); }
         }
 
-        .cyber-table td {
-            padding: 16px;
-            border-bottom: var(--table-border);
-        }
-
-        .cyber-table tbody tr:hover {
-            background: rgba(100, 255, 218, 0.03);
-            box-shadow: 0 0 15px rgba(100, 255, 218, 0.05);
-        }
-
-        .cyber-table-wrapper {
-            max-height: 600px;
-            overflow: auto;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-
-        /* 自定义滚动条 */
-        .cyber-table-wrapper::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .cyber-table-wrapper::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
-            border-radius: 4px;
-        }
-
-        /* 搜索表单样式 */
         .cyber-search-box {
-            padding: 30px;
-            border-bottom: var(--table-border);
+            padding: 40px;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .cyber-input-group {
@@ -103,48 +98,132 @@
             gap: 15px;
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
         }
 
         #id_query {
             flex: 1;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(100, 255, 218, 0.3);
-            border-radius: 8px;
+            padding: 16px 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(74, 180, 244, 0.3);
+            border-radius: 12px;
             color: var(--text-primary);
+            font-size: 16px;
             transition: all 0.3s ease;
         }
 
+        #id_query:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 25px rgba(74, 180, 244, 0.2);
+        }
+
         .cyber-search-btn {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #45b649 100%);
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
             border: none;
-            padding: 12px 35px;
-            border-radius: 8px;
-            color: var(--primary-bg);
+            padding: 0 40px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 180, 244, 0.4);
+        }
+
+        /* 表格样式升级 */
+        .cyber-table {
+            --table-border: 1px solid rgba(74, 180, 244, 0.1);
+            width: 100%;
+            border-collapse: collapse;
+            position: relative;
+        }
+
+        .cyber-table thead {
+            background: linear-gradient(90deg, 
+                rgba(74, 180, 244, 0.1) 0%, 
+                rgba(69, 230, 179, 0.1) 100%);
+        }
+
+        .cyber-table th {
+            padding: 18px;
+            font-weight: 600;
+            text-align: left;
+            color: var(--accent-blue);
+            border-bottom: var(--table-border);
+        }
+
+        .cyber-table td {
+            padding: 16px;
+            border-bottom: var(--table-border);
+            position: relative;
+        }
+
+        .cyber-table tbody tr:hover {
+            background: rgba(74, 180, 244, 0.03);
+        }
+
+        /* 新增地图可视化模块 */
+        .geo-visualization {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .map-container {
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        /* 时间线组件 */
+        .timeline-wrapper {
+            padding: 30px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            flex-shrink: 0;
         }
 
         @media (max-width: 768px) {
             .cyber-container {
-                padding: 20px;
+                padding: 30px 15px;
             }
             
-            .cyber-input-group {
-                flex-direction: column;
+            .cyber-title h1 {
+                font-size: 2rem;
             }
             
-            .cyber-search-btn {
-                width: 100%;
+            .geo-visualization {
+                grid-template-columns: 1fr;
             }
             
-            .cyber-table th, 
-            .cyber-table td {
-                padding: 12px;
-                font-size: 14px;
+            .cyber-table-wrapper {
+                overflow-x: auto;
             }
         }
     </style>
+    <!-- 新增地图库 -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
     <div class="cyber-container">
@@ -153,7 +232,6 @@
         </div>
 
         <div class="cyber-card">
-            <!-- 搜索框 -->
             <div class="cyber-search-box">
                 <form method="get" action="{% url 'search' %}">
                     <div class="cyber-input-group">
@@ -167,43 +245,114 @@
                 </form>
             </div>
 
-            <!-- 结果表格 -->
+            <!-- 新增统计卡片 -->
+            <div class="geo-visualization">
+                <div class="map-container" id="threatMap"></div>
+                <div class="stats-card">
+                    <h3>威胁概览</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">1.2K</div>
+                            <div class="stat-label">高风险IP</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">98%</div>
+                            <div class="stat-label">置信度</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="cyber-table-wrapper">
                 <table class="cyber-table">
                     <thead>
                         <tr>
                             <th>IP地址</th>
-                            <th>国家</th>
-                            <th>城市</th>
-                            <th>纬度</th>
-                            <th>经度</th>
+                            <th>地理位置</th>
+                            <th>威胁等级</th>
+                            <th>最近活跃</th>
+                            <th>关联事件</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for result in results %}
                         <tr>
                             <td>{{ result.ip_address }}</td>
-                            <td>{{ result.country|default:"-" }}</td>
-                            <td>{{ result.city|default:"-" }}</td>
-                            <td>{{ result.latitude|floatformat:4 }}</td>
-                            <td>{{ result.longitude|floatformat:4 }}</td>
+                            <td>
+                                <div class="location-info">
+                                    <span class="country-flag">🌐</span>
+                                    {{ result.country|default:"-" }} / 
+                                    {{ result.city|default:"-" }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="threat-level level-{{ result.threat_level }}">
+                                    {{ result.get_threat_level_display }}
+                                </div>
+                            </td>
+                            <td>{{ result.last_active|date:"Y-m-d" }}</td>
+                            <td>{{ result.related_events }}</td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5" style="text-align: center; padding: 40px;">
+                            <td colspan="5" class="no-result">
                                 <img src="{% static 'images/no-data.svg' %}" 
-                                     alt="无结果" 
-                                     style="height: 100px; margin-bottom: 20px;">
-                                <div style="color: #8892b0;">
-                                    未发现匹配的威胁情报
-                                </div>
+                                     alt="无结果"
+                                     class="empty-state">
+                                <div class="empty-text">未发现匹配的威胁情报</div>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+
+            <!-- 新增时间线 -->
+            <div class="timeline-wrapper">
+                <h3>威胁时间线</h3>
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023-08-15</div>
+                        <div class="timeline-desc">检测到异常登录活动</div>
+                    </div>
+                </div>
+                <!-- 更多时间线条目... -->
+            </div>
         </div>
     </div>
+
+    <script>
+        // 初始化地图
+        const threatMap = L.map('threatMap', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([30, 104], 4);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 18
+        }).addTo(threatMap);
+
+        // 模拟数据点
+        const threatData = [
+            { lat: 39.9042, lng: 116.4074, level: 'high' },
+            { lat: 31.2304, lng: 121.4737, level: 'medium' },
+            // 更多数据点...
+        ];
+
+        threatData.forEach(point => {
+            L.circleMarker([point.lat, point.lng], {
+                color: point.level === 'high' ? '#ff6b6b' : '#ffd93d',
+                fillOpacity: 0.6
+            }).addTo(threatMap);
+        });
+
+        // 表格交互效果
+        document.querySelectorAll('.cyber-table tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                row.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>

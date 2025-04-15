@@ -7,17 +7,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary-bg: #1a1b2f;
-            --accent-color: #7d6fff;
-            --text-primary: #e6e9ff;
-            --glass-bg: rgba(25, 26, 47, 0.9);
+            --primary-bg: #f8f9ff;
+            --accent-color: #3b8eff;
+            --text-primary: #2d3748;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --border-color: rgba(203, 213, 225, 0.3);
+            --hover-bg: rgba(59, 142, 255, 0.05);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         body {
@@ -29,16 +31,16 @@
             overflow-x: hidden;
         }
 
-        /* 未来感导航栏 */
+        /* 清新导航栏 */
         .navbar {
             background: var(--glass-bg);
-            padding: 1.5rem 3rem;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 1.2rem 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(125, 111, 255, 0.2);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -47,215 +49,169 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.2s ease;
         }
 
         .logo:hover {
-            transform: translateX(5px) rotate(-2deg);
+            transform: translateX(3px);
         }
 
         .logo i {
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             color: var(--accent-color);
-            filter: drop-shadow(0 0 8px rgba(125, 111, 255, 0.4));
-        }
-
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-color) 30%, #a18fff 100%);
+            background: linear-gradient(135deg, #3b8eff 0%, #6ba8ff 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: 1.2px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
         }
 
         .nav-links {
             display: flex;
-            gap: 3rem;
+            gap: 2.5rem;
             align-items: center;
         }
 
         .nav-links a {
-            color: #9da5d5;
+            color: #64748b;
             text-decoration: none;
             font-weight: 500;
-            position: relative;
-            padding: 8px 0;
-            transition: all 0.3s ease;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
 
         .nav-links a:hover {
             color: var(--accent-color);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
+            background: var(--hover-bg);
         }
 
         /* 主内容区 */
         .main-content {
             flex: 1;
-            padding: 5rem 2rem;
+            padding: 4rem 2rem;
             position: relative;
-            overflow: hidden;
         }
 
         .neon-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 4rem;
             max-width: 1400px;
             margin: 0 auto;
-        }
-
-        /* 动态粒子背景 */
-        .particles-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle at 50% 50%, 
-                rgba(125, 111, 255, 0.1) 0%, 
-                transparent 60%);
-            pointer-events: none;
-            z-index: -1;
-            animation: particles 20s linear infinite;
-        }
-
-        @keyframes particles {
-            0% { transform: translate(0,0); }
-            100% { transform: translate(-50%,-50%); }
         }
 
         /* 功能卡片 */
         .model-functions {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 3rem;
-            margin: 4rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
         }
 
         .neon-card {
             background: var(--glass-bg);
-            border: 1px solid rgba(125, 111, 255, 0.3);
-            border-radius: 20px;
-            padding: 2.5rem;
-            backdrop-filter: blur(15px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
         }
 
         .neon-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(125, 111, 255, 0.2);
-            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 142, 255, 0.1);
+            border-color: rgba(59, 142, 255, 0.4);
         }
 
-        .neon-card::before {
+        .neon-card::after {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, 
-                transparent, 
-                rgba(125, 111, 255, 0.15), 
-                transparent);
-            transform: rotate(45deg);
-            transition: all 0.8s ease;
-        }
-
-        .neon-card:hover::before {
-            top: 50%;
-            left: 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, 
+                rgba(59, 142, 255, 0.03) 0%,
+                transparent 50%,
+                rgba(59, 142, 255, 0.03) 100%);
+            pointer-events: none;
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
         .card-icon {
-            font-size: 3rem;
-            color: var(--accent-color);
-            filter: drop-shadow(0 0 15px rgba(125, 111, 255, 0.3));
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #6ba8ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             transition: transform 0.3s ease;
         }
 
         .neon-card:hover .card-icon {
-            transform: rotate(15deg) scale(1.1);
+            transform: rotate(10deg) scale(1.1);
         }
 
         .card-title {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-color) 30%, #b5a8ff 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            position: relative;
         }
 
         .card-desc {
-            color: #b5b9d6;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            opacity: 0.9;
+            color: #64748b;
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 1rem;
         }
 
         /* 数据面板 */
         .model-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 3rem;
-            margin-top: 5rem;
+            gap: 2rem;
+            margin-top: 4rem;
         }
 
         .stat-item {
             background: var(--glass-bg);
-            padding: 2.5rem;
-            border-radius: 15px;
-            border: 1px solid rgba(125, 111, 255, 0.2);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .stat-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(125, 111, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(59, 142, 255, 0.08);
         }
 
         .stat-value {
-            font-size: 2.8rem;
-            font-weight: 800;
+            font-size: 2.4rem;
+            font-weight: 700;
             color: var(--accent-color);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px rgba(125, 111, 255, 0.3);
+            margin-bottom: 0.8rem;
         }
 
         .stat-label {
-            color: #aeb4d6;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
+            color: #64748b;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
         }
 
         /* 响应式设计 */
@@ -266,26 +222,27 @@
             
             .model-stats {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
             
             .navbar {
-                padding: 1.2rem;
+                padding: 1rem;
                 flex-direction: column;
-                gap: 1.5rem;
+                gap: 1rem;
             }
         }
 
         @media (max-width: 768px) {
             .neon-card {
-                padding: 2rem;
+                padding: 1.5rem;
             }
             
             .card-title {
-                font-size: 1.8rem;
+                font-size: 1.4rem;
             }
             
             .stat-value {
-                font-size: 2.2rem;
+                font-size: 2rem;
             }
         }
     </style>
@@ -304,8 +261,6 @@
     </nav>
 
     <div class="main-content">
-        <div class="particles-bg"></div>
-        
         <div class="neon-grid">
             <!-- 核心功能区块 -->
             <div class="model-functions">
@@ -349,26 +304,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // 动态背景交互
-        document.addEventListener('mousemove', (e) => {
-            const particles = document.querySelector('.particles-bg');
-            const x = e.clientX / window.innerWidth * 20;
-            const y = e.clientY / window.innerHeight * 20;
-            particles.style.backgroundPosition = `${x}% ${y}%`;
-        });
-
-        // 卡片悬停效果
-        document.querySelectorAll('.neon-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width * 100;
-                const y = (e.clientY - rect.top) / rect.height * 100;
-                card.style.setProperty('--mouse-x', x);
-                card.style.setProperty('--mouse-y', y);
-            });
-        });
-    </script>
 </body>
 </html>

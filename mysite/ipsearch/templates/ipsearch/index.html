@@ -8,148 +8,262 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <style>
         :root {
-            --primary-bg: #0a192f;
-            --accent-color: #64ffda;
-            --text-primary: #ccd6f6;
-            --glass-bg: rgba(17, 34, 64, 0.8);
+            --primary-bg: #f0f6ff;
+            --accent-blue: #4ab4f4;
+            --accent-green: #45e6b3;
+            --text-primary: #2a4a8b;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --border-light: rgba(74, 180, 244, 0.2);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
         }
 
         body {
-            background: var(--primary-bg);
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f4fe 100%);
             color: var(--text-primary);
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 动态背景 */
+        .dynamic-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        /* 标题动画 */
+        .cyber-title h1 {
+            position: relative;
+            display: inline-block;
+            padding: 0 30px;
+        }
+
+        .cyber-title h1::before,
+        .cyber-title h1::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            transform: translateY(-50%);
+        }
+
+        .cyber-title h1::before {
+            left: -50px;
+        }
+
+        .cyber-title h1::after {
+            right: -50px;
         }
 
         .cyber-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 80px 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .cyber-title {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             position: relative;
-            padding-bottom: 15px;
         }
 
         .cyber-title h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-color) 30%, #45b649 100%);
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
-
-        .cyber-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--accent-color);
-            border-radius: 2px;
+            letter-spacing: -1px;
         }
 
         .cyber-card {
             background: var(--glass-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 12px 40px rgba(74, 180, 244, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease;
         }
 
         .cyber-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 16px 50px rgba(74, 180, 244, 0.2);
+        }
+
+        /* 微光扫描效果 */
+        .cyber-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 25%,
+                rgba(74, 180, 244, 0.1) 50%,
+                transparent 75%
+            );
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translate(0,0) rotate(0); }
+            100% { transform: translate(-50%,-50%) rotate(360deg); }
         }
 
         .cyber-form {
-            padding: 30px;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
         }
 
         .cyber-input-group {
             position: relative;
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
         #id_query {
             flex: 1;
-            height: 56px;
-            padding: 0 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(100, 255, 218, 0.3);
-            border-radius: 8px;
+            height: 60px;
+            padding: 0 25px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(74, 180, 244, 0.3);
+            border-radius: 12px;
             color: var(--text-primary);
-            font-size: 16px;
+            font-size: 17px;
             transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
         }
 
         #id_query:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
-            background: rgba(17, 34, 64, 0.6);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 25px rgba(74, 180, 244, 0.2);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .cyber-btn {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #45b649 100%);
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
             border: none;
-            padding: 0 35px;
-            border-radius: 8px;
-            color: var(--primary-bg);
+            padding: 0 40px;
+            border-radius: 12px;
+            color: white;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
         }
 
         .cyber-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(100, 255, 218, 0.4);
+            box-shadow: 0 8px 25px rgba(74, 180, 244, 0.4);
         }
 
-        .cyber-btn:active {
-            transform: scale(0.98);
+        /* 新增状态指示器 */
+        .status-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #45e6b3;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(69, 230, 179, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(69, 230, 179, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(69, 230, 179, 0); }
         }
 
         @media (max-width: 768px) {
             .cyber-container {
-                padding: 30px 15px;
+                padding: 50px 15px;
             }
             
-            .cyber-input-group {
-                flex-direction: column;
+            .cyber-title h1 {
+                font-size: 2rem;
             }
-            
+
+            .cyber-form {
+                padding: 25px;
+            }
+
             .cyber-btn {
                 width: 100%;
                 justify-content: center;
-                padding: 15px;
+                padding: 18px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 动态粒子背景 -->
+    <canvas class="dynamic-bg" id="particle-canvas"></canvas>
+
+    <!-- 系统状态指示器 -->
+    <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span>威胁情报库已同步</span>
+    </div>
+
     <div class="cyber-container">
         <!-- 标题部分 -->
         <div class="cyber-title">
             <h1>
-                <span style="font-family: 'Arial Black'">CyberIP</span> 威胁情报系统
+                <span style="font-family: 'Inter'">CyberIP</span> 威胁情报系统
             </h1>
         </div>
 
@@ -160,8 +274,9 @@
                     <div class="cyber-input-group">
                         {{ form.query }}
                         <button type="submit" class="cyber-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
+                                <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                                <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
                             </svg>
                             威胁扫描
                         </button>
@@ -169,22 +284,84 @@
                 </form>
             </div>
         </div>
+
+        <!-- 新增实时情报卡片 -->
+        <div class="cyber-card mt-4">
+            <div class="cyber-form">
+                <h3 class="mb-3">实时威胁动态</h3>
+                <div class="d-flex justify-content-between">
+                    <div class="text-center">
+                        <div class="h4 text-accent-blue">1,234</div>
+                        <small>今日检测事件</small>
+                    </div>
+                    <div class="text-center">
+                        <div class="h4 text-accent-green">98.7%</div>
+                        <small>识别准确率</small>
+                    </div>
+                    <div class="text-center">
+                        <div class="h4 text-warning">0.3s</div>
+                        <small>平均响应时间</small>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+        // 粒子背景动画
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(74, 180, 244, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particles = Array.from({ length: 100 }, () => new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // 窗口尺寸变化处理
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
         // 输入框动态效果
         const queryInput = document.getElementById('id_query');
         queryInput.placeholder = '请输入IP地址/域名/网络资产特征...';
-        
-        // 按钮悬停动画
-        const cyberBtn = document.querySelector('.cyber-btn');
-        cyberBtn.addEventListener('mousemove', (e) => {
-            const rect = cyberBtn.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            cyberBtn.style.setProperty('--x', `${x}px`);
-            cyberBtn.style.setProperty('--y', `${y}px`);
-        });
     </script>
 </body>
 </html>

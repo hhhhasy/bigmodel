@@ -16,75 +16,89 @@
             font-family: 'Microsoft YaHei', sans-serif;
             color: #fff;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1920px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .dashboard-section {
             background: rgba(16, 33, 68, 0.9);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 30px;
-            box-shadow: 0 0 20px rgba(67, 136, 255, 0.2);
-            border: 1px solid #2a4a8b;
+            box-shadow: 0 0 30px rgba(67, 136, 255, 0.3);
+            border: 1px solid rgba(42, 74, 139, 0.8);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .dashboard-section:hover {
+            transform: translateY(-5px);
         }
 
         .dashboard-section::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
             background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(74, 180, 244, 0.2),
-                transparent
+                45deg,
+                transparent 25%,
+                rgba(74, 180, 244, 0.1) 50%,
+                transparent 75%
             );
-            transition: 0.5s;
+            animation: flow 8s linear infinite;
         }
 
-        .dashboard-section:hover::before {
-            left: 100%;
+        @keyframes flow {
+            0% { transform: translate(0,0) rotate(0); }
+            100% { transform: translate(-50%,-50%) rotate(360deg); }
         }
 
         .chart-container {
-            height: 500px;
+            height: 600px;
             margin: 20px 0;
+            position: relative;
         }
 
         .dual-chart {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
         }
 
         h2.section-title {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
+            margin-bottom: 25px;
+            font-size: 28px;
             color: #4ab4f4;
-            text-shadow: 0 0 10px rgba(74, 180, 244, 0.5);
-            padding: 10px;
+            text-shadow: 0 0 15px rgba(74, 180, 244, 0.6);
             position: relative;
+            padding: 15px 0;
         }
 
-        h2.section-title::after {
+        h2.section-title::before {
             content: '';
             position: absolute;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 120px;
+            width: 150px;
             height: 3px;
-            background: linear-gradient(90deg, transparent, #4ab4f4, transparent);
+            background: linear-gradient(90deg, 
+                transparent, 
+                #4ab4f4 30%, 
+                #7b68ee 70%, 
+                transparent
+            );
+            box-shadow: 0 0 10px rgba(123, 104, 238, 0.5);
         }
 
         .loading {
@@ -93,25 +107,92 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 22, 51, 0.9);
+            background: rgba(10, 22, 51, 0.95);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 999;
+            backdrop-filter: blur(5px);
         }
 
         .loading::after {
             content: '';
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border: 4px solid #4ab4f4;
             border-top-color: transparent;
             border-radius: 50%;
             animation: spin 1s linear infinite;
+            position: relative;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* 新增装饰元素 */
+        .decorative-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4ab4f4;
+        }
+
+        .corner-tl {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .corner-tr {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .corner-bl {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .corner-br {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* 新增统计面板 */
+        .stats-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(16, 33, 68, 0.8);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid #2a4a8b;
+            z-index: 1;
+        }
+
+        .stats-item {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .stats-label {
+            color: #8ca0c7;
+            margin-right: 15px;
+        }
+
+        .stats-value {
+            color: #4ab4f4;
+            font-size: 18px;
+            font-weight: bold;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
@@ -124,7 +205,22 @@
     <div class="container">
         <!-- 全球地图模块 -->
         <div class="dashboard-section">
+            <div class="decorative-corner corner-tl"></div>
+            <div class="decorative-corner corner-tr"></div>
+            <div class="decorative-corner corner-bl"></div>
+            <div class="decorative-corner corner-br"></div>
+            
             <h2 class="section-title">全球IP分布态势</h2>
+            <div class="stats-panel">
+                <div class="stats-item">
+                    <span class="stats-label">总IP数量</span>
+                    <span class="stats-value" id="world-total">0</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">国家数量</span>
+                    <span class="stats-value" id="world-countries">0</span>
+                </div>
+            </div>
             <div class="dual-chart">
                 <div class="chart-container" id="world-map"></div>
                 <div class="chart-container" id="world-bar"></div>
@@ -133,7 +229,22 @@
 
         <!-- 中国地图模块 -->
         <div class="dashboard-section">
+            <div class="decorative-corner corner-tl"></div>
+            <div class="decorative-corner corner-tr"></div>
+            <div class="decorative-corner corner-bl"></div>
+            <div class="decorative-corner corner-br"></div>
+            
             <h2 class="section-title">中国IP分布态势</h2>
+            <div class="stats-panel">
+                <div class="stats-item">
+                    <span class="stats-label">总IP数量</span>
+                    <span class="stats-value" id="china-total">0</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">省份数量</span>
+                    <span class="stats-value" id="china-provinces">0</span>
+                </div>
+            </div>
             <div class="dual-chart">
                 <div class="chart-container" id="china-map"></div>
                 <div class="chart-container" id="china-bar"></div>
@@ -143,7 +254,7 @@
 
     <script>
         // 科技主题配色
-        const TECH_COLORS = ['#4ab4f4', '#40daf1', '#45e6b3', '#7b68ee', '#ff6b6b', '#ffd93d'];
+        const TECH_COLORS = ['#4ab4f4', '#7b68ee', '#45e6b3', '#ff6b6b', '#ffd93d'];
         
         // 国家/城市映射表（示例数据）
         const countryToChineseName = {/* 完整国家映射表 */};
@@ -232,6 +343,23 @@
         
 
         };
+
+        // 动态更新统计数字
+        function animateNumber(element, finalValue, duration = 2000) {
+            let start = null;
+            const initial = parseInt(element.textContent);
+            
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                const progress = timestamp - start;
+                const value = initial + Math.floor((finalValue - initial) * (progress / duration));
+                element.textContent = value > finalValue ? finalValue : value;
+                if (progress < duration) {
+                    requestAnimationFrame(step);
+                }
+            }
+            requestAnimationFrame(step);
+        }
 
         // 初始化全球地图
         const initWorldMap = (data) => {
@@ -422,6 +550,19 @@
             const worldData = processWorldData(worldRes);
             // 处理中国数据
             const chinaData = processChinaData(chinaRes);
+            // 更新统计面板
+
+            console.log("World Data:", chinaData);
+            
+            animateNumber(document.getElementById('world-total'), 
+                worldData.reduce((sum, d) => sum + d.value, 0));
+            animateNumber(document.getElementById('world-countries'), 
+                new Set(worldData.map(d => d.name)).size);
+
+            animateNumber(document.getElementById('china-total'), 
+                chinaData.reduce((sum, d) => sum + d.value, 0));
+            animateNumber(document.getElementById('china-provinces'), 
+                new Set(chinaData.map(d => d.name)).size);
             
             initWorldMap(worldData);
             initChinaMap(chinaData);
