@@ -307,6 +307,8 @@
                 </table>
             </div>
 
+            
+
             <!-- 新增时间线 -->
             <div class="timeline-wrapper">
                 <h3>威胁时间线</h3>
@@ -321,31 +323,63 @@
             </div>
         </div>
     </div>
+    <!-- 在表格下方添加数据传递 -->
+    {{ results|json_script:"results-data" }}
 
     <script>
+
+         // 获取序列化数据
+        const resultsData = JSON.parse(document.getElementById('results-data').textContent);
         // 初始化地图
         const threatMap = L.map('threatMap', {
             zoomControl: false,
             attributionControl: false
         }).setView([30, 104], 4);
-
+    
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 18
         }).addTo(threatMap);
+    
+        // 创建标记
+        const validPoints = resultsData.filter(item => 
+            !isNaN(item.latitude) && 
+            !isNaN(item.longitude) &&
+            Math.abs(item.latitude) <= 90 &&
+            Math.abs(item.longitude) <= 180
+        );
 
-        // 模拟数据点
-        const threatData = [
-            { lat: 39.9042, lng: 116.4074, level: 'high' },
-            { lat: 31.2304, lng: 121.4737, level: 'medium' },
-            // 更多数据点...
-        ];
-
-        threatData.forEach(point => {
-            L.circleMarker([point.lat, point.lng], {
-                color: point.level === 'high' ? '#ff6b6b' : '#ffd93d',
-                fillOpacity: 0.6
+        validPoints.forEach(item => {
+            const marker = L.circleMarker([item.latitude, item.longitude], {
+                color: '#ff6b6b',
+                radius: 10,  // 根据威胁等级调整大小
+                fillOpacity: 0.7
             }).addTo(threatMap);
+
+            // 弹窗内容
+            const popupContent = `
+                <div class="map-popup">
+                    <h4>${item.ip_address}</h4>
+                    <p>位置: ${item.city || item.country || '未知'}</p>
+                </div>
+            `;
+            
+            marker.bindPopup(popupContent);
         });
+
+        // 自动调整视野
+        if (validPoints.length > 0) {
+            const bounds = L.latLngBounds(validPoints.map(p => [p.latitude, p.longitude]));
+            threatMap.fitBounds(bounds.pad(0.1));  // 添加10%的边距
+        }
+
+        // 颜色生成函数
+        function getColor(level) {
+            return [
+                '#4ab4f4',  // 低
+                '#ffd93d',  // 中
+                '#ff6b6b'   // 高
+            ][level-1] || '#999';
+        }
 
         // 表格交互效果
         document.querySelectorAll('.cyber-table tbody tr').forEach(row => {

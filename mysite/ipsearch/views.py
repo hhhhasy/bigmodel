@@ -9,21 +9,32 @@ def index(request):
 
 def search(request):
     form = SearchForm(request.GET)
+    results = IPInfo.objects.all()
+
     if form.is_valid():
         query = form.cleaned_data['query']
         if query:
             results = IPInfo.objects.filter(
                 Q(ip_address__icontains=query) |
                 Q(country__icontains=query) |
-                Q(city__icontains=query)
+                Q(city__icontains=query) |
+                Q(latitude__icontains=query) |
+                Q(longitude__icontains=query)
             )
-        else:
-            results = IPInfo.objects.all()
-    else:
-        results = IPInfo.objects.all()
+
+    # 序列化处理
+    serialized_results = []
+    for item in results:
+        serialized_results.append({
+            'ip_address': item.ip_address,
+            'country': item.country,
+            'city': item.city,
+            'latitude': float(item.latitude) if item.latitude else None,
+            'longitude': float(item.longitude) if item.longitude else None,
+        })
 
     context = {
         'form': form,
-        'results': results
+        'results': serialized_results  # 使用序列化后的数据
     }
     return render(request, 'ipsearch/result.html', context)
