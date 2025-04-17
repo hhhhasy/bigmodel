@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'ipmap',
     'ipsearch',
     'ollamahome',
+    'probinghome',
     'home'
 ]
 

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>大模型服务监控平台</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00f7ff;
+            --bg-gradient: linear-gradient(45deg, #0a0e27, #1a1f4d);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --neon-shadow: 0 0 15px rgba(0, 247, 255, 0.3);
+        }
+        
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            color: #fff;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .service-list {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--neon-shadow);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            padding: 1.5rem;
+        }
+
+        .list-item {
+            padding: 1.25rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .list-item:hover {
+            background: rgba(0, 247, 255, 0.1);
+            transform: translateX(10px);
+            box-shadow: var(--neon-shadow);
+        }
+
+        .list-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--primary-color);
+            transition: 0.3s ease;
+            opacity: 0;
+        }
+
+        .list-item:hover::before {
+            opacity: 1;
+            left: 0;
+        }
+
+        .detail-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--neon-shadow);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            padding: 2rem;
+            position: relative;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .online { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
+        .offline { background: #ff4646; box-shadow: 0 0 10px #ff4646; }
+        
+        .chart-container {
+            height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .glow-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, 
+                rgba(0, 247, 255, 0.2) 0%, 
+                transparent 60%);
+            pointer-events: none;
+        }
+
+        .metric-badge {
+            background: rgba(0, 247, 255, 0.15);
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        <!-- 服务列表 -->
+        <div class="col-md-4">
+            <div class="service-list">
+                <h4 class="mb-4"><i class="fas fa-server me-2"></i>服务节点列表</h4>
+                {% for service in services %}
+                    <div class="list-item" onclick="loadServiceDetail('{{ service.name }}')">
+                        <div class="d-flex align-items-center">
+                            
+                            <div>
+                                <h6 class="mb-1">{{ service.name }}</h6>
+                    
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 详情展示 -->
+        <div class="col-md-8">
+            <div class="detail-card">
+                <div class="glow-effect"></div>
+                <h4 class="mb-4"><i class="fas fa-microchip me-2"></i>服务监控面板</h4>
+                <div id="detail-content">
+                    <div class="text-center py-5">
+                        <i class="fas fa-meteor fa-2x text-primary mb-3"></i>
+                        <p class="text-muted">请选择服务节点查看实时监控数据</p>
+                    </div>
+                </div>
+                
+                <!-- 数据可视化容器 -->
+                <div class="chart-container d-none" id="metricsChart">
+                    <!-- 这里可以添加图表 -->
+                </div>
+
+                <!-- 性能指标 -->
+                <div class="d-flex flex-wrap" id="performanceMetrics"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function loadServiceDetail(serviceName) {
+    // 加载动画
+    document.getElementById('detail-content').innerHTML = `
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+            <p class="mt-2">正在加载服务数据...</p>
+        </div>
+    `;
+
+    fetch(`/Probing/service/${serviceName}/`)
+        .then(response => response.json())
+        .then(data => {
+            const detailHtml = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-info-circle me-2"></i>基础信息</h5>
+                        <dl class="mt-3">
+                            <dt>部署环境</dt>
+
+                            <dt class="col-sm-3">端口号</dt>
+                            <dd class="col-sm-9">${data.port || '未记录'}</dd>
+
+                             <dt class="col-sm-3">认证机制</dt>
+                            <dd class="col-sm-9">${data.auth}</dd>
+                            
+                            
+                            <dt class="mt-2">API端点</dt>
+                            <dd><code class="bg-dark p-2 rounded">${data.api || '未配置'}</code></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-chart-bar me-2"></i>实时状态</h5>
+                        <div class="mt-3">
+                            <span class="metric-badge">QPS: ${data.qps || 'N/A'}</span>
+                            <span class="metric-badge">延迟: ${data.latency || 'N/A'}ms</span>
+                            <span class="metric-badge">可用率: ${data.availability || 'N/A'}%</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detail-content').innerHTML = detailHtml;
+            document.getElementById('metricsChart').classList.remove('d-none');
+        });
+}
+</script>
+</body>
+</html>
