@@ -5,12 +5,12 @@ from .models import ServiceInfo
 import os
 
 def index(request):
-    return render(request, '/home.html')
+    return render(request, 'prob/home.html')
 
 
 def service_list(request):
     services = ServiceInfo.objects.all()
-    return render(request, 'home.html', {'services': services})
+    return render(request, 'prob/home.html', {'services': services})
 
 
 def service_detail(request, service_name):
