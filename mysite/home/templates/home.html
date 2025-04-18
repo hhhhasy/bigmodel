@@ -31,13 +31,20 @@
             background: var(--bg-main);
             color: var(--text-primary);
             overflow-x: hidden;
+            padding-top: 180px; /* 为固定搜索栏留出空间 */
         }
 
-        #earthCanvas {
+        #bgVideo {
             position: fixed;
             top: 0;
             left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
             z-index: -1;
+            object-fit: cover;
+            opacity: 0.9;
         }
 
         .cyber-nav {
@@ -45,8 +52,10 @@
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--border-light);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
@@ -71,8 +80,115 @@
             color: var(--primary-blue);
         }
 
+        .search-wrapper {
+            position: fixed;
+            top: 90px; /* 导航栏高度 */
+            left: 0;
+            right: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 1.5rem 0;
+            background: transparent;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .search-container {
+            width: 80%;
+            max-width: 800px;
+            background: var(--glass-bg);
+            border-radius: 30px;
+            padding: 0.8rem 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .search-select {
+            position: relative;
+            margin-right: 1rem;
+        }
+
+        .search-selected {
+            padding: 0.5rem 1.5rem 0.5rem 1rem;
+            border-radius: 20px;
+            background: rgba(0, 170, 255, 0.1);
+            color: var(--primary-blue);
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .search-selected::after {
+            content: "▼";
+            font-size: 0.6rem;
+            margin-left: 0.5rem;
+            position: absolute;
+            top: 50%;
+            right: 0.5rem;
+            transform: translateY(-50%);
+        }
+
+        .search-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            display: none;
+            z-index: 10;
+        }
+
+        .search-options.show {
+            display: block;
+        }
+
+        .search-option {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-option:hover {
+            background: rgba(0, 170, 255, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 0.5rem;
+        }
+
+        .search-btn:hover {
+            background: #0095e6;
+        }
+
         .hero-section {
-            min-height: 100vh;
+            min-height: calc(100vh - 180px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -93,6 +209,7 @@
             font-size: 1.2rem;
             max-width: 800px;
             color: #4a4a4a;
+            margin-bottom: 2rem;
         }
 
         .metric-grid {
@@ -100,7 +217,7 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
             width: 80%;
-            margin: 4rem auto 2rem;
+            margin: 2rem auto;
         }
 
         .metric-card {
@@ -176,28 +293,26 @@
         .risk-high {
             color: #ef4444;
         }
-        #bgVideo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -1;
-            object-fit: cover;
-            opacity: 0.9;
-            
+
+        /* 当页面滚动时，缩小搜索栏 */
+        .scrolled .search-wrapper {
+            padding: 0.8rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .scrolled .search-container {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-    <!-- 替换canvas为video -->
+    <!-- 背景视频 -->
     <video id="bgVideo" autoplay muted loop playsinline>
         <source src="http://127.0.0.1:8000/get-earth/" type="video/mp4">
         您的浏览器不支持视频标签。
     </video>
 
+    <!-- 固定导航栏 -->
     <nav class="cyber-nav">
         <div class="nav-brand">
             <h1>ModelGuard</h1>
@@ -206,88 +321,155 @@
             <a href="#" class="nav-item">风险图谱</a>
             <a href="#" class="nav-item">基准测试</a>
             <a href="#" class="nav-item">白皮书</a>
-            <a href="/Probing" class="nav-item">数据探测</a>
         </div>
     </nav>
 
-    <section class="hero-section">
-        <h1 class="hero-title">大模型部署风险可视化平台</h1>
-        <p class="hero-desc">
-            专业评估 Ollama、AnyLLM、Jan 等大模型部署方案的安全性风险，提供实时监控、漏洞预警和最佳实践指南，
-            助力企业构建安全可靠的人工智能基础设施。
-        </p>
-
-        <div class="metric-grid">
-            <div class="metric-card">
-                <div class="metric-value">15+</div>
-                <div class="metric-label">支持部署方案</div>
+    <!-- 固定搜索栏 -->
+    <div class="search-wrapper">
+        <div class="search-container">
+            <div class="search-select">
+                <div class="search-selected">IP</div>
+                <div class="search-options">
+                    <div class="search-option" data-value="ip">IP</div>
+                    <div class="search-option" data-value="domain">域名</div>
+                    <div class="search-option" data-value="asset">网络资产特征</div>
+                </div>
             </div>
-            <div class="metric-card">
-                <div class="metric-value">98.7%</div>
-                <div class="metric-label">威胁识别率</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value">2.3k+</div>
-                <div class="metric-label">风险事件捕获</div>
-            </div>
+            <input type="text" class="search-input" placeholder="请输入IP地址...">
+            <button class="search-btn"><i class="fas fa-search"></i> 搜索</button>
         </div>
-    </section>
+    </div>
 
-    <section class="deployment-grid">
-        <a href="/Ollama" class="deploy-card">
-            <div class="platform-header">
-                <div class="platform-icon">
-                    <i class="fab fa-docker"></i>
-                </div>
-                <h2>Ollama</h2>
-            </div>
-            <p>
-                本地化大模型部署框架，支持快速模型切换与版本管理，
-                当前发现12个潜在安全漏洞，涉及容器逃逸风险。
+    <!-- 主要内容 -->
+    <main>
+        <section class="hero-section">
+            <h1 class="hero-title">大模型部署风险可视化平台</h1>
+            <p class="hero-desc">
+                专业评估 Ollama、AnyLLM、Jan 等大模型部署方案的安全性风险，提供实时监控、漏洞预警和最佳实践指南，
+                助力企业构建安全可靠的人工智能基础设施。
             </p>
-            <div class="platform-footer" style="margin-top: 2rem;">
-                <div class="risk-indicator risk-medium">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    中风险等级
-                </div>
-                <div style="margin-top: 1rem; color: #64748b;">
-                    最近更新：3天前 | 活跃部署：1.2k+
-                </div>
-            </div>
-        </a>
 
-        <a href="/anyllm" class="deploy-card">
-            <div class="platform-header">
-                <div class="platform-icon">
-                    <i class="fas fa-cloud"></i>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-value">15+</div>
+                    <div class="metric-label">支持部署方案</div>
                 </div>
-                <h2>AnyLLM</h2>
-            </div>
-            <p>
-                多云架构部署解决方案，检测到7个配置缺陷，
-                存在API密钥泄露和过度权限分配风险。
-            </p>
-            <div class="platform-footer" style="margin-top: 2rem;">
-                <div class="risk-indicator risk-high">
-                    <i class="fas fa-radiation"></i>
-                    高风险等级
+                <div class="metric-card">
+                    <div class="metric-value">98.7%</div>
+                    <div class="metric-label">威胁识别率</div>
                 </div>
-                <div style="margin-top: 1rem; color: #64748b;">
-                    最近更新：7天前 | 活跃部署：850+
+                <div class="metric-card">
+                    <div class="metric-value">2.3k+</div>
+                    <div class="metric-label">风险事件捕获</div>
                 </div>
             </div>
-        </a>
-    </section>
+        </section>
+
+        <section class="deployment-grid">
+            <a href="/Ollama" class="deploy-card">
+                <div class="platform-header">
+                    <div class="platform-icon">
+                        <i class="fab fa-docker"></i>
+                    </div>
+                    <h2>Ollama</h2>
+                </div>
+                <p>
+                    本地化大模型部署框架，支持快速模型切换与版本管理，
+                    当前发现12个潜在安全漏洞，涉及容器逃逸风险。
+                </p>
+                <div class="platform-footer" style="margin-top: 2rem;">
+                    <div class="risk-indicator risk-medium">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        中风险等级
+                    </div>
+                    <div style="margin-top: 1rem; color: #64748b;">
+                        最近更新：3天前 | 活跃部署：1.2k+
+                    </div>
+                </div>
+            </a>
+
+            <a href="/anyllm" class="deploy-card">
+                <div class="platform-header">
+                    <div class="platform-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h2>AnyLLM</h2>
+                </div>
+                <p>
+                    多云架构部署解决方案，检测到7个配置缺陷，
+                    存在API密钥泄露和过度权限分配风险。
+                </p>
+                <div class="platform-footer" style="margin-top: 2rem;">
+                    <div class="risk-indicator risk-high">
+                        <i class="fas fa-radiation"></i>
+                        高风险等级
+                    </div>
+                    <div style="margin-top: 1rem; color: #64748b;">
+                        最近更新：7天前 | 活跃部署：850+
+                    </div>
+                </div>
+            </a>
+        </section>
+    </main>
 
     <script>
         // 确保视频自动播放
         document.getElementById('bgVideo').play();
-        
+
         // 窗口调整时保持视频比例
         window.addEventListener('resize', () => {
             const video = document.getElementById('bgVideo');
             video.style.width = window.innerWidth + 'px';
             video.style.height = window.innerHeight + 'px';
+        });
+
+        // 搜索框下拉功能
+        const searchSelected = document.querySelector('.search-selected');
+        const searchOptions = document.querySelector('.search-options');
+        const searchOptionsItems = document.querySelectorAll('.search-option');
+        const searchInput = document.querySelector('.search-input');
+
+        // 点击选择器显示/隐藏选项
+        searchSelected.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchOptions.classList.toggle('show');
+        });
+
+        // 点击选项更新选择器
+        searchOptionsItems.forEach(item => {
+            item.addEventListener('click', () => {
+                searchSelected.textContent = item.textContent;
+                searchOptions.classList.remove('show');
+
+                // 根据选择的类型更新placeholder
+                const value = item.getAttribute('data-value');
+                if (value === 'ip') {
+                    searchInput.placeholder = '请输入IP地址...';
+                } else if (value === 'domain') {
+                    searchInput.placeholder = '请输入域名...';
+                } else if (value === 'asset') {
+                    searchInput.placeholder = '请输入网络资产特征...';
+                }
+            });
+        });
+
+        // 点击页面其他位置关闭选项
+        document.addEventListener('click', () => {
+            searchOptions.classList.remove('show');
+        });
+
+        // 阻止选项点击事件冒泡
+        searchOptions.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // 滚动时添加缩小效果
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
         });
     </script>
 </body>
