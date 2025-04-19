@@ -272,6 +272,54 @@
                 gap: 1rem;
             }
         }
+        /* 安全风险卡片增强样式 */
+        .risk-list {
+            padding-left: 1.5rem;
+            color: #ef4444;
+            line-height: 1.8;
+        }
+        .risk-list li::marker {
+            content: "⚠️";
+        }
+        .vulnerability-matrix {
+            display: grid;
+            gap: 1rem;
+        }
+        .vul-item {
+            padding: 0.8rem;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 4px solid;
+        }
+        .vul-item.critical { border-color: #dc2626; }
+        .vul-item.high { border-color: #ea580c; }
+        .vul-item.medium { border-color: #ca8a04; }
+        .cve-id {
+            display: inline-block;
+            width: 120px;
+            font-family: monospace;
+            color: #3b82f6;
+        }
+        .attack-case {
+            border-top: 1px solid rgba(203, 213, 225, 0.3);
+            padding-top: 1rem;
+        }
+        .case-item {
+            margin-bottom: 1.2rem;
+        }
+        .case-title {
+            color: #3b82f6;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        .citation-tag {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 0.8rem;
+            color: #64748b;
+            opacity: 0.7;
+        }
     </style>
 </head>
 
@@ -341,19 +389,73 @@
                 </div>
             </div>
 
-            <!-- 数据概览面板 -->
-            <div class="model-stats">
-                <div class="stat-item">
-                    <div class="stat-value">850K+</div>
-                    <div class="stat-label">托管模型数量</div>
+            <div class="chart-container">
+
+                <!-- 未授权访问漏洞统计 -->
+                <div class="neon-card chart-card" onclick="window.open('https://www.secrss.com/articles/76168','_blank')">
+                    <div class="card-header">
+                        <i class="fas fa-unlock-alt card-icon"></i>
+                        <h3 class="card-title">高危未授权访问漏洞</h3>
+                    </div>
+                    <div class="card-desc">
+                        <ul class="risk-list">
+                            <li><strong>14,359台服务器裸奔公网</strong>（截至2025-03-01）</li>
+                            <li>默认11434端口无认证机制</li>
+                            <li>可执行模型窃取/数据投毒/DDoS攻击</li>
+                            <li>CNVD评级：高危（CNVD-2025-04094）]</li>
+                        </ul>
+                    </div>
+                    <div class="citation-tag">来源：CNCERT安全公告/澎湃新闻</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value">45+</div>
-                    <div class="stat-label">支持架构</div>
+
+                <!-- 历史漏洞利用案例 -->
+                <div class="neon-card chart-card" onclick="window.open('https://jyjszx.symc.edu.cn/info/1013/1962.htm','_blank')">
+                    <div class="card-header">
+                        <i class="fas fa-bug card-icon"></i>
+                        <h3 class="card-title">历史漏洞武器化攻击</h3>
+                    </div>
+                    <div class="card-desc">
+                        <div class="vulnerability-matrix">
+                            <div class="vul-item critical">
+                                <span class="cve-id">CVE-2024-37032</span>
+                                <span class="vul-desc">路径遍历代码执行</span>
+                            </div>
+                            <div class="vul-item high">
+                                <span class="cve-id">CVE-2024-39720</span>
+                                <span class="vul-desc">越界读取导致DoS攻击</span>
+                            </div>
+                            <div class="vul-item medium">
+                                <span class="cve-id">CVE-2024-39722</span>
+                                <span class="vul-desc">敏感信息泄露漏洞</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="citation-tag">来源：国家漏洞库CNNVD/南京农业大学通报</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value">99.99%</div>
-                    <div class="stat-label">API可用性</div>
+
+                <!-- 真实攻击事件 -->
+                <div class="neon-card chart-card" onclick="window.open('https://tech.qudong.com/2025/0313/867226.shtml','_blank')">
+                    <div class="card-header">
+                        <i class="fas fa-radiation-alt card-icon"></i>
+                        <h3 class="card-title">真实攻击事件分析</h3>
+                    </div>
+                    <div class="card-desc">
+                        <div class="attack-case">
+                            <div class="case-item">
+                                <div class="case-title">▶ 模型资产窃取</div>
+                                <div class="case-detail">通过/api/push接口导出私有模型</div>
+                            </div>
+                            <div class="case-item">
+                                <div class="case-title">▶ 算力资源滥用</div>
+                                <div class="case-detail">GPU资源占用导致账单暴涨300%</div>
+                            </div>
+                            <div class="case-item">
+                                <div class="case-title">▶ 系统沦陷案例</div>
+                                <div class="case-detail">利用漏洞植入XMRig矿机程序</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="citation-tag">来源：腾云悦智安全实验室</div>
                 </div>
             </div>
         </div>
