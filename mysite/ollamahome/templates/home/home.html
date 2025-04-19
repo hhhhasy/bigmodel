@@ -31,7 +31,7 @@
             overflow-x: hidden;
         }
 
-        /* 清新导航栏 */
+        /* 导航栏 */
         .navbar {
             background: var(--glass-bg);
             padding: 1.2rem 3rem;
@@ -60,7 +60,6 @@
 
         .logo i {
             font-size: 2.2rem;
-            color: var(--accent-color);
             background: linear-gradient(135deg, #3b8eff 0%, #6ba8ff 100%);
             -webkit-background-clip: text;
             background-clip: text;
@@ -114,7 +113,17 @@
             margin: 3rem 0;
         }
 
+        .chart-container {
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+
+        }
+
         .neon-card {
+            height:350px;
             background: var(--glass-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
@@ -138,10 +147,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(120deg, 
-                rgba(59, 142, 255, 0.03) 0%,
-                transparent 50%,
-                rgba(59, 142, 255, 0.03) 100%);
+            background: linear-gradient(120deg,
+                    rgba(59, 142, 255, 0.03) 0%,
+                    transparent 50%,
+                    rgba(59, 142, 255, 0.03) 100%);
             pointer-events: none;
         }
 
@@ -169,7 +178,6 @@
             font-size: 1.6rem;
             font-weight: 600;
             color: var(--text-primary);
-            position: relative;
         }
 
         .card-desc {
@@ -219,12 +227,12 @@
             .model-functions {
                 grid-template-columns: 1fr;
             }
-            
+
             .model-stats {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
-            
+
             .navbar {
                 padding: 1rem;
                 flex-direction: column;
@@ -233,20 +241,40 @@
         }
 
         @media (max-width: 768px) {
+            .chart-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
             .neon-card {
                 padding: 1.5rem;
+                height: auto;
+                min-height: 280px;
             }
-            
+
+            .neon-card.chart-card {
+                width: 100%;
+            }
+
             .card-title {
                 font-size: 1.4rem;
             }
-            
+
             .stat-value {
                 font-size: 2rem;
+            }
+
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
             }
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar">
         <div class="logo">
@@ -287,6 +315,32 @@
                 </div>
             </div>
 
+            <!-- 图表容器 -->
+            <div class="chart-container">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    数据加载中...
+                </div>
+
+                <!-- 日活量折线图 -->
+                <div class="neon-card chart-card">
+                    <h3 class="chart-title">过去七天日活量</h3>
+                    <canvas id="dailyActiveChart"></canvas>
+                </div>
+
+                <!-- 模型TOP10柱状图 -->
+                <div class="neon-card chart-card">
+                    <h3 class="chart-title">Ollama当日托管模型选择TOP10</h3>
+                    <canvas id="modelTopChart"></canvas>
+                </div>
+
+                <!-- 版本TOP10柱状图 -->
+                <div class="neon-card chart-card">
+                    <h3 class="chart-title">最多选择模型使用版本TOP10</h3>
+                    <canvas id="versionTopChart"></canvas>
+                </div>
+            </div>
+
             <!-- 数据概览面板 -->
             <div class="model-stats">
                 <div class="stat-item">
@@ -304,5 +358,136 @@
             </div>
         </div>
     </div>
+<!-- Chart.js -->
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {# 把 three.js 数据安全地传给前端 #}
+    {{ daily_data|json_script:"daily-data" }}
+    {{ model_data|json_script:"model-data" }}
+    {{ version_data|json_script:"version-data" }}
+     <script>
+    // 公共样式配置
+    const chartOptions = {
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(203, 213, 225, 0.1)' },
+                ticks: { color: '#64748b' }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { color: '#64748b' }
+            }
+        },
+        plugins: {
+            legend:  { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(59, 142, 255, 0.9)',
+                bodyFont:      { size: 14 },
+                titleFont:     { size: 16 }
+            }
+        }
+    };
+
+    // 渐变生成器
+    function createGradient(ctx) {
+        const gradient = ctx.createLinearGradient(0, 0, 400, 0);
+        gradient.addColorStop(0, '#3b8eff');
+        gradient.addColorStop(1, '#9b5cff');
+        return gradient;
+    }
+
+    // 图表管理
+    let charts = {};
+    const spinner = document.querySelector('.loading-spinner');
+
+    function loadChartData() {
+        try {
+            spinner.style.display = 'flex';
+
+            // 1. 从模板注入的 JSON 中读取数据
+            const dailyData   = JSON.parse(document.getElementById('daily-data').textContent);
+            const modelData   = JSON.parse(document.getElementById('model-data').textContent);
+            const versionData = JSON.parse(document.getElementById('version-data').textContent);
+
+            // 2. 销毁旧图表
+            Object.values(charts).forEach(c => c && c.destroy());
+
+            // 3. 日活折线图
+            charts.daily = new Chart(
+                document.getElementById('dailyActiveChart'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: dailyData.labels,
+                        datasets: [{
+                            data: dailyData.data,
+                            borderColor: '#3b8eff',
+                            tension: 0.3,
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#3b8eff'
+                        }]
+                    },
+                    options: chartOptions
+                }
+            );
+
+            // 4. 模型TOP10柱状图
+            const modelCtx = document.getElementById('modelTopChart').getContext('2d');
+            charts.model = new Chart(
+                modelCtx,
+                {
+                    type: 'bar',
+                    data: {
+                        labels: modelData.labels,
+                        datasets: [{
+                            data: modelData.data,
+                            backgroundColor: createGradient(modelCtx),
+                            borderWidth: 0,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: chartOptions
+                }
+            );
+
+            // 5. 版本TOP10柱状图
+            const versionCtx = document.getElementById('versionTopChart').getContext('2d');
+            charts.version = new Chart(
+                versionCtx,
+                {
+                    type: 'bar',
+                    data: {
+                        labels: versionData.labels,
+                        datasets: [{
+                            data: versionData.data,
+                            backgroundColor: createGradient(versionCtx),
+                            borderWidth: 0,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: chartOptions
+                }
+            );
+        } catch (err) {
+            console.error('图表渲染失败:', err);
+            document.querySelector('.chart-container').innerHTML = `
+                <div class="error-msg">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    图表加载失败，请刷新或检查后台数据
+                </div>
+            `;
+        } finally {
+            spinner.style.display = 'none';
+        }
+    }
+
+    // 初始化加载 & 每 5 分钟自动刷新
+    document.addEventListener('DOMContentLoaded', loadChartData);
+    setInterval(loadChartData, 300000);
+</script>
 </body>
 </html>
