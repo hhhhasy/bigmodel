@@ -7,30 +7,59 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary-bg: #f8f9ff;
+            --primary-bg: #ffffff;
             --accent-color: #3b8eff;
             --text-primary: #2d3748;
             --glass-bg: rgba(255, 255, 255, 0.95);
             --border-color: rgba(203, 213, 225, 0.3);
-            --hover-bg: rgba(59, 142, 255, 0.05);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--primary-bg); color: var(--text-primary); overflow-x: hidden; }
+        /* Hero Section Fullscreen: 两列布局，图片与文字 */
+        .hero-section {
+            width: 100%; height: 100vh;
+            background-color: var(--primary-bg);
+            display: flex; align-items: center; justify-content: center;
+            padding: 1rem;
         }
-
-        body {
-            background: var(--primary-bg);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+        .hero-box {
+            display: flex; align-items: center; justify-content: center;
+            max-width: 1200px; width: 100%;
+            gap: 2rem;
         }
-
+        .hero-image img {
+            max-width: 360px; width: 100%; height: auto;
+            display: block;
+        }
+        .hero-text {
+            flex: 1; text-align: left;
+        }
+        .hero-text h1 {
+            font-size: 3rem; margin-bottom: 1rem; color: var(--text-primary);
+        }
+        .hero-text p {
+            font-size: 1.2rem; line-height: 1.6; margin-bottom: 1.5rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 0.5rem;
+            background-color: var(--accent-color);
+            color: #fff;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .btn:hover { background-color: rgba(59,142,255,0.8); }
+        /* 响应式：小屏幕堆叠 */
+        @media (max-width: 768px) {
+            .hero-box { flex-direction: column; text-align: center; }
+            .hero-text { text-align: center; }
+            .hero-text h1 { font-size: 2.5rem; }
+        }
+        
         /* 导航栏 */
         .navbar {
             background: var(--glass-bg);
@@ -93,11 +122,13 @@
             background: var(--hover-bg);
         }
 
-        /* 主内容区 */
-        .main-content {
-            flex: 1;
-            padding: 4rem 2rem;
-            position: relative;
+        /* Main Content */
+        #main-content { padding: 2rem 3rem; }
+        .navbar {
+            background: var(--glass-bg); padding: 1rem 2rem; backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000; display: flex;
+            justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .neon-grid {
@@ -338,7 +369,23 @@
 </head>
 
 <body>
-    <nav class="navbar">
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-box">
+            <div class="hero-image">
+                <img src="https://ollama.com/public/ollama.png" alt="Ollama Logo">
+            </div>
+            <div class="hero-text">
+                <h1>Ollama: 模型分析与监控中心</h1>
+                <p>Ollama 提供一站式模型部署监控与性能分析服务，支持实时日志收集、多维度指标可视化，以及告警和自动扩缩容功能，助力团队快速定位问题并优化 AI 服务。</p>
+                <div class="btn" id="scroll-btn">了解更多</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- <nav class="navbar">
         <div class="logo">
             <i class="fas fa-brain"></i>
             <h1>Ollama</h1>
@@ -348,9 +395,9 @@
             <a href="#"><i class="fas fa-microchip"></i> 性能分析</a>
             <a href="#"><i class="fas fa-database"></i> 模型库</a>
         </div>
-    </nav>
+    </nav> -->
 
-    <div class="main-content">
+    <div id="main-content" class="main-content">
         <div class="neon-grid">
             <!-- 核心功能区块 -->
             <div class="model-functions">
@@ -404,24 +451,6 @@
             </div>
 
             <div class="chart-container">
-
-                <!-- 未授权访问漏洞统计 -->
-                <div class="neon-card chart-card" onclick="window.open('https://www.secrss.com/articles/76168','_blank')">
-                    <div class="card-header">
-                        <i class="fas fa-unlock-alt card-icon"></i>
-                        <h3 class="card-title">高危未授权访问漏洞</h3>
-                    </div>
-                    <div class="card-desc">
-                        <ul class="risk-list">
-                            <li><strong>14,359台服务器裸奔公网</strong>（截至2025-03-01）</li>
-                            <li>默认11434端口无认证机制</li>
-                            <li>可执行模型窃取/数据投毒/DDoS攻击</li>
-                            <li>CNVD评级：高危（CNVD-2025-04094）]</li>
-                        </ul>
-                    </div>
-                    <div class="citation-tag">来源：CNCERT安全公告/澎湃新闻</div>
-                </div>
-
                 <!-- 历史漏洞利用案例 -->
                 <div class="neon-card chart-card" onclick="window.open('https://jyjszx.symc.edu.cn/info/1013/1962.htm','_blank')">
                     <div class="card-header">
@@ -470,6 +499,23 @@
                         </div>
                     </div>
                     <div class="citation-tag">来源：腾云悦智安全实验室</div>
+                </div>
+
+                <!-- 最新 Ollama 服务暴露 -->
+                <div class="neon-card chart-card" onclick="window.open('https://nsfocusglobal.com/ollama-unauthorized-access-vulnerability-due-to-misconfiguration-cnvd-2025-04094','_blank')">
+                    <div class="card-header">
+                        <i class="fas fa-server card-icon"></i>
+                        <h3 class="card-title">最新 Ollama 服务暴露</h3>
+                    </div>
+                    <div class="card-desc">
+                        <ul class="risk-list">
+                            <li><strong>7,000+ 个 API 实例暴露公网</strong>（截至 2025-02-07）</li>
+                            <li>默认 11434 端口无认证机制</li>
+                            <li>可执行模型窃取／数据投毒／DDoS 攻击</li>
+                            <li>CNVD 编号：CNVD-2025-04094</li>
+                        </ul>
+                    </div>
+                    <div class="citation-tag">来源：NSFOCUS 安全报告／UpGuard 安全实验室</div>
                 </div>
             </div>
         </div>
@@ -604,6 +650,13 @@
     // 初始化加载 & 每 5 分钟自动刷新
     document.addEventListener('DOMContentLoaded', loadChartData);
     setInterval(loadChartData, 300000);
+
+    
+</script>
+<script>
+    document.getElementById('scroll-btn').addEventListener('click', function() {
+        document.getElementById('main-content').scrollIntoView({ behavior: 'smooth' });
+    });
 </script>
 </body>
 </html>
