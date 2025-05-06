@@ -114,12 +114,26 @@
         }
 
         .chart-container {
-
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
+            flex-direction: column;
             gap: 2rem;
             margin-top: 4rem;
+        }
 
+        /* 新增图表和文本框组合的样式 */
+        .chart-with-explanation {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        /* 新增文本框样式 */
+        .chart-explanation {
+            flex: 1;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
         }
 
         .neon-card {
