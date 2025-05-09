@@ -38,8 +38,8 @@
             position: absolute;
             top: 0;
             left: 0;
-            min-width: 100%;
-            min-height: 100%;
+            min-width: 10%;
+            min-height: 10%;
             width: auto;
             height: auto;
             z-index: -1;
@@ -82,7 +82,7 @@
 
         .search-wrapper {
             position: fixed;
-            top: 90px; /* 导航栏高度 */
+            top: 100px; /* 导航栏高度 */
             left: 0;
             right: 0;
             width: 100%;
@@ -303,6 +303,133 @@
         .scrolled .search-container {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+        .nav-links {
+            position: relative;
+            display: flex;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            flex-direction: column;
+        }
+
+        .dropdown-content a {
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: flex;
+        }
+
+        .nav-item {
+            cursor: pointer;
+        }
+        /* 1. 分栏外层保持透明，让视频穿透 */
+        .split-section {
+        position: relative;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5%;
+        /* background: transparent;  默认就是透明，无需额外声明 */
+        z-index: 1; /* 确保在视频之上 */
+        }
+
+        /* 2. 玻璃态浮层 */
+        .glass-container {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 2rem;
+        max-width: 1400px;
+        width: 100%;
+        box-shadow: 0 8px 20px rgba(0, 170, 255, 0.1);
+        }
+
+        /* 内部布局 */
+        .split-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        }
+        .text-col, .media-col {
+        flex: 1 1 500px;
+        padding: 1rem;
+        }
+        .text-col h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        }
+        .text-col p,
+        .text-col ul,
+        .text-col ol {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #4a4a4a;
+        margin-bottom: 1rem;
+        }
+        .text-col ul,
+        .text-col ol {
+        padding-left: 1.2rem;
+        }
+        .text-col li {
+        margin-bottom: 0.5rem;
+        }
+        .cta-btn {
+        padding: 0.8rem 1.8rem;
+        background: var(--primary-blue);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+        }
+        .cta-btn:hover {
+        background: #0095e6;
+        }
+
+        .media-col {
+        text-align: center;
+        }
+        .media-col img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        }
+
+        /* 反向布局 */
+        .split-section.reverse .split-content {
+        flex-direction: row-reverse;
+        }
+
+        /* 响应式堆叠 */
+        @media (max-width: 768px) {
+        .split-content {
+            flex-direction: column;
+        }
+        .split-section.reverse .split-content {
+            flex-direction: column;
+        }
+        }
     </style>
 </head>
 <body>
@@ -318,9 +445,14 @@
             <h1>ModelGuard</h1>
         </div>
         <div class="nav-links">
-            <a href="#" class="nav-item">风险图谱</a>
-            <a href="#" class="nav-item">基准测试</a>
-            <a href="#" class="nav-item">白皮书</a>
+            <div class="dropdown">
+                <a href="#" class="nav-item">部署平台</a>
+                <div class="dropdown-content">
+                    <a href="/Ollama">Ollama</a>
+                    <a href="/platform2">平台选项 2</a>
+                    <a href="/platform3">平台选项 3</a>
+                </div>
+            </div>
             <a href="/Probing" class="nav-item">数据探测</a>
         </div>
     </nav>
@@ -345,71 +477,51 @@
     <main>
         <section class="hero-section">
             <h1 class="hero-title">大模型部署风险可视化平台</h1>
-            <p class="hero-desc">
-                专业评估 Ollama、AnyLLM、Jan 等大模型部署方案的安全性风险，提供实时监控、漏洞预警和最佳实践指南，
-                助力企业构建安全可靠的人工智能基础设施。
-            </p>
-
-            <div class="metric-grid">
-                <div class="metric-card">
-                    <div class="metric-value">15+</div>
-                    <div class="metric-label">支持部署方案</div>
+        </section>
+        <!-- 平台简介：全屏左右分栏，背景透明 -->
+        <section id="about-section" class="split-section">
+            <div class="glass-container">
+            <div class="split-content">
+                <div class="text-col">
+                <h2>关于 ModelGuard</h2>
+                <p>
+                    ModelGuard 是一款大模型部署风险可视化平台，旨在帮助企业与研发团队：
+                </p>
+                <ul>
+                    <li>实时监控模型在生产环境中的安全风险</li>
+                    <li>通过可视化看板快速定位异常节点</li>
+                    <li>提供一键告警与应急处置方案</li>
+                </ul>
+                <button class="cta-btn">立即体验</button>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value">98.7%</div>
-                    <div class="metric-label">威胁识别率</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">2.3k+</div>
-                    <div class="metric-label">风险事件捕获</div>
+                <div class="media-col">
+                <img src="https://via.placeholder.com/600x400" alt="平台示意图">
                 </div>
             </div>
+            </div>
         </section>
-
-        <section class="deployment-grid">
-            <a href="/Ollama" class="deploy-card">
-                <div class="platform-header">
-                    <div class="platform-icon">
-                        <i class="fab fa-docker"></i>
-                    </div>
-                    <h2>Ollama</h2>
+  
+        <!-- 数据扫描原理：同理 -->
+        <section id="scan-section" class="split-section reverse">
+            <div class="glass-container">
+            <div class="split-content">
+                <div class="media-col">
+                <img src="https://via.placeholder.com/600x400" alt="数据扫描流程">
                 </div>
+                <div class="text-col">
+                <h2>数据如何扫描</h2>
                 <p>
-                    本地化大模型部署框架，支持快速模型切换与版本管理，
-                    当前发现12个潜在安全漏洞，涉及容器逃逸风险。
+                    我们通过多层网络探测与资产指纹分析，自动化完成数据采集：
                 </p>
-                <div class="platform-footer" style="margin-top: 2rem;">
-                    <div class="risk-indicator risk-medium">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        中风险等级
-                    </div>
-                    <div style="margin-top: 1rem; color: #64748b;">
-                        最近更新：3天前 | 活跃部署：1.2k+
-                    </div>
+                <ol>
+                    <li>被动采集：监听流量、抓取开放服务指纹</li>
+                    <li>主动探测：发送定制化探针，检测端口与服务版本</li>
+                    <li>特征匹配：结合漏洞库与模型评估，标记高风险资产</li>
+                </ol>
+                <button class="cta-btn">查看探测报告</button>
                 </div>
-            </a>
-
-            <a href="/anyllm" class="deploy-card">
-                <div class="platform-header">
-                    <div class="platform-icon">
-                        <i class="fas fa-cloud"></i>
-                    </div>
-                    <h2>AnyLLM</h2>
-                </div>
-                <p>
-                    多云架构部署解决方案，检测到7个配置缺陷，
-                    存在API密钥泄露和过度权限分配风险。
-                </p>
-                <div class="platform-footer" style="margin-top: 2rem;">
-                    <div class="risk-indicator risk-high">
-                        <i class="fas fa-radiation"></i>
-                        高风险等级
-                    </div>
-                    <div style="margin-top: 1rem; color: #64748b;">
-                        最近更新：7天前 | 活跃部署：850+
-                    </div>
-                </div>
-            </a>
+            </div>
+            </div>
         </section>
     </main>
 
