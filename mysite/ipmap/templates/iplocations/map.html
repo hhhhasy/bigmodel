@@ -19,14 +19,52 @@
             overflow-x: hidden;
         }
 
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(132deg, #FC415A, #591BC5, #212335);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
         .container {
+            position: relative;
             max-width: 1920px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .dashboard-section {
-            background: #ffffff;
+            background: linear-gradient(
+                45deg,
+                transparent 25%,
+                rgba(101, 168, 255, 0.1) 50%,
+                transparent 75%
+            );
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 30px;
@@ -52,7 +90,7 @@
             background: linear-gradient(
                 45deg,
                 transparent 25%,
-                rgba(101, 168, 255, 0.05) 50%,
+                rgba(101, 168, 255, 0.1) 50%,
                 transparent 75%
             );
             animation: flow 8s linear infinite;
@@ -207,8 +245,27 @@
 </head>
 <body>
     <div class="loading"></div>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">全球IP可视化分析平台</h1>
+            <p class="hero-description">
+                本平台基于先进的地理信息技术，实时可视化展示全球范围内OLLAMA服务的IP分布态势。
+                通过交互式地图与数据分析图表，帮助用户快速掌握网络安全态势，识别关键节点，
+                为全球网络资产管理和安全防护提供数据支持。
+            </p>
+            <p class="hero-description">
+                <em>核心功能：</em><br>
+                • 全球/中国双维度IP分布可视化<br>
+                • 实时数据统计分析<br>
+                • 多维度地理信息展示<br>
+                • 动态交互式探索
+            </p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
     
-    <div class="container">
+    
         <!-- 全球地图模块 -->
         <div class="dashboard-section">
             <div class="decorative-corner corner-tl"></div>
@@ -264,7 +321,7 @@
                 <p>此地图展示了 OLLAMA 服务暴露的中国 IP 分布情况，通过不同颜色和数值体现各个省份的 IP 数量。</p>
             </div>
         </div>
-    </div>
+    
 
     <script>
         // 科技主题配色
