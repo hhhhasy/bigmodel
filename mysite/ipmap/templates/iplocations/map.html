@@ -23,32 +23,95 @@
             height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             background: linear-gradient(132deg, #FC415A, #591BC5, #212335);
             color: white;
-            text-align: center;
-            padding: 20px;
+            padding: 0 8%;
             position: relative;
             overflow: hidden;
         }
 
         .hero-content {
-            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
             z-index: 1;
         }
 
+        .hero-left {
+            flex: 1;
+            text-align: left;
+            padding-right: 60px;
+        }
+
+        .hero-right {
+            flex: 1;
+            text-align: left;
+            position: relative;
+            padding-left: 40px;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin-bottom: 1.5rem;
-            font-weight: 600;
+            font-weight: 700;
             text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: linear-gradient(45deg, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleFade 1s ease-in-out;
         }
 
         .hero-description {
             font-size: 1.2rem;
-            line-height: 1.6;
+            line-height: 1.8;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            opacity: 0;
+            animation: descriptionFade 1s ease-in-out 0.5s forwards;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .hero-description p {
+            margin-bottom: 1rem;
+        }
+
+        .hero-description::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            border-radius: 3px;
+        }
+
+        @keyframes titleFade {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes descriptionFade {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 0.9;
+                transform: translateX(0);
+            }
         }
 
         .container {
@@ -73,6 +136,12 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .dashboard-section:hover {
@@ -93,7 +162,8 @@
                 rgba(101, 168, 255, 0.1) 50%,
                 transparent 75%
             );
-            animation: flow 8s linear infinite;
+            animation: flow 15s linear infinite;
+            z-index: -1;
         }
 
         @keyframes flow {
@@ -108,12 +178,27 @@
             background: #f8faff;
             border-radius: 12px;
             border: 1px solid rgba(224, 232, 255, 0.8);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .chart-container:hover {
+            box-shadow: 0 8px 24px rgba(74, 180, 244, 0.2);
+            border-color: rgba(74, 180, 244, 0.5);
         }
 
         .dual-chart {
             display: grid;
             grid-template-columns: 1.5fr 1fr;
             gap: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h2.section-title {
@@ -124,6 +209,22 @@
             position: relative;
             padding: 15px 0;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        h2.section-title i {
+            font-size: 24px;
+            color: #6ba2ff;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         h2.section-title::after {
@@ -141,6 +242,118 @@
             border-radius: 2px;
         }
 
+        .stats-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid #e1eaff;
+            box-shadow: 0 4px 16px rgba(143, 169, 230, 0.1);
+            z-index: 1;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            animation: fadeInRight 0.8s ease-out;
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .stats-panel:hover {
+            box-shadow: 0 6px 20px rgba(74, 180, 244, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .stats-item {
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .stats-item::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            width: 4px;
+            height: 80%;
+            background: linear-gradient(to bottom, #6ba2ff, #8fc1ff);
+            border-radius: 2px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stats-item:hover::before {
+            opacity: 1;
+        }
+
+        .stats-label {
+            color: #6b7c9e;
+            margin-right: 15px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-label i {
+            color: #6ba2ff;
+            font-size: 16px;
+        }
+
+        .stats-value {
+            color: #2a4a8b;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .stats-item:hover .stats-value {
+            color: #6ba2ff;
+            transform: scale(1.05);
+        }
+
+        .map-info-box {
+            margin-top: 20px; 
+            padding: 15px;
+            background-color: rgba(240, 244, 255, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 8px; 
+            border: 1px solid #d3e0ff;
+            position: relative;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.5s forwards;
+        }
+
+        .map-info-box:hover {
+            background-color: rgba(240, 244, 255, 0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(74, 180, 244, 0.15);
+        }
+
+        .map-info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #6ba2ff, #8fc1ff);
+        }
+
+        .map-info-box i {
+            font-size: 20px;
+            color: #6ba2ff;
+        }
+
         .loading {
             position: fixed;
             top: 0;
@@ -149,10 +362,12 @@
             height: 100%;
             background: rgba(255, 255, 255, 0.95);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 999;
             backdrop-filter: blur(5px);
+            gap: 20px;
         }
 
         .loading::after {
@@ -164,6 +379,17 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
             position: relative;
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #2a4a8b;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .decorative-corner {
@@ -201,36 +427,6 @@
             border-top: none;
         }
 
-        .stats-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 25px;
-            border-radius: 8px;
-            border: 1px solid #e1eaff;
-            box-shadow: 0 4px 16px rgba(143, 169, 230, 0.1);
-            z-index: 1;
-        }
-
-        .stats-item {
-            margin: 12px 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .stats-label {
-            color: #6b7c9e;
-            margin-right: 15px;
-            font-size: 14px;
-        }
-
-        .stats-value {
-            color: #2a4a8b;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
         /* 新增渐变装饰线 */
         .decorative-line {
             position: absolute;
@@ -244,25 +440,23 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
 </head>
 <body>
-    <div class="loading"></div>
+    <div class="loading">
+        <div class="loading-text">加载地理数据中...</div>
+    </div>
 
     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">全球IP可视化分析平台</h1>
-            <p class="hero-description">
-                本平台基于先进的地理信息技术，实时可视化展示全球范围内OLLAMA服务的IP分布态势。
-                通过交互式地图与数据分析图表，帮助用户快速掌握网络安全态势，识别关键节点，
-                为全球网络资产管理和安全防护提供数据支持。
-            </p>
-            <p class="hero-description">
-                <em>核心功能：</em><br>
-                • 全球/中国双维度IP分布可视化<br>
-                • 实时数据统计分析<br>
-                • 多维度地理信息展示<br>
-                • 动态交互式探索
-            </p>
+            <div class="hero-left">
+                <h1 class="hero-title">全球IP可视化<br>分析平台</h1>
+            </div>
+            <div class="hero-right">
+                <div class="hero-description">
+                    <p>欢迎使用我们的全球IP可视化分析平台，这是一个强大的工具，能够帮助您深入了解全球IP分布情况。</p>
+                    <p>通过直观的数据可视化展示，您可以轻松掌握IP地理位置分布、网络活动趋势以及相关统计数据。</p>
+                    <p>我们的平台采用先进的数据分析技术，为您提供实时、准确的IP信息洞察。</p>
+                </div>
+            </div>
         </div>
-        <div class="scroll-indicator">↓</div>
     </section>
     
     
@@ -273,14 +467,14 @@
             <div class="decorative-corner corner-bl"></div>
             <div class="decorative-corner corner-br"></div>
             
-            <h2 class="section-title">全球IP分布态势</h2>
+            <h2 class="section-title"><i class="fas fa-globe-americas"></i>全球IP分布态势</h2>
             <div class="stats-panel">
                 <div class="stats-item">
-                    <span class="stats-label">总IP数量</span>
+                    <span class="stats-label"><i class="fas fa-server"></i>总IP数量</span>
                     <span class="stats-value" id="world-total">0</span>
                 </div>
                 <div class="stats-item">
-                    <span class="stats-label">国家数量</span>
+                    <span class="stats-label"><i class="fas fa-flag"></i>国家数量</span>
                     <span class="stats-value" id="world-countries">0</span>
                 </div>
             </div>
@@ -289,7 +483,8 @@
                 <div class="chart-container" id="world-bar"></div>
             </div>
             <!-- 添加全球地图解释文本框 -->
-            <div style="margin-top: 20px; padding: 15px; background-color: #f0f4ff; border-radius: 8px; border: 1px solid #d3e0ff;">
+            <div class="map-info-box">
+                <i class="fas fa-info-circle"></i>
                 <p>此地图展示了 OLLAMA 服务暴露的全球 IP 分布情况，通过不同颜色和数值体现各个国家的 IP 数量。</p>
             </div>
         </div>
@@ -301,14 +496,14 @@
             <div class="decorative-corner corner-bl"></div>
             <div class="decorative-corner corner-br"></div>
             
-            <h2 class="section-title">中国IP分布态势</h2>
+            <h2 class="section-title"><i class="fas fa-map-marked-alt"></i>中国IP分布态势</h2>
             <div class="stats-panel">
                 <div class="stats-item">
-                    <span class="stats-label">总IP数量</span>
+                    <span class="stats-label"><i class="fas fa-server"></i>总IP数量</span>
                     <span class="stats-value" id="china-total">0</span>
                 </div>
                 <div class="stats-item">
-                    <span class="stats-label">省份数量</span>
+                    <span class="stats-label"><i class="fas fa-map"></i>省份数量</span>
                     <span class="stats-value" id="china-provinces">0</span>
                 </div>
             </div>
@@ -317,15 +512,44 @@
                 <div class="chart-container" id="china-bar"></div>
             </div>
             <!-- 添加中国地图解释文本框 -->
-            <div style="margin-top: 20px; padding: 15px; background-color: #f0f4ff; border-radius: 8px; border: 1px solid #d3e0ff;">
+            <div class="map-info-box">
+                <i class="fas fa-info-circle"></i>
                 <p>此地图展示了 OLLAMA 服务暴露的中国 IP 分布情况，通过不同颜色和数值体现各个省份的 IP 数量。</p>
             </div>
         </div>
     
 
     <script>
-        // 科技主题配色
-        const TECH_COLORS = ['#4ab4f4', '#7b68ee', '#45e6b3', '#ff6b6b', '#ffd93d'];
+        // 科技主题配色 - 增强版渐变色
+        const TECH_COLORS = [
+            ['#4ab4f4', '#366cfd'], // 蓝色系
+            ['#7b68ee', '#6a11cb'], // 紫色系
+            ['#45e6b3', '#32a786'], // 绿色系
+            ['#ff6b6b', '#ee0979'], // 红色系
+            ['#ffd93d', '#ff9500']  // 黄色系
+        ];
+        
+        // 更细腻的地图颜色渐变
+        function getGradientColors(colorFrom, colorTo, steps) {
+            const result = [];
+            for (let i = 0; i < steps; i++) {
+                const ratio = i / (steps - 1);
+                result.push(lerpColor(colorFrom, colorTo, ratio));
+            }
+            return result;
+        }
+        
+        // 颜色线性插值
+        function lerpColor(a, b, t) {
+            const ah = parseInt(a.replace(/#/g, ''), 16),
+                  ar = ah >> 16, ag = (ah >> 8) & 0xff, ab = ah & 0xff,
+                  bh = parseInt(b.replace(/#/g, ''), 16),
+                  br = bh >> 16, bg = (bh >> 8) & 0xff, bb = bh & 0xff;
+                  
+            return '#' + ((1 << 24) + (Math.round(ar + (br - ar) * t) << 16) + 
+                          (Math.round(ag + (bg - ag) * t) << 8) + 
+                           Math.round(ab + (bb - ab) * t)).toString(16).slice(1);
+        }
         
         // 国家/城市映射表（示例数据）
         const countryToChineseName = {/* 完整国家映射表 */};
@@ -990,18 +1214,25 @@
 
         };
 
-        // 动态更新统计数字
+        // 增强版动态数字更新
         function animateNumber(element, finalValue, duration = 2000) {
             let start = null;
             const initial = parseInt(element.textContent);
+            const formatNumber = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             
             function step(timestamp) {
                 if (!start) start = timestamp;
                 const progress = timestamp - start;
                 const value = initial + Math.floor((finalValue - initial) * (progress / duration));
-                element.textContent = value > finalValue ? finalValue : value;
+                element.textContent = formatNumber(value > finalValue ? finalValue : value);
                 if (progress < duration) {
                     requestAnimationFrame(step);
+                } else {
+                    // 数字更新完毕后添加强调动画
+                    element.classList.add('highlight-pulse');
+                    setTimeout(() => {
+                        element.classList.remove('highlight-pulse');
+                    }, 1000);
                 }
             }
             requestAnimationFrame(step);
@@ -1011,6 +1242,9 @@
         const initWorldMap = (data) => {
             const mapChart = echarts.init(document.getElementById('world-map'));
             const barChart = echarts.init(document.getElementById('world-bar'));
+            
+            // 构建渐变色序列
+            const gradientColors = getGradientColors(TECH_COLORS[0][0], TECH_COLORS[0][1], 10);
 
             // 地图配置
             const mapOption = {
@@ -1019,26 +1253,48 @@
                     trigger: 'item',
                     backgroundColor: 'rgba(10,22,51,0.9)',
                     borderColor: '#2a4a8b',
+                    borderWidth: 2,
+                    padding: [10, 15],
+                    borderRadius: 8,
+                    textStyle: {
+                        fontSize: 14,
+                        color: '#fff'
+                    },
                     formatter: params => {
                         const chineseName = getChineseName(params.name) || params.name;
-                        return `<div style="font-size:14px;color:${TECH_COLORS[0]}">
-                            ${chineseName}<br/>数量: ${params.value || 0}
+                        return `<div style="font-weight:500;">
+                            <span style="color:${TECH_COLORS[0][0]};margin-right:5px;">●</span>${chineseName}
+                            <div style="margin-top:5px;font-size:16px;font-weight:bold;color:#fff;">
+                                ${params.value || 0} 个IP
+                            </div>
                         </div>`;
-                    }
+                    },
+                    extraCssText: 'box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);'
                 },
                 visualMap: {
                     show: true,
                     type: 'continuous',
                     min: 0,
                     max: Math.max(...data.map(d => d.value)),
-                    inRange: { color: TECH_COLORS },
+                    inRange: { color: gradientColors },
                     textStyle: { color: '#fff' },
-                    bottom: 30
+                    bottom: 30,
+                    left: 'center',
+                    calculable: true,
+                    itemWidth: 15,
+                    itemHeight: 200,
+                    orient: 'vertical',
+                    padding: [5, 10]
                 },
                 series: [{
                     type: 'map',
                     map: 'world',
                     roam: true,
+                    scaleLimit: {
+                        min: 1,
+                        max: 8
+                    },
+                    zoom: 1.2,
                     itemStyle: {
                         areaColor: '#142952',
                         borderColor: '#2a4a8b',
@@ -1046,12 +1302,22 @@
                     },
                     emphasis: {
                         itemStyle: {
-                            areaColor: TECH_COLORS[0],
+                            areaColor: TECH_COLORS[0][0],
                             shadowColor: 'rgba(74,180,244,0.5)',
                             shadowBlur: 20
+                        },
+                        label: {
+                            show: true,
+                            color: '#fff',
+                            fontSize: 12,
+                            fontWeight: 'bold'
                         }
                     },
-                    data: data
+                    data: data,
+                    animation: true,
+                    animationDuration: 1000,
+                    animationEasing: 'cubicOut',
+                    animationDelay: idx => idx * 20
                 }]
             };
 
@@ -1059,52 +1325,126 @@
             const barOption = {
                 title: { show: false },
                 tooltip: { 
-                    ...mapOption.tooltip,
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        shadowStyle: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    backgroundColor: 'rgba(10,22,51,0.9)',
+                    borderColor: '#2a4a8b',
+                    borderWidth: 2,
+                    padding: [10, 15],
+                    borderRadius: 8,
                     formatter: params => {
-                        return `<div style="font-size:14px;color:${TECH_COLORS[0]}">
-                            ${params.name}<br/>数量: ${params.value}
+                        const param = params[0];
+                        return `<div style="font-weight:500;">
+                            <span style="color:${TECH_COLORS[0][0]};margin-right:5px;">●</span>${param.name}
+                            <div style="margin-top:5px;font-size:16px;font-weight:bold;color:#fff;">
+                                ${param.value} 个IP
+                            </div>
                         </div>`;
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    data: data.sort((a,b) => b.value - a.value).slice(0,20).map(d => getChineseName(d.name) || d.name),
-                    axisLabel: { 
-                        color: '#8ca0c7',
-                        rotate: 45,
-                        fontSize: 12
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLabel: { color: '#8ca0c7' }
+                    },
+                    extraCssText: 'box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);'
                 },
                 grid: {
                     left: '5%',
                     right: '5%',
-                    bottom: '15%'
+                    bottom: '20%',
+                    top: '5%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.sort((a,b) => b.value - a.value).slice(0,15).map(d => getChineseName(d.name) || d.name),
+                    axisLabel: { 
+                        color: '#8ca0c7',
+                        rotate: 45,
+                        fontSize: 12,
+                        interval: 0
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(140, 160, 199, 0.2)'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: { 
+                        color: '#8ca0c7',
+                        fontSize: 12
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(140, 160, 199, 0.1)'
+                        }
+                    }
                 },
                 series: [{
                     type: 'bar',
-                    data: data.sort((a,b) => b.value - a.value).slice(0,20),
+                    data: data.sort((a,b) => b.value - a.value).slice(0,15),
+                    barWidth: '50%',
                     itemStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: TECH_COLORS[0] },
-                            { offset: 1, color: TECH_COLORS[3] }
+                            { offset: 0, color: TECH_COLORS[0][0] },
+                            { offset: 1, color: TECH_COLORS[3][0] }
                         ]),
                         borderRadius: [5, 5, 0, 0]
-                    }
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: TECH_COLORS[0][0] },
+                                { offset: 1, color: TECH_COLORS[3][1] }
+                            ])
+                        }
+                    },
+                    animation: true,
+                    animationDuration: 1500,
+                    animationEasing: 'elasticOut',
+                    animationDelay: idx => idx * 100
                 }]
             };
 
             mapChart.setOption(mapOption);
             barChart.setOption(barOption);
+            
+            // 添加地图点击事件
+            mapChart.on('click', function(params) {
+                // 让对应的柱状图高亮
+                const countryName = getChineseName(params.name) || params.name;
+                const dataIndex = barOption.xAxis.data.indexOf(countryName);
+                
+                if (dataIndex >= 0) {
+                    barChart.dispatchAction({
+                        type: 'highlight',
+                        seriesIndex: 0,
+                        dataIndex: dataIndex
+                    });
+                    
+                    setTimeout(() => {
+                        barChart.dispatchAction({
+                            type: 'downplay',
+                            seriesIndex: 0,
+                            dataIndex: dataIndex
+                        });
+                    }, 1000);
+                }
+            });
         };
 
         // 初始化中国地图
         const initChinaMap = (data) => {
             const mapChart = echarts.init(document.getElementById('china-map'));
             const barChart = echarts.init(document.getElementById('china-bar'));
+            
+            // 构建渐变色序列
+            const gradientColors = getGradientColors(TECH_COLORS[1][0], TECH_COLORS[1][1], 10);
 
             // 地图配置
             const mapOption = {
@@ -1113,25 +1453,48 @@
                     trigger: 'item',
                     backgroundColor: 'rgba(10,22,51,0.9)',
                     borderColor: '#2a4a8b',
+                    borderWidth: 2,
+                    padding: [10, 15],
+                    borderRadius: 8,
+                    textStyle: {
+                        fontSize: 14,
+                        color: '#fff'
+                    },
                     formatter: params => {
-                        return `<div style="font-size:14px;color:${TECH_COLORS[0]}">
-                            ${params.name}<br/>数量: ${params.value || 0}
+                        return `<div style="font-weight:500;">
+                            <span style="color:${TECH_COLORS[1][0]};margin-right:5px;">●</span>${params.name}
+                            <div style="margin-top:5px;font-size:16px;font-weight:bold;color:#fff;">
+                                ${params.value || 0} 个IP
+                            </div>
                         </div>`;
-                    }
+                    },
+                    extraCssText: 'box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);'
                 },
                 visualMap: {
                     show: true,
                     type: 'continuous',
                     min: 0,
                     max: Math.max(...data.map(d => d.value)),
-                    inRange: { color: TECH_COLORS },
+                    inRange: { color: gradientColors },
                     textStyle: { color: '#fff' },
-                    bottom: 30
+                    bottom: 30,
+                    left: 'center',
+                    calculable: true,
+                    itemWidth: 15,
+                    itemHeight: 200,
+                    orient: 'vertical',
+                    padding: [5, 10]
                 },
                 series: [{
                     type: 'map',
                     map: 'china',
                     roam: true,
+                    scaleLimit: {
+                        min: 1,
+                        max: 8
+                    },
+                    zoom: 1.2,
+                    center: [104, 38],
                     itemStyle: {
                         areaColor: '#142952',
                         borderColor: '#2a4a8b',
@@ -1139,52 +1502,140 @@
                     },
                     emphasis: {
                         itemStyle: {
-                            areaColor: TECH_COLORS[0],
-                            shadowColor: 'rgba(74,180,244,0.5)',
+                            areaColor: TECH_COLORS[1][0],
+                            shadowColor: 'rgba(123,104,238,0.5)',
                             shadowBlur: 20
+                        },
+                        label: {
+                            show: true,
+                            color: '#fff',
+                            fontSize: 12,
+                            fontWeight: 'bold'
                         }
                     },
-                    data: data
+                    data: data,
+                    animation: true,
+                    animationDuration: 1000,
+                    animationEasing: 'cubicOut',
+                    animationDelay: idx => idx * 20
                 }]
             };
 
             // 柱状图配置
             const barOption = {
                 title: { show: false },
-                tooltip: { ...mapOption.tooltip },
-                xAxis: {
-                    type: 'category',
-                    data: data.sort((a,b) => b.value - a.value).slice(0,20).map(d => d.name),
-                    axisLabel: { 
-                        color: '#8ca0c7',
-                        rotate: 45,
-                        fontSize: 12
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLabel: { color: '#8ca0c7' }
+                tooltip: { 
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        shadowStyle: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    backgroundColor: 'rgba(10,22,51,0.9)',
+                    borderColor: '#2a4a8b',
+                    borderWidth: 2,
+                    padding: [10, 15],
+                    borderRadius: 8,
+                    formatter: params => {
+                        const param = params[0];
+                        return `<div style="font-weight:500;">
+                            <span style="color:${TECH_COLORS[1][0]};margin-right:5px;">●</span>${param.name}
+                            <div style="margin-top:5px;font-size:16px;font-weight:bold;color:#fff;">
+                                ${param.value} 个IP
+                            </div>
+                        </div>`;
+                    },
+                    extraCssText: 'box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);'
                 },
                 grid: {
                     left: '5%',
                     right: '5%',
-                    bottom: '15%'
+                    bottom: '20%',
+                    top: '5%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.sort((a,b) => b.value - a.value).slice(0,15).map(d => d.name),
+                    axisLabel: { 
+                        color: '#8ca0c7',
+                        rotate: 45,
+                        fontSize: 12,
+                        interval: 0
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(140, 160, 199, 0.2)'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: { 
+                        color: '#8ca0c7',
+                        fontSize: 12
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(140, 160, 199, 0.1)'
+                        }
+                    }
                 },
                 series: [{
                     type: 'bar',
-                    data: data.sort((a,b) => b.value - a.value).slice(0,20),
+                    data: data.sort((a,b) => b.value - a.value).slice(0,15),
+                    barWidth: '50%',
                     itemStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: TECH_COLORS[0] },
-                            { offset: 1, color: TECH_COLORS[3] }
+                            { offset: 0, color: TECH_COLORS[1][0] },
+                            { offset: 1, color: TECH_COLORS[2][0] }
                         ]),
                         borderRadius: [5, 5, 0, 0]
-                    }
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: TECH_COLORS[1][0] },
+                                { offset: 1, color: TECH_COLORS[2][1] }
+                            ])
+                        }
+                    },
+                    animation: true,
+                    animationDuration: 1500,
+                    animationEasing: 'elasticOut',
+                    animationDelay: idx => idx * 100
                 }]
             };
 
             mapChart.setOption(mapOption);
             barChart.setOption(barOption);
+            
+            // 添加地图点击事件
+            mapChart.on('click', function(params) {
+                // 让对应的柱状图高亮
+                const provinceName = params.name;
+                const dataIndex = barOption.xAxis.data.indexOf(provinceName);
+                
+                if (dataIndex >= 0) {
+                    barChart.dispatchAction({
+                        type: 'highlight',
+                        seriesIndex: 0,
+                        dataIndex: dataIndex
+                    });
+                    
+                    setTimeout(() => {
+                        barChart.dispatchAction({
+                            type: 'downplay',
+                            seriesIndex: 0,
+                            dataIndex: dataIndex
+                        });
+                    }, 1000);
+                }
+            });
         };
 
         // 数据加载
@@ -1197,26 +1648,47 @@
             // 处理中国数据
             const chinaData = processChinaData(chinaRes);
             // 更新统计面板
+            
+            // 添加数字变化强调样式
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes highlight-pulse {
+                    0% { color: #2a4a8b; transform: scale(1); }
+                    50% { color: #4ab4f4; transform: scale(1.1); }
+                    100% { color: #2a4a8b; transform: scale(1); }
+                }
+                .highlight-pulse {
+                    animation: highlight-pulse 1s ease-in-out;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // 设置延迟，让加载效果更明显
+            setTimeout(() => {
+                animateNumber(document.getElementById('world-total'), 
+                    worldData.reduce((sum, d) => sum + d.value, 0));
+                animateNumber(document.getElementById('world-countries'), 
+                    new Set(worldData.map(d => d.name)).size);
 
-            console.log("World Data:", chinaData);
-            
-            animateNumber(document.getElementById('world-total'), 
-                worldData.reduce((sum, d) => sum + d.value, 0));
-            animateNumber(document.getElementById('world-countries'), 
-                new Set(worldData.map(d => d.name)).size);
-
-            animateNumber(document.getElementById('china-total'), 
-                chinaData.reduce((sum, d) => sum + d.value, 0));
-            animateNumber(document.getElementById('china-provinces'), 
-                new Set(chinaData.map(d => d.name)).size);
-            
-            initWorldMap(worldData);
-            initChinaMap(chinaData);
-            
-            // 隐藏loading
-            document.querySelector('.loading').style.display = 'none';
+                animateNumber(document.getElementById('china-total'), 
+                    chinaData.reduce((sum, d) => sum + d.value, 0));
+                animateNumber(document.getElementById('china-provinces'), 
+                    new Set(chinaData.map(d => d.name)).size);
+                
+                initWorldMap(worldData);
+                initChinaMap(chinaData);
+                
+                // 平滑隐藏loading
+                const loader = document.querySelector('.loading');
+                loader.style.opacity = '0';
+                loader.style.transition = 'opacity 0.8s ease';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 800);
+            }, 800);
         }).catch(error => {
             console.error('Error:', error);
+            document.querySelector('.loading').style.display = 'none';
             alert('数据加载失败');
         });
 
@@ -1257,11 +1729,43 @@
 
         // 窗口resize处理
         window.addEventListener('resize', () => {
-            [echarts.getInstanceByDom(document.getElementById('world-map')),
-             echarts.getInstanceByDom(document.getElementById('world-bar')),
-             echarts.getInstanceByDom(document.getElementById('china-map')),
-             echarts.getInstanceByDom(document.getElementById('china-bar'))]
-            .forEach(chart => chart && chart.resize());
+            // 获取所有图表实例并进行重新渲染
+            const charts = [
+                echarts.getInstanceByDom(document.getElementById('world-map')),
+                echarts.getInstanceByDom(document.getElementById('world-bar')),
+                echarts.getInstanceByDom(document.getElementById('china-map')),
+                echarts.getInstanceByDom(document.getElementById('china-bar'))
+            ];
+            
+            charts.forEach(chart => {
+                if (chart) {
+                    chart.resize();
+                }
+            });
+        });
+        
+        // 在地图区块滚动到视口中时触发动画
+        const observeElement = (element, callback) => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        callback();
+                        observer.unobserve(element);
+                    }
+                });
+            }, { threshold: 0.2 });
+            
+            observer.observe(element);
+        };
+        
+        // 页面加载完成后，添加滚动观察器
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.dashboard-section');
+            sections.forEach(section => {
+                observeElement(section, () => {
+                    section.classList.add('animated');
+                });
+            });
         });
     </script>
 </body>
