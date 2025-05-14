@@ -1,215 +1,245 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>ModelGuard - 大模型部署风险评估</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModelGuard - 大模型部署风险评估</title>
 
-    <!-- 字体 & 图标库 -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <!-- Google Font & FontAwesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-    <style>
-        body, html { margin:0; padding:0; height:100%; scroll-behavior: smooth; }
-        .background {
-          background: linear-gradient(132deg, #FC415A, #591BC5, #212335);
-          background-size: 400% 400%;
-          animation: Gradient 15s ease infinite;
-          position: relative;
-          overflow: hidden;
-          height: 100vh;
-        }
-        @keyframes Gradient {
-          0%   { background-position: 0% 50%; }
-          50%  { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        /* Banner 样式 */
-        header {
-            position: absolute; top: 0; left: 0;
-            width: 100%;
-            z-index: 10;
-        }
-        nav{
-            color: #FFF;
-            float: right;
-            margin:30px 90px;
-        }
-        nav ul{
-            list-style: none;
-        }
-        nav ul li {
-            float: left;
-            transition: .3s;
-        }
-        nav ul li a{
-            text-decoration: none;
-            color: #EFEEF5;
-            transition: .5;
-            font-size: 20px;
-            margin-left:16px;
-        }
-        nav ul li:hover a{
-            text-decoration: none;
-            color: #591BC5;;
-        }
-        nav ul li:hover{
-            height: 45px;
-            padding-top: 30px;
-            margin-top: -30px;
-            background: #EFEEF5;
-            text-decoration: none;
-            transform: skew(15deg);
-        }
+  <style>
+    /* CSS Variables */
+    :root {
+      --color-primary: #591BC5;
+      --color-secondary: #FC415A;
+      --color-bg-dark: #212335;
+      --color-bg-light: #EFEEF5;
+      --font-main: 'Inter', sans-serif;
+      --transition-speed: 0.2s;
+      --icon-size: 50px; /* 修改为更合适的尺寸 */
+      --icon-opacity: 0.5;
+    }
 
-        /* 子菜单样式（下拉项） */
-        nav ul li .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 75px;
-        left: 0;
-        background: #EFEEF5;
-        padding: 10px 0;
-        min-width: 140px;
-        z-index: 999;
-        border-radius: 6px;
-        }
+    /* Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      font-family: var(--font-main);
+      scroll-behavior: smooth;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+    ul { list-style: none; }
+    a { text-decoration: none; }
 
-        /* 子菜单项 */
-        nav ul li .dropdown-menu li {
-        float: none;
-        padding: 8px 20px;
-        text-align: left;
-        white-space: nowrap;
-        }
+    /* Section 通用 */
+    section {
+      width: 100%;
+      height: 100vh;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        /* 子菜单链接样式 */
-        nav ul li .dropdown-menu li a {
-        color: #591BC5;
-        font-size: 16px;
-        text-decoration: none;
-        }
+    /* Banner / Hero */
+    .hero {
+      background: linear-gradient(132deg, var(--color-secondary), var(--color-primary), var(--color-bg-dark));
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: var(--color-bg-light);
+      overflow: hidden;
+      flex-direction: column;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        /* 悬停时显示子菜单 */
-        nav ul li.dropdown:hover .dropdown-menu {
-        display: block;
-        }
-        .header-content {
-          position:relative; z-index:10;
-          text-align:center; margin-top:20%; color:#EFEEF5;
-        }
-        .header-content h1 { font-size:3em; text-transform:uppercase; letter-spacing:1px; }
-        .header-content p { font-size:1.1em; line-height:1.6; max-width:600px; margin:20px auto; }
-        .header-content button {
-          padding:10px 20px; font-size:1em; border:1px solid #EFEEF5; background:#EFEEF5;
-          color:#591BC5; border-radius:20px; cursor:pointer; transition:.3s;
-        }
-        .header-content button:hover { border-radius:0; }
-        /* Cube 动画 */
-        .cube {
-          position: absolute;
-          width: 10px; height: 10px;
-          border: 1px solid #D7D4E4;
-          transform-origin: top left;
-          transform: scale(0) rotate(0) translate(-50%, -50%);
-          animation: cube 12s ease-in forwards infinite;
-          z-index:1;
-        }
-        .cube:nth-child(2n) { border-color: #FFF; }
-        .cube:nth-child(2) { animation-delay: 2s; left: 25vw;  top: 40vh; }
-        .cube:nth-child(3) { animation-delay: 4s; left: 75vw;  top: 50vh; }
-        .cube:nth-child(4) { animation-delay: 6s; left: 90vw;  top: 10vh; }
-        .cube:nth-child(5) { animation-delay: 8s; left: 10vw;  top: 85vh; }
-        .cube:nth-child(6) { animation-delay:10s; left: 50vw;  top: 10vh; }
-        @keyframes cube {
-          from { transform: scale(0) rotate(0deg) translate(-50%, -50%); opacity:1; }
-          to   { transform: scale(20) rotate(960deg) translate(-50%, -50%); opacity:0; }
-        }
-        /* Section 通用 */
-        section { width:100%; min-height:100vh; position:relative; display:flex; align-items:center; padding:50px 0; }
-        /* 关于我们: 左文案 右动画 */
-        #about { flex-direction: row; background:rgb(249, 243, 243)255, 0.6); }
-        #about .content { flex:1; text-align:left; padding-left:80px; }
-        #about #tag-sphere { position:relative; flex:1; margin:0; width:400px; height:400px; }
-        /* 数据来源居中 */
-        #data-sources { justify-content:center; background:rgba(33,35,53,0.8); }
-        #data-sources .content { text-align:center; }
-        /* 文字球元素 */
-        #tag-sphere span { position:absolute; top:50%; left:50%; transform-style: preserve-3d; white-space: nowrap; font-family:'Inter', sans-serif; user-select:none; cursor:default; transition: transform 0.3s, opacity 0.3s; }
-    </style>
+    /* Hero Icon (SVG) */
+    .hero-icon {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-icon svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Header & Nav */
+    .header {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 90px;
+    }
+    .nav-links { display: flex; gap: 20px; }
+    .nav-item { position: relative; }
+    .nav-item > a { font-size: 20px; color: var(--color-bg-light); transition: color var(--transition-speed); }
+    .nav-item:hover > a { color: var(--color-primary); }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%; left: 0;
+      background: var(--color-bg-light);
+      border-radius: 6px;
+      margin-top: 10px;
+      padding: 10px 0;
+      white-space: nowrap;
+    }
+    .dropdown-item a { display: block; padding: 8px 20px; color: var(--color-primary); font-size: 16px; }
+    .nav-item.dropdown:hover .dropdown-menu { display: block; }
+
+    /* Hero Content */
+    .hero-content {
+      text-align: center;
+      padding: 0 20px;
+      margin-top: 20vh;
+      z-index: 1;
+    }
+    .hero-content h1 { font-size: 3em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+    .hero-content p { font-size: 1.1em; line-height: 1.6; max-width: 600px; margin: 0 auto 30px; }
+    .btn-primary {
+      padding: 10px 20px;
+      border: 1px solid var(--color-bg-light);
+      background: var(--color-bg-light);
+      color: var(--color-primary);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: border-radius var(--transition-speed);
+    }
+    .btn-primary:hover { border-radius: 0; }
+
+    /* About Section */
+    #about { background: #F9F3F3; flex-direction: row; padding: 0 80px; }
+    .about-text { flex: 1; }
+    .about-text h2 { font-size: 2em; margin-bottom: 20px; color: var(--color-primary); }
+    .about-text p { font-size: 1em; line-height: 1.6; color: #333; }
+    .tag-sphere { flex: 1; width: 400px; height: 400px; position: relative; perspective: 800px; }
+    .tag-sphere span { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d; white-space: nowrap; user-select: none; cursor: default; transition: transform 0.3s, opacity 0.3s; }
+  </style>
 </head>
-<body >
-    <!-- Banner Section -->
-    <div class="background" id="home">
-      <header>
-        <nav>
-            <ul>
-                <li class="dropdown">
-                    <a href="#">部署平台</a>
-                    <ul class="dropdown-menu">
-                      <li><a href="/Ollama">Ollama</a></li>
-                      <li><a href="/deploy/cloud">云端部署</a></li>
-                      <li><a href="/deploy/compare">方案对比</a></li>
-                    </ul>
-                  </li>
-                <li><a href="/Probing">数据探测</a></li>
-             </ul>
-        </nav>
-        <!-- Cube 粒子 -->
-        <div class="cube"></div><div class="cube"></div><div class="cube"></div>
-        <div class="cube"></div><div class="cube"></div><div class="cube"></div>
-        <!-- Header 内容 -->
-        <div class="header-content">
-          <h1>大模型部署风险可视化平台</h1>
-          <p>ModelGuard 帮助企业与研发团队实时监控模型在生产环境中的安全风险，快速定位异常，并提供一键应急处置。</p>
-          <button id="btnExperience">立即体验</button>
+<body>
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <!-- White semi-transparent SVG Icon -->
+    <img class="hero-icon" src="{% static 'guard.svg' %}" alt="" />
+
+    <div class="header">
+      <div class="logo"><a href="#" style="color: var(--color-bg-light); font-weight: 700; font-size: 1.5em;">ModelGuard</a></div>
+      <nav class="nav-links">
+        <div class="nav-item">
+          <a href="/service-details">服务详情</a>
         </div>
-      </header>
+        <div class="nav-item"><a href="/Probing">数据探测</a></div>
+      </nav>
     </div>
 
-    
+    <div class="hero-content">
+      <h1>大模型部署风险可视化平台</h1>
+      <p>ModelGuard 帮助企业与研发团队实时监控模型在生产环境中的安全风险，快速定位异常，并提供一键应急处置。</p>
+      <button class="btn-primary" id="btnExperience">立即体验</button>
+    </div>
+  </section>
 
-    <!-- 关于我们 Section (左文案 右文字球) -->
-    <section id="about">
-        <div class="cube"></div><div class="cube"></div><div class="cube"></div>
-        <div class="cube"></div><div class="cube"></div><div class="cube"></div>
-      <div class="content">
-        <h2>关于我们平台</h2>
-        <p>ModelGuard 是一款专为大模型生产环境设计的风险评估与可视化工具。它能够接入多种模型部署框架，实时采集预测结果与模型行为指标，通过多维日志分析和异常检测算法，帮助您发现潜在的安全漏洞与性能瓶颈，并提供可操作的优化建议和应急方案。</p>
-      </div>
-      <div id="tag-sphere"></div>
-    </section>
+  <!-- About Section -->
+  <section id="about">
+    <div class="about-text">
+      <h2>关于我们平台</h2>
+      <p>ModelGuard 是一款专为大模型生产环境设计的风险评估与可视化工具。它能够接入多种模型部署框架，实时采集预测结果与模型行为指标，通过多维日志分析和异常检测算法，帮助您发现潜在的安全漏洞与性能瓶颈，并提供可操作的优化建议和应急方案。</p>
+    </div>
+    <div class="tag-sphere" id="tag-sphere"></div>
+  </section>
 
+  <!-- JavaScript (模块化) -->
+  <script>
+    /* Smooth Scroll */
+    document.getElementById('btnExperience').addEventListener('click', () => {
+      document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+    });
 
-
-    <script>
-      // 平滑滚动到关于我们
-      document.getElementById('btnExperience').onclick = () => {
-        document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
-      };
-      // 文字球动画脚本（同上）
-      const tags=[
+    /* Tag Sphere Module */
+    (function() {
+      const tags = [
         'SDXL Turbo','DALL·E','mPLUG','GLM','VideoCrafter','openjourney','言一小文','Pika','Claude',
         'MiniCM','Stable Diffusion','Vicuna','InternVL','Codex','Starcoder','ChatGLM','Kiini','Midjourney',
         'ControlNet','DreamBooth','LLaMA','LLaMA2','LLaMA3','GPT-3','GPT-3.5','GPT-4','GPT-4o','Gemini','Gemini Pro',
         'Bard','ERNIE','Falcon','Whisper','Sora','Bloom','Jasper','Mistral','T5','ALUM','Reformer','Perceiver',
         'StableLM','Palm','Claude Instant','TinyBERT','Eris','Groq','AlphaFold','LaMDA','MPT','OPT','GLM2',
         'Vicuna 2','MPT-30B','Falcon 180B'
-      ]; const RADIUS=250,SPEED=0.002; const container=document.getElementById('tag-sphere'); const tagElems=[];
-      function randomColor(){return 'hsl('+Math.floor(Math.random()*360)+',70%,60%)';}
-      tags.forEach((text,i)=>{const phi=Math.acos(1-2*(i+0.5)/tags.length);const theta=Math.PI*(1+Math.sqrt(5))*(i+0.5);
-        const x=RADIUS*Math.cos(theta)*Math.sin(phi),y=RADIUS*Math.sin(theta)*Math.sin(phi),z=RADIUS*Math.cos(phi);
-        const el=document.createElement('span');el.innerText=text;el.style.color=randomColor();el.style.transform=`translate3d(${x}px,${y}px,${z}px)`;
-        container.appendChild(el);tagElems.push({el,x,y,z});});
-      let angleX=0,angleY=0;function animate(){angleX+=SPEED;angleY+=SPEED*0.8;
-        const sinX=Math.sin(angleX),cosX=Math.cos(angleX),sinY=Math.sin(angleY),cosY=Math.cos(angleY);
-        tagElems.forEach(obj=>{let y1=obj.y*cosX-obj.z*sinX,z1=obj.y*sinX+obj.z*cosX;
-          let x1=obj.x*cosY+z1*sinY,z2=-obj.x*sinY+z1*cosY;const per=(z2+RADIUS)/(2*RADIUS);
-          const scale=per*0.5+0.5,alpha=per*per+0.3;obj.el.style.transform=`translate3d(${x1}px,${y1}px,${z2}px) scale(${scale})`;obj.el.style.opacity=alpha;});
-        requestAnimationFrame(animate);}animate();
-      let dragging=false,lastX,lastY;container.addEventListener('mousedown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;});
-      window.addEventListener('mousemove',e=>{if(!dragging)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;angleY+=dx*0.002;angleX-=dy*0.002;lastX=e.clientX;lastY=e.clientY;});
-      window.addEventListener('mouseup',()=>dragging=false);
-    </script>
+      ];
+      const RADIUS = 250;
+      const SPEED_X = 0.002;
+      const SPEED_Y = 0.0016;
+      const sphere = document.getElementById('tag-sphere');
+      const elements = [];
+      let angleX = 0, angleY = 0;
+
+      function randomColor() { return `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`; }
+
+      tags.forEach((text, i) => {
+        const phi = Math.acos(1 - 2 * (i + 0.5) / tags.length);
+        const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5);
+        const x = RADIUS * Math.cos(theta) * Math.sin(phi);
+        const y = RADIUS * Math.sin(theta) * Math.sin(phi);
+        const z = RADIUS * Math.cos(phi);
+        const span = document.createElement('span');
+        span.textContent = text;
+        span.style.color = randomColor();
+        span.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
+        sphere.appendChild(span);
+        elements.push({ span, x, y, z });
+      });
+
+      function animate() {
+        angleX += SPEED_X;
+        angleY += SPEED_Y;
+        const sinX = Math.sin(angleX), cosX = Math.cos(angleX);
+        const sinY = Math.sin(angleY), cosY = Math.cos(angleY);
+        elements.forEach(obj => {
+          let { x, y, z } = obj;
+          let y1 = y * cosX - z * sinX;
+          let z1 = y * sinX + z * cosX;
+          let x1 = x * cosY + z1 * sinY;
+          let z2 = -x * sinY + z1 * cosY;
+          const per = (z2 + RADIUS) / (2 * RADIUS);
+          const scale = per * 0.5 + 0.5;
+          const opacity = per * per + 0.3;
+          obj.span.style.transform = `translate3d(${x1}px, ${y1}px, ${z2}px) scale(${scale})`;
+          obj.span.style.opacity = opacity;
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      let isDragging = false, lastX, lastY;
+      sphere.addEventListener('mousedown', e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
+      window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        angleY += dx * 0.002;
+        angleX -= dy * 0.002;
+        lastX = e.clientX; lastY = e.clientY;
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+    })();
+  </script>
 </body>
 </html>
