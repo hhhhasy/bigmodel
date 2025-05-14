@@ -6,6 +6,9 @@ import os
 def index(request):
     return render(request, 'home.html')
 
+def service_details(request):
+    return render(request, 'service_details.html')
+
 def getearth(request):
     # 获取文件的完整路径
     file_path = os.path.join(settings.MEDIA_ROOT, 'earth.mp4')
