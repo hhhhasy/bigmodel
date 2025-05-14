@@ -53,7 +53,13 @@ def index(request):
     return render(request, 'ipsearch/index.html', {'form': form})
 """
     
+def search_page(request):
+    """渲染搜索页面"""
+    form = SearchForm()
+    return render(request, 'AllSearch/search.html', {'form': form})
+
 def search_view(request):
+    """处理搜索结果页面"""
     form = SearchForm(request.GET)
     query=[]
 
@@ -82,8 +88,6 @@ def search_view(request):
             'longitude': float(item.longitude) if item.longitude else None,
         })
 
-
-
     # 组合 FOFA 查询： user_query AND ollma
     results2 = []
     if query:
@@ -98,9 +102,7 @@ def search_view(request):
             'full': 'false',
         }
 
-
         try:
-
             resp = requests.get(
                 "http://fofa.xmint.cn/api/v1/search/all",
                 params=params,
