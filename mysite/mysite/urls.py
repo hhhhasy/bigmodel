@@ -8,4 +8,5 @@ urlpatterns = [
     path('Probing/', include('probinghome.urls')),
     path('Ollama/search/', include('ipsearch.urls')),
     path('Ollama/distribution/', include('ipmap.urls')),
+    path('Search/', include('AllSearch.urls')),
 ]

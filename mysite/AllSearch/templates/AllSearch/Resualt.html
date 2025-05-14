@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>威胁情报分析报告</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* 保留所有之前的CSS样式 */
+        :root {
+            --primary-bg: #f8fbfe;
+            --accent-blue: #4ab4f4;
+            --accent-purple: #8c7ae6;
+            --accent-green: #45e6b3;
+            --accent-red: #ff6b6b;
+            --accent-orange: #ff9f43;
+            --accent-cyan: #0ce7fa;
+            --text-primary: #2a4a8b;
+            --text-secondary: #5a7ab8;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-card: rgba(255, 255, 255, 0.7);
+            --border-light: rgba(74, 180, 244, 0.2);
+            --shadow-sm: 0 5px 15px rgba(74, 180, 244, 0.1);
+            --shadow-md: 0 8px 30px rgba(74, 180, 244, 0.2);
+            --shadow-lg: 0 15px 50px rgba(74, 180, 244, 0.3);
+            --gradient-primary: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 70%);
+            --gradient-danger: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-orange) 100%);
+            --gradient-cyber: linear-gradient(135deg, #0b132b 0%, #3a506b 100%);
+            --gradient-dark: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f4fe 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(74, 180, 244, 0.05);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(74, 180, 244, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(74, 180, 244, 0.4);
+        }
+
+        /* 动态背景 */
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* 改进布局样式 - 全屏时尚设计 */
+        .cyber-container {
+            width: 100%;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cyber-title {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        /* 添加模块间距 */
+        .section-spacer {
+            height: 40px;
+            width: 100%;
+            background: transparent;
+        }
+
+        .cyber-title h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            padding: 0 30px;
+            display: inline-block;
+            position: relative;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { filter: brightness(1) drop-shadow(0 10px 20px rgba(74, 180, 244, 0.2)); }
+            50% { filter: brightness(1.1) drop-shadow(0 15px 30px rgba(74, 180, 244, 0.4)); }
+        }
+
+        .cyber-title h1::before,
+        .cyber-title h1::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 3px;
+            transform: translateY(-50%);
+        }
+
+        .cyber-title h1::before { 
+            left: -40px; 
+            background: linear-gradient(90deg, transparent, var(--accent-blue));
+            animation: slideLeftRight 2s ease-in-out infinite;
+        }
+        
+        .cyber-title h1::after { 
+            right: -40px; 
+            background: linear-gradient(90deg, var(--accent-green), transparent);
+            animation: slideRightLeft 2s ease-in-out infinite;
+        }
+
+        @keyframes slideLeftRight {
+            0%, 100% { transform: translateY(-50%) translateX(-10px); opacity: 0.5; }
+            50% { transform: translateY(-50%) translateX(5px); opacity: 1; }
+        }
+
+        @keyframes slideRightLeft {
+            0%, 100% { transform: translateY(-50%) translateX(10px); opacity: 0.5; }
+            50% { transform: translateY(-50%) translateX(-5px); opacity: 1; }
+        }
+
+        /* 主搜索卡片 - 全屏版本 */
+        .cyber-card {
+            background: var(--glass-bg);
+            border: none;
+            border-radius: 0;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out;
+            width: 100%;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 微光扫描效果 */
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.8s;
+            z-index: 2;
+        }
+
+        .cyber-card:hover::before {
+            left: 100%;
+        }
+
+        /* 动态边框动画 */
+        .cyber-card::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px;
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            background: linear-gradient(45deg, 
+                var(--accent-blue), 
+                var(--accent-green),
+                var(--accent-purple),
+                var(--accent-blue));
+            z-index: -1;
+            opacity: 0.5;
+            border-radius: 18px;
+            animation: borderRotate 8s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* 搜索框区域 - 居中放大 */
+        .cyber-search-box {
+            padding: 40px 5%;
+            border-bottom: 1px solid var(--border-light);
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px; /* 添加底部间距 */
+        }
+
+        .cyber-input-group {
+            display: flex;
+            gap: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #id_query {
+            flex: 1;
+            padding: 16px 25px 16px 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(74, 180, 244, 0.3);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        #id_query:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 25px rgba(74, 180, 244, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* 搜索图标 */
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-blue);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        #id_query:focus ~ .search-icon {
+            transform: translateY(-50%) scale(1.2);
+            color: var(--accent-purple);
+        }
+
+        .cyber-search-btn {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 0 30px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cyber-search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .cyber-search-btn:hover::before {
+            left: 100%;
+        }
+
+        .cyber-search-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(74, 180, 244, 0.4);
+            background: var(--gradient-secondary);
+        }
+
+        /* 地图和服务信息区域 - 全宽布局 */
+        .geo-visualization {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px 5%;
+            background: rgba(255, 255, 255, 0.4);
+            margin-bottom: 40px; /* 添加底部间距 */
+        }
+
+        /* 地图容器 - 增高 */
+        .map-container {
+            height: 500px;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* 地图加载动画 */
+        .map-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            transition: opacity 0.3s ease;
+        }
+
+        .map-loading.loaded {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .pulsing-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(74, 180, 244, 0.2);
+            border-radius: 50%;
+            position: relative;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(0.8); }
+        }
+
+        .pulsing-circle::before,
+        .pulsing-circle::after {
+            content: '';
+            position: absolute;
+            border: 2px solid var(--accent-blue);
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .pulsing-circle::before {
+            animation: ripple 1.5s linear infinite;
+        }
+
+        .pulsing-circle::after {
+            animation: ripple 1.5s linear 0.75s infinite;
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.7); opacity: 0; }
+        }
+
+        /* 地图相关增强样式 */
+        .custom-popup .leaflet-popup-content-wrapper {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-popup .leaflet-popup-content {
+            margin: 10px 15px;
+            line-height: 1.5;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .custom-popup .leaflet-popup-tip {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .threat-marker {
+            animation: markerPulse 2s infinite;
+        }
+
+        @keyframes markerPulse {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.7; }
+        }
+
+        .connection-line {
+            stroke-dasharray: 5, 5;
+            animation: dashOffset 30s linear infinite;
+        }
+
+        @keyframes dashOffset {
+            to { stroke-dashoffset: -1000; }
+        }
+
+        /* 神经网络动画增强 */
+        .neural-network {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            perspective: 1000px;
+        }
+
+        .neural-network.active {
+            opacity: 0.2;
+        }
+
+        .neural-network-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            animation: rotateNetwork 30s linear infinite;
+        }
+
+        @keyframes rotateNetwork {
+            0% { transform: translate(-50%, -50%) rotateY(0deg) rotateX(10deg); }
+            100% { transform: translate(-50%, -50%) rotateY(360deg) rotateX(10deg); }
+        }
+
+        .neural-line {
+            position: absolute;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            height: 2px;
+            animation: neuralPulse 4s linear infinite;
+        }
+
+        @keyframes neuralPulse {
+            0% { width: 0; opacity: 0; }
+            20% { opacity: 1; }
+            100% { width: 100%; opacity: 0; }
+        }
+
+        .neural-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            box-shadow: 0 0 10px var(--accent-blue);
+            animation: nodePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px var(--accent-blue); }
+            50% { transform: scale(1.5); box-shadow: 0 0 15px var(--accent-purple); }
+        }
+
+        /* 服务信息表格容器 */
+        .service-info-container {
+            height: 400px;
+            overflow-y: auto;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+
+        .service-info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .service-info-table th {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(90deg,
+                    rgba(74, 180, 244, 0.2) 0%,
+                    rgba(69, 230, 179, 0.2) 100%);
+            padding: 12px 15px;
+            text-align: left;
+            color: var(--accent-blue);
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .service-info-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(74, 180, 244, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .service-info-table tr {
+            transition: all 0.2s ease;
+        }
+
+        .service-info-table tr:hover {
+            background: rgba(74, 180, 244, 0.05);
+            transform: translateX(5px);
+        }
+
+        /* 威胁数据表格 - 添加滑动特效 */
+        .cyber-table-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 20px;
+            padding: 0 30px 30px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-blue) var(--primary-bg);
+            width: 100%;
+        }
+
+        .cyber-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            display: table;
+        }
+
+        .cyber-table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .cyber-table-container::-webkit-scrollbar-track {
+            background: var(--primary-bg);
+            border-radius: 10px;
+        }
+
+        .cyber-table-container::-webkit-scrollbar-thumb {
+            background-color: var(--accent-blue);
+            border-radius: 10px;
+        }
+
+        .cyber-table-container::-webkit-scrollbar-thumb:hover {
+            background-color: var(--accent-green);
+        }
+
+        /* 固定大小并添加滚动条 */
+        .fixed-table-container {
+            position: relative;
+            max-height: 450px;
+            overflow-y: auto;
+            border: 20px solid var(--border-light);
+            border-radius: 12px;
+            margin: 0;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: var(--shadow-md);
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        .fixed-table-container:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .fixed-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .fixed-table-container th {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(90deg,
+                    rgba(74, 180, 244, 0.1) 0%,
+                    rgba(69, 230, 179, 0.1) 100%);
+            padding: 15px;
+            font-weight: 600;
+            text-align: left;
+            color: var(--accent-blue);
+            border-bottom: 1px solid rgba(74, 180, 244, 0.1);
+            z-index: 1;
+        }
+
+        .fixed-table-container th i {
+            margin-right: 8px;
+            color: var(--accent-blue);
+        }
+
+        .fixed-table-container td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(74, 180, 244, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .fixed-table-container tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .fixed-table-container tbody tr:hover {
+            background: rgba(74, 180, 244, 0.05);
+            transform: translateX(5px);
+        }
+
+        /* 表格内容居中 */
+        .fixed-table-container .no-result {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-secondary);
+        }
+
+        /* 威胁时间线样式 */
+        .timeline-wrapper {
+            padding: 40px 5%;
+            border-top: 50px solid var(--border-light);
+            position: relative;
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.6s;
+            opacity: 0;
+            background: rgba(255, 255, 255, 0.6);
+            width: 100%;
+            margin: 0 0 40px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-wrapper h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 1200px;
+            margin: 0 auto 20px;
+        }
+
+        .timeline-wrapper h3 i {
+            color: var(--accent-blue);
+        }
+
+        .timeline-container {
+            position: relative;
+            padding-left: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 12px;
+            width: 3px;
+            background: linear-gradient(180deg, 
+                var(--accent-blue) 0%, 
+                var(--accent-green) 100%);
+            opacity: 0.3;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            padding: 15px 0;
+            position: relative;
+            animation: fadeInLeft 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        @keyframes fadeInLeft {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.8s; }
+        .timeline-item:nth-child(2) { animation-delay: 1.0s; }
+        .timeline-item:nth-child(3) { animation-delay: 1.2s; }
+
+        .timeline-marker {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: absolute;
+            left: -30px;
+            top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 0 10px rgba(74, 180, 244, 0.5);
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-desc {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-blue);
+            font-size: 0.95rem;
+        }
+
+        /* AI分析报告模块 - 全宽突出显示 */
+        .ai-analysis-module {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 0;
+            padding: 50px 5%;
+            margin: 0;
+            box-shadow: var(--shadow-md);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 249, 255, 0.9) 100%);
+        }
+
+        /* AI分析内容 - 居中限宽 */
+        .ai-analysis-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* AI助手效果 */
+        .ai-assistant-icon {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            opacity: 0.15;
+            transform: rotate(15deg);
+        }
+
+        .ai-analysis-header {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai-analysis-header h3 {
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ai-analysis-header h3 i {
+            color: var(--accent-purple);
+            font-size: 1.6rem;
+        }
+
+        .ai-analysis-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 80%;
+        }
+
+        /* 模型选择器 - 增强版 */
+        .model-selector-container {
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+
+        .model-selector-container h4 {
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .model-selector-container h4 i {
+            color: var(--accent-blue);
+        }
+
+        .model-selector-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .model-btn {
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-btn i {
+            font-size: 16px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .model-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .model-btn:hover::before {
+            left: 100%;
+        }
+
+        .model-btn:hover,
+        .model-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .model-btn:hover i,
+        .model-btn.active i {
+            color: white;
+        }
+
+        /* 安全仪表盘 */
+        .security-dashboard {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 威胁指示器 */
+        .threat-indicator {
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-sm);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .threat-indicator i {
+            font-size: 1.3rem;
+        }
+
+        .threat-indicator.low {
+            background-color: rgba(69, 230, 179, 0.15);
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .threat-indicator.medium {
+            background-color: rgba(255, 159, 67, 0.15);
+            color: #ff8f00;
+            border-left: 4px solid #ff8f00;
+        }
+
+        .threat-indicator.high {
+            background-color: rgba(244, 67, 54, 0.15);
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        /* 报告摘要 */
+        .report-summary {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-light);
+            animation: fadeIn 0.5s ease-out forwards;
+            animation-delay: 0.2s;
+        }
+
+        .report-summary h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .report-summary h3 i {
+            color: var(--accent-orange);
+        }
+
+        #riskList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #riskList li {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-blue);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #riskList li i {
+            color: var(--accent-blue);
+        }
+
+        /* 加固建议 */
+        .recommendations {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-light);
+            animation: fadeIn 0.5s ease-out forwards;
+            animation-delay: 0.4s;
+        }
+
+        .recommendations h4 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recommendations h4 i {
+            color: var(--accent-green);
+        }
+
+        #suggestionList {
+            padding-left: 20px;
+        }
+
+        #suggestionList li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 5px;
+        }
+
+        #suggestionList li::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+        }
+
+        /* 下载按钮 */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--gradient-primary);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        /* 分析按钮 */
+        #analyzeBtn {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        #analyzeBtn i {
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        #analyzeBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            background: var(--gradient-secondary);
+        }
+
+        #analyzeBtn:hover i {
+            transform: rotate(15deg);
+        }
+
+        #analyzeBtn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 加载动画 */
+        #loading {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px solid rgba(74, 180, 244, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-blue);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .cyber-title h1 {
+                font-size: 2rem;
+            }
+
+            .geo-visualization,
+            .tables-section {
+                grid-template-columns: 1fr;
+                padding: 20px 5%;
+            }
+
+            .service-info-container {
+                height: 300px;
+            }
+            
+            .ai-analysis-module {
+                padding: 30px 5%;
+            }
+
+            .model-selector-buttons {
+                gap: 8px;
+            }
+
+            .model-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+        }
+
+        /* 隐藏类 */
+        .hidden {
+            display: none;
+        }
+
+        /* 错误消息 */
+        #error {
+            color: var(--accent-red);
+            background: rgba(255, 107, 107, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            border-left: 3px solid var(--accent-red);
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<body>
+    <!-- 动态粒子背景 -->
+    <canvas class="dynamic-bg" id="particle-canvas"></canvas>
+
+    <!-- 标题区域 - 独立于容器 -->
+    <div class="cyber-title">
+        <h1><i class="fas fa-shield-alt me-2"></i>威胁情报分析报告</h1>
+    </div>
+
+    <!-- 主搜索卡片 - 现在是全屏的 -->
+    <div class="cyber-search-box">
+        <form method="get" action="{% url 'search' %}">
+            <div class="cyber-input-group">
+                <input type="text" id="id_query" name="query"
+                    placeholder="输入IP/域名进行威胁分析..." value="{{ form.query.value|default:'' }}">
+                <i class="fas fa-search search-icon"></i>
+                <button type="submit" class="cyber-search-btn">
+                    <i class="fas fa-radar"></i>
+                    深度检索
+                    <i class="fas fa-angle-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 显示搜索结果 -->
+    {% if form.query.value %}
+    <!-- 地图和服务信息区域 -->
+    <div class="geo-visualization">
+        <div class="map-container">
+            <div class="map-loading" id="map-loading">
+                <div class="pulsing-circle"></div>
+            </div>
+            <div id="threatMap" style="width:100%; height:100%;"></div>
+        </div>
+
+        <!-- 服务信息表格 - 动态生成 -->
+        <div class="service-info-container">
+            <table class="service-info-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-network-wired me-1"></i>IP</th>
+                        <th><i class="fas fa-info-circle me-1"></i>Status</th>
+                        <th><i class="fas fa-exchange-alt me-1"></i>Protocol</th>
+                        <th><i class="far fa-clock me-1"></i>Timestamp</th>
+                        <th><i class="fas fa-terminal me-1"></i>Status Line</th>
+                        <th><i class="fas fa-tag me-1"></i>Proto Name</th>
+                        <th><i class="fas fa-code-branch me-1"></i>Body Ver</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if db_rows %}
+                        {% for row in db_rows %}
+                        <tr>
+                            <td>{{ row.ip }}</td>
+                            <td>{{ row.status }}</td>
+                            <td>{{ row.protocol }}</td>
+                            <td>{{ row.timestamp }}</td>
+                            <td>{{ row.status_line }}</td>
+                            <td>{{ row.protocol_name }}</td>
+                            <td>{{ row.body_version }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align: center;">
+                                未找到相关服务信息
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 威胁数据表格 - 使用新的分组布局 -->
+    <div class="tables-section">
+        <!-- 威胁数据表格 -->
+        <div class="fixed-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-globe me-2"></i>IP地址</th>
+                        <th><i class="fas fa-map-marker-alt me-2"></i>地理位置</th>
+                        <th><i class="fas fa-exclamation-triangle me-2"></i>威胁等级</th>
+                        <th><i class="far fa-calendar-alt me-2"></i>最近活跃</th>
+                        <th><i class="fas fa-link me-2"></i>关联事件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if results %}
+                        {% for item in results %}
+                        <tr>
+                            <td>{{ item.ip_address }}</td>
+                            <td>
+                                <div class="location-info">
+                                    <span class="country-flag">🌐</span>
+                                    {{ item.country|default:"-" }} / {{ item.city|default:"-" }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="threat-level level-{% if item.threat_level %}{{ item.threat_level }}{% else %}1{% endif %}">
+                                    {% if item.get_threat_level_display %}
+                                        {{ item.get_threat_level_display }}
+                                    {% else %}
+                                        低风险
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                {% if item.last_active %}
+                                    {{ item.last_active|date:"Y-m-d" }}
+                                {% else %}
+                                    无记录
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.related_events %}
+                                    {{ item.related_events }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="no-result">
+                                <i class="fas fa-exclamation-circle fa-2x mb-3" style="color: var(--accent-blue);"></i>
+                                <div>未找到相关IP信息</div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- FOFA 查询结果 -->
+        <div class="fixed-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-network-wired me-2"></i>IP</th>
+                        <th><i class="fas fa-door-open me-2"></i>端口</th>
+                        <th><i class="fas fa-exchange-alt me-2"></i>协议</th>
+                        <th><i class="fas fa-server me-2"></i>主机</th>
+                        <th><i class="fas fa-globe me-2"></i>域名</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if results2 %}
+                        {% for item in results2 %}
+                        <tr>
+                            <td>{{ item.0 }}</td>
+                            <td>{{ item.1 }}</td>
+                            <td>{{ item.2 }}</td>
+                            <td>{{ item.3 }}</td>
+                            <td>{{ item.4 }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="no-result">
+                                <i class="fas fa-database fa-2x mb-3" style="color: var(--accent-blue);"></i>
+                                <div>未找到FOFA查询结果</div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 威胁时间线 -->
+    <div class="timeline-wrapper">
+        <h3><i class="fas fa-history"></i>威胁时间线</h3>
+        <div class="timeline-container">
+            {% if db_rows %}
+            <div class="timeline-item">
+                <div class="timeline-marker"><i class="fas fa-exclamation"></i></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">{{ db_rows.0.timestamp|default:"-" }}</div>
+                    <div class="timeline-desc">检测到活动：{{ db_rows.0.protocol_name|default:"数据访问" }}</div>
+                </div>
+            </div>
+            {% if db_rows|length > 1 %}
+            <div class="timeline-item">
+                <div class="timeline-marker"><i class="fas fa-bug"></i></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">{{ db_rows.1.timestamp|default:"-" }}</div>
+                    <div class="timeline-desc">发现服务：{{ db_rows.1.protocol_name|default:"网络服务" }} 运行于端口 {{ db_rows.1.status|default:"未知" }}</div>
+                </div>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="timeline-item">
+                <div class="timeline-marker"><i class="fas fa-info"></i></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">-</div>
+                    <div class="timeline-desc">无活动记录</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- AI分析报告模块 -->
+    <div class="ai-analysis-module">
+        <!-- 神经网络背景动画 -->
+        <div class="neural-network" id="neural-network"></div>
+        
+        <div class="ai-analysis-content">
+            <!-- AI助手icon -->
+            <div class="ai-assistant-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+
+            <div class="ai-analysis-header">
+                <h3><i class="fas fa-robot"></i>AI威胁分析引擎</h3>
+                <p>选择大语言模型生成详细分析报告，利用最新的威胁情报进行深度解析</p>
+            </div>
+
+            <!-- 模型选择器 -->
+            <div class="model-selector-container">
+                <h4><i class="fas fa-microchip"></i>选择分析模型</h4>
+                <div class="model-selector-buttons">
+                    <button class="model-btn active" data-model="deepseek">
+                        <i class="fas fa-brain"></i>DeepSeek
+                    </button>
+                    <button class="model-btn" data-model="ernie">
+                        <i class="fas fa-comment-dots"></i>文心一言
+                    </button>
+                    <button class="model-btn" data-model="qwen">
+                        <i class="fas fa-robot"></i>通义千问
+                    </button>
+                    <button class="model-btn" data-model="spark">
+                        <i class="fas fa-fire"></i>讯飞星火
+                    </button>
+                    <button class="model-btn" data-model="zhipu">
+                        <i class="fas fa-lightbulb"></i>智谱AI
+                    </button>
+                </div>
+            </div>
+
+            <div class="security-dashboard">
+                <!-- 威胁指示器 -->
+                <div class="threat-indicator hidden" id="threatIndicator">
+                    <i class="fas fa-shield-alt"></i>
+                    <span id="threatText"></span>
+                </div>
+        
+                <!-- 报告摘要 -->
+                <div class="report-summary hidden" id="reportSummary">
+                    <h3><i class="fas fa-exclamation-triangle"></i>检测到潜在风险：</h3>
+                    <ul id="riskList"></ul>
+                    <a href="#" class="download-btn" onclick="downloadReport()">
+                        <i class="fas fa-file-download"></i>下载完整报告
+                    </a>
+                </div>
+        
+                <!-- 加固建议 -->
+                <div class="recommendations hidden" id="recommendations">
+                    <h4><i class="fas fa-shield-alt"></i>建议应对措施：</h4>
+                    <ol id="suggestionList"></ol>
+                </div>
+        
+                <div id="error" class="hidden"></div>
+
+                <button onclick="startAnalysis()" id="analyzeBtn">
+                    <i class="fas fa-radar"></i>
+                    开始安全分析
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // 当前选择的模型
+        let selectedModel = 'deepseek';
+
+        // 模拟模型API端点
+        const modelEndpoints = {
+            'deepseek': 'https://api.deepseek.com/chat/completions',
+            'qwen': 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+            'spark': 'https://spark-api-open.xf-yun.com/v1/chat/completions',
+            //'ernie': 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions'
+            'ernie': 'https://qianfan.baidubce.com/v2/chat/completions',
+            'zhipu': 'https://open.bigmodel.cn/api/paas/v4/chat/completions'
+        };
+
+        // 模型API密钥
+        const modelAPIKeys = {
+            'deepseek': 'sk-0c5fb8a6f0ce4763891b7b116cb2c942',
+            'qwen': 'sk-9294d85b18c74dc0bef6750f718b4c92',
+            'spark': 'Bearer qRirSpeDNSTsCBZLzEPT:TUklnHYKQZCBQtMCUkWO',
+            'ernie': 'Bearer bce-v3/ALTAK-TJpg94yKpUZapm2MmLlMs/3441a5037783e990093c0ecccc2a9e95bd04f7d8',
+            'zhipu': '10a590c0faa244519a0b31b71b2f401f.gOTCo14OkhYPkhCG'
+        };
+
+        // 不同模型的请求处理函数
+        async function callModelAPI(model, prompt) {
+            switch(model) {
+                case 'deepseek':
+                    return await callDeepseekAPI(prompt);
+                case 'qwen':
+                    return await callQwenAPI(prompt);
+                case 'spark':
+                    return await callSparkAPI(prompt);
+                case 'ernie':
+                    return await callErnieAPI(prompt);
+                case 'zhipu':
+                    return await callZhipuAPI(prompt);
+                default:
+                    throw new Error('不支持的模型类型');
+            }
+        }
+
+        // DeepSeek API调用
+        async function callDeepseekAPI(prompt) {
+            const response = await fetch(modelEndpoints['deepseek'], {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${modelAPIKeys['deepseek']}`
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: [
+                        {
+                            role: 'system',
+                            content: '你是一名专业的网络安全分析师，擅长从技术数据中识别安全威胁并提供可行的缓解建议。'
+                        },
+                        {
+                            role: 'user',
+                            content: prompt
+                        }
+                    ],
+                    temperature: 0.3
+                })
+            });
+            const data = await response.json();
+            return data.choices[0].message.content;
+        }
+
+        // 通义千问 API调用
+        async function callQwenAPI(prompt) {
+            try {
+                const response = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${modelAPIKeys['qwen']}`
+                    },
+                    body: JSON.stringify({
+                        model: 'qwen-plus',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: '你是一名专业的网络安全分析师，擅长从技术数据中识别安全威胁并提供可行的缓解建议。'
+                            },
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('Qwen API error:', error);
+                throw error;
+            }
+        }
+
+        // 讯飞星火 API调用
+        async function callSparkAPI(prompt) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const response = await fetch('/api/spark/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prompt: prompt })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    return data.choices[0].message.content;
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+
+        // 文心一言 API调用
+        async function callErnieAPI(prompt) {
+            try {
+                const payload = JSON.stringify({
+                    model: 'ernie-4.0-8k-latest',
+                    messages: [
+                        {
+                            role: 'user',
+                            content: prompt
+                        }
+                    ],
+                    web_search: {
+                        enable: false,
+                        enable_citation: false,
+                        enable_trace: false
+                    }
+                });
+
+                const response = await fetch(modelEndpoints['ernie'], {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'appid': 'app-KpSeRfgx',
+                        'Authorization': modelAPIKeys['ernie']
+                    },
+                    body: new TextEncoder().encode(payload)
+                });
+
+                const text = await response.text();
+                console.log('API Response:', text);
+                return text;
+            } catch (error) {
+                console.error('Ernie API error:', error);
+                throw error;
+            }
+        }
+
+        // 智谱AI API调用
+        async function callZhipuAPI(prompt) {
+            try {
+                const response = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${modelAPIKeys['zhipu']}`
+                    },
+                    body: JSON.stringify({
+                        model: 'glm-4-plus',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: '你是一名专业的网络安全分析师，擅长从技术数据中识别安全威胁并提供可行的缓解建议。'
+                            },
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ]
+                    })
+                });
+
+                const text = await response.text();
+                console.log('Zhipu API Response:', text);
+                const data = JSON.parse(text);
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('Zhipu API error:', error);
+                throw error;
+            }
+        }
+
+        // 初始化地图
+        function initMap() {
+            // 创建更专业的地图样式
+            const map = L.map('threatMap', {
+                zoomControl: false,
+                attributionControl: false
+            }).setView([30, 110], 3);
+            
+            // 使用更现代的地图瓦片样式
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // 添加自定义控制
+            L.control.zoom({
+                position: 'bottomright'
+            }).addTo(map);
+            
+            // 添加图层控制
+            const threatLayers = L.layerGroup().addTo(map);
+            const connectionLayers = L.layerGroup().addTo(map);
+            
+            // 自定义图标样式
+            const threatIcon = L.divIcon({
+                className: 'custom-threat-icon',
+                html: '<div class="threat-marker" style="background-color: rgba(255, 120, 0, 0.8); width: 15px; height: 15px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 15px rgba(255, 120, 0, 0.8);"></div>',
+                iconSize: [15, 15],
+                iconAnchor: [7, 7]
+            });
+
+            // 添加标记点 - 使用Django模板数据
+            {% if results %}
+                const markers = [];
+                {% for item in results %}
+                    {% if item.latitude and item.longitude %}
+                    const marker = L.marker([{{ item.latitude }}, {{ item.longitude }}], {
+                        icon: threatIcon
+                    });
+                    
+                    const popupContent = `
+                        <div class="custom-popup-content">
+                            <h3 style="color: #4ab4f4; margin: 0 0 10px; font-size: 16px; border-bottom: 1px solid rgba(74, 180, 244, 0.2); padding-bottom: 5px;">
+                                <i class="fas fa-network-wired" style="margin-right: 5px;"></i> IP: {{ item.ip_address }}
+                            </h3>
+                            <div style="display: flex; flex-direction: column; gap: 5px;">
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fas fa-map-marker-alt" style="color: #ff7800; width: 20px;"></i> 
+                                    <span>{{ item.country|default:"Unknown" }} / {{ item.city|default:"Unknown" }}</span>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fas fa-exclamation-triangle" style="color: #ff6b6b; width: 20px;"></i> 
+                                    <span>{{ item.get_threat_level_display|default:"Low Risk" }}</span>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <i class="far fa-calendar-alt" style="color: #45e6b3; width: 20px;"></i> 
+                                    <span>最近活跃: {{ item.last_active|date:"Y-m-d"|default:"Unknown" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    marker.bindPopup(popupContent, {
+                        className: 'custom-popup',
+                        maxWidth: 300
+                    }).addTo(threatLayers);
+                    
+                    markers.push({
+                        latLng: [{{ item.latitude }}, {{ item.longitude }}],
+                        marker: marker
+                    });
+                    {% endif %}
+                {% endfor %}
+                
+                // 添加连接线以显示关联
+                if (markers.length > 1) {
+                    for (let i = 0; i < markers.length - 1; i++) {
+                        const line = L.polyline([markers[i].latLng, markers[i+1].latLng], {
+                            color: 'rgba(74, 180, 244, 0.4)',
+                            weight: 1,
+                            className: 'connection-line',
+                            dashArray: '5, 10'
+                        }).addTo(connectionLayers);
+                    }
+                }
+            {% endif %}
+            
+            // 添加地图完成加载后的处理
+            setTimeout(function() {
+                document.getElementById('map-loading').classList.add('loaded');
+            }, 1000);
+        }
+
+        // 从页面数据生成安全分析数据
+        function getSecurityData() {
+            const openPorts = new Set();
+            const highRiskIPs = new Set();
+            const attackPatterns = new Set();
+            const services = new Set();
+            
+            // 从服务信息中提取开放端口和服务
+            {% for row in db_rows %}
+                openPorts.add(parseInt('{{ row.status }}'));
+                services.add('{{ row.protocol_name }}');
+                if ('{{ row.protocol_name }}'.includes('SQL') || '{{ row.protocol_name }}'.includes('MySQL')) {
+                    attackPatterns.add('SQL注入');
+                }
+                if ('{{ row.protocol_name }}'.includes('SSH')) {
+                    attackPatterns.add('暴力破解');
+                }
+                if ('{{ row.protocol_name }}'.includes('HTTP') || '{{ row.protocol_name }}'.includes('HTTPS')) {
+                    attackPatterns.add('Web应用攻击');
+                }
+            {% endfor %}
+            
+            // 从IP信息中提取高风险IP
+            {% for item in results %}
+                highRiskIPs.add('{{ item.ip_address }}');
+            {% endfor %}
+            
+            // 从FOFA结果中提取信息
+            {% for item in results2 %}
+                if ('{{ item.2 }}' === 'http' || '{{ item.2 }}' === 'https') {
+                    attackPatterns.add('Web服务暴露');
+                }
+                if (['22', '3389', '3306'].includes('{{ item.1 }}')) {
+                    attackPatterns.add('高危端口暴露');
+                }
+            {% endfor %}
+            
+            // 计算置信度
+            let confidence = 50;
+            if (openPorts.size > 0) confidence += 15;
+            if (highRiskIPs.size > 0) confidence += 20;
+            if (attackPatterns.size > 0) confidence += 15;
+            
+            return {
+                openPorts: Array.from(openPorts).sort((a, b) => a - b),
+                highRiskIPs: Array.from(highRiskIPs),
+                attackPatterns: Array.from(attackPatterns),
+                services: Array.from(services),
+                confidence: Math.min(confidence, 95)
+            };
+        }
+
+        // 生成神经网络动画
+        function createNeuralNetwork() {
+            const neuralNetwork = document.getElementById('neural-network');
+            
+            // 如果已有内容，清空
+            neuralNetwork.innerHTML = '';
+            
+            // 创建旋转容器
+            const wrapper = document.createElement('div');
+            wrapper.className = 'neural-network-wrapper';
+            neuralNetwork.appendChild(wrapper);
+            
+            // 创建节点和连线
+            const nodeCount = 25;
+            const nodes = [];
+            
+            // 创建节点
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                
+                // 使用3D空间排布节点
+                const angle1 = Math.random() * Math.PI * 2;
+                const angle2 = Math.random() * Math.PI * 2;
+                const radius = 120 * Math.random();
+                
+                const x = Math.cos(angle1) * Math.sin(angle2) * radius + 150;
+                const y = Math.sin(angle1) * Math.sin(angle2) * radius + 150;
+                const z = Math.cos(angle2) * radius;
+                
+                node.style.left = `${x}px`;
+                node.style.top = `${y}px`;
+                node.style.transform = `translateZ(${z}px)`;
+                node.style.animationDelay = `${Math.random() * 3}s`;
+                
+                wrapper.appendChild(node);
+                nodes.push({node, x, y, z});
+            }
+            
+            // 创建连线
+            for (let i = 0; i < nodeCount; i++) {
+                for (let j = i + 1; j < nodeCount; j++) {
+                    // 只连接一部分节点，否则会过于密集
+                    if (Math.random() > 0.7) continue;
+                    
+                    const line = document.createElement('div');
+                    line.className = 'neural-line';
+                    
+                    const start = nodes[i];
+                    const end = nodes[j];
+                    
+                    // 计算两点间距离
+                    const dx = end.x - start.x;
+                    const dy = end.y - start.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    // 只连接较近的节点
+                    if (distance > 100) continue;
+                    
+                    // 计算旋转角度
+                    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                    
+                    // 设置线条样式
+                    line.style.width = `${distance}px`;
+                    line.style.left = `${start.x}px`;
+                    line.style.top = `${start.y}px`;
+                    line.style.transform = `rotate(${angle}deg)`;
+                    line.style.transformOrigin = '0 0';
+                    line.style.opacity = `${1 - distance / 120}`;
+                    line.style.animationDelay = `${Math.random() * 3}s`;
+                    
+                    wrapper.appendChild(line);
+                }
+            }
+        }
+
+        // 主分析函数
+        async function startAnalysis() {
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const error = document.getElementById('error');
+            const neuralNetwork = document.getElementById('neural-network');
+            
+            try {
+                // 重置状态
+                analyzeBtn.disabled = true;
+                error.classList.add('hidden');
+                
+                // 激活神经网络动画
+                createNeuralNetwork();
+                neuralNetwork.classList.add('active');
+                
+                // 准备请求数据
+                const securityData = getSecurityData();
+                const prompt = `作为专业的网络安全分析师，请基于以下数据生成非常非常详细的安全评估报告，格式要规整一点，对于每一项都要有详细的解释：
+
+## 分析数据
+- 开放端口: ${securityData.openPorts.join(', ') || '无'}
+- 检测到的服务: ${securityData.services.join(', ') || '无'}
+- 风险IP地址: ${securityData.highRiskIPs.join(', ') || '无'}
+- 可能的攻击模式: ${securityData.attackPatterns.join(', ') || '无'}
+
+## 报告要求
+请按照以下结构组织报告内容：
+
+1. 执行摘要
+   - 总体风险评估
+   - 关键发现
+
+2. 详细分析
+   - 端口与服务分析
+   - IP威胁分析
+   - 攻击模式分析
+
+3. 风险评估
+   - 风险等级评估
+   - 置信度说明
+
+4. 建议措施
+   - 立即行动建议
+   - 长期改进建议
+   - 监控与响应建议
+
+5. 附录
+   - 分析数据详情
+   - 参考标准`;
+
+                // 调用当前选择的模型API
+                const aiResponse = await callModelAPI(selectedModel, prompt);
+                
+                // 解析AI响应
+                const analysisResult = parseAIResponse(aiResponse, securityData);
+                updateUI(analysisResult);
+
+            } catch (err) {
+                error.textContent = `错误: ${err.message}`;
+                error.classList.remove('hidden');
+                neuralNetwork.classList.remove('active');
+            } finally {
+                analyzeBtn.disabled = false;
+                loading.classList.add('hidden');
+                // 保持神经网络动画激活状态，这样在结果显示时继续有动画效果
+            }
+        }
+
+        // 解析AI响应 - 更强大的解析逻辑
+        function parseAIResponse(text, securityData) {
+            try {
+                // 尝试解析JSON响应
+                if (text.startsWith('{')) {
+                    const data = JSON.parse(text);
+                    if (data.choices && data.choices[0] && data.choices[0].message) {
+                        text = data.choices[0].message.content;
+                    }
+                }
+
+                // 提取风险等级
+                let riskLevel = 'medium';
+                if (text.includes('高风险') || text.includes('严重风险')) riskLevel = 'high';
+                else if (text.includes('低风险')) riskLevel = 'low';
+
+                // 提取建议部分
+                const suggestionMatch = text.match(/4\. 建议措施([\s\S]+?)(?=5\.|$)/i);
+                const suggestions = suggestionMatch 
+                    ? suggestionMatch[1].split('\n').filter(line => line.trim() && line.match(/^\s*-/))
+                    : ['未能从报告中提取具体建议'];
+
+                // 提取关键发现
+                const findingsMatch = text.match(/1\. 执行摘要([\s\S]+?)(?=2\.|$)/i);
+                const keyFindings = findingsMatch 
+                    ? findingsMatch[1].split('\n').filter(line => line.trim() && line.match(/^\s*-/))
+                    : ['未能从报告中提取关键发现'];
+
+                // 提取完整报告内容
+                const fullReport = text;
+
+                return {
+                    status: riskLevel,
+                    summary: {
+                        riskIPs: securityData.highRiskIPs.length,
+                        attackPatterns: securityData.attackPatterns.length,
+                        openPorts: securityData.openPorts.length,
+                        confidence: securityData.confidence,
+                        keyFindings: keyFindings
+                    },
+                    suggestions: suggestions,
+                    fullReport: fullReport
+                };
+            } catch (error) {
+                console.error('Error parsing AI response:', error);
+                return {
+                    status: 'medium',
+                    summary: {
+                        riskIPs: securityData.highRiskIPs.length,
+                        attackPatterns: securityData.attackPatterns.length,
+                        openPorts: securityData.openPorts.length,
+                        confidence: securityData.confidence,
+                        keyFindings: ['解析响应时出错']
+                    },
+                    suggestions: ['请重试分析'],
+                    fullReport: text
+                };
+            }
+        }
+
+        // 状态判断 - 更精确的逻辑
+        function determineStatus(data) {
+            const sensitivePorts = [22, 3389, 3306, 1433, 5432, 6379];
+            const hasCriticalPorts = data.openPorts.some(p => sensitivePorts.includes(p));
+            const hasMultipleIPs = data.highRiskIPs.length > 3;
+            const hasMultipleAttacks = data.attackPatterns.length > 2;
+            
+            if (hasCriticalPorts && hasMultipleIPs) return 'high';
+            if (hasMultipleAttacks && data.confidence > 80) return 'high';
+            if (data.openPorts.length > 0 || data.highRiskIPs.length > 0) return 'medium';
+            return 'low';
+        }
+
+        // 更新界面 - 更丰富的展示
+        function updateUI(data) {
+            // 威胁指示器
+            const threatIndicator = document.getElementById('threatIndicator');
+            threatIndicator.className = `threat-indicator ${data.status}`;
+            
+            let threatText = '';
+            switch(data.status) {
+                case 'high':
+                    threatText = '⚠️ 严重威胁: 发现多个高危安全风险';
+                    break;
+                case 'medium':
+                    threatText = '⚠️ 中等威胁: 发现潜在安全风险';
+                    break;
+                default:
+                    threatText = '✅ 低风险: 未发现重大安全威胁';
+            }
+            threatIndicator.querySelector('#threatText').textContent = threatText;
+            threatIndicator.classList.remove('hidden');
+
+            // 风险摘要
+            const riskList = document.getElementById('riskList');
+            riskList.innerHTML = `
+                <li>检测到 ${data.summary.openPorts} 个开放端口</li>
+                <li>发现 ${data.summary.riskIPs} 个可疑IP地址</li>
+                <li>识别 ${data.summary.attackPatterns} 种攻击模式</li>
+                <li>分析置信度: ${data.summary.confidence}%</li>
+            `;
+            
+            // 添加关键发现
+            if (data.summary.keyFindings && data.summary.keyFindings.length > 0) {
+                const findingsList = document.createElement('ul');
+                findingsList.style.marginTop = '10px';
+                findingsList.innerHTML = '<h4>关键发现:</h4>' + 
+                    data.summary.keyFindings.map(f => `<li>${f.replace(/^\s*-/, '').trim()}</li>`).join('');
+                riskList.appendChild(findingsList);
+            }
+            
+            document.getElementById('reportSummary').classList.remove('hidden');
+
+            // 建议列表
+            const suggestionList = document.getElementById('suggestionList');
+            suggestionList.innerHTML = data.suggestions
+                .map(s => `<li>${s.replace(/^\s*-/, '').trim()}</li>`)
+                .join('');
+            document.getElementById('recommendations').classList.remove('hidden');
+
+            // 保存完整报告用于下载
+            window.lastGeneratedReport = data.fullReport;
+        }
+
+        // 下载报告函数 - 生成更专业的报告
+        function downloadReport() {
+            const securityData = getSecurityData();
+            const currentDate = new Date().toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const reportContent = window.lastGeneratedReport || `# 网络安全分析报告
+## 报告生成时间
+${currentDate}
+
+## 1. 分析数据概览
+### 开放端口
+${securityData.openPorts.join(', ') || '无'}
+
+### 检测到的服务
+${securityData.services.join(', ') || '无'}
+
+### 风险IP地址
+${securityData.highRiskIPs.join('\n- ') || '无'}
+
+### 可能的攻击模式
+${securityData.attackPatterns.join(', ') || '无'}
+
+## 2. AI分析结果
+${document.getElementById('suggestionList').innerHTML
+    .replace(/<li>/g, '### ')
+    .replace(/<\/li>/g, '\n')
+    .replace(/<[^>]+>/g, '')}
+
+## 3. 完整分析报告
+${document.getElementById('suggestionList').innerHTML
+    .replace(/<li>/g, '- ')
+    .replace(/<\/li>/g, '\n')
+    .replace(/<[^>]+>/g, '')}
+
+## 4. 分析元数据
+- 分析模型: ${selectedModel}安全分析模型
+- 报告版本: 1.0
+- 置信度: ${securityData.confidence}%`;
+
+            const blob = new Blob([reportContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `网络安全报告_${new Date().toISOString().slice(0,10)}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 模型选择功能
+        document.querySelectorAll('.model-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.model-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedModel = this.dataset.model;
+            });
+        });
+
+        // 页面加载完成后初始化地图
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+            
+            // 设置标记加载完成
+            setTimeout(function() {
+                document.getElementById('map-loading').classList.add('loaded');
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

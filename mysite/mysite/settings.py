@@ -21,7 +21,8 @@ INSTALLED_APPS = [
     'ipsearch',
     'ollamahome',
     'probinghome',
-    'home'
+    'home',
+    'AllSearch'
 ]
 
 # 中间件配置
