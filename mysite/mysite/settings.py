@@ -65,7 +65,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bigmodel',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'Aaa041082',
         'HOST': 'localhost',
         'PORT': '3306',
     }
