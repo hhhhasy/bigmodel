@@ -21,20 +21,20 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for serviceinfo
 -- ----------------------------
 DROP TABLE IF EXISTS `serviceinfo`;
-CREATE TABLE `serviceinfo`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `port` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `banner` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `auth` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `api` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+CREATE TABLE `serviceinfo` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) DEFAULT NULL,
+  `port` VARCHAR(255) DEFAULT NULL,
+  `banner` VARCHAR(512) DEFAULT NULL,
+  `auth` VARCHAR(255) DEFAULT NULL,
+  `api` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB ROW_FORMAT=Dynamic;
 
 -- ----------------------------
 -- Records of serviceinfo
 -- ----------------------------
-INSERT INTO `serviceinfo` VALUES (1, 'backyard ai', '未提供API', 'title=\"Backyard AI | Chat\"', '有', '官方文档未列出');
 INSERT INTO `serviceinfo` VALUES (2, 'FastChat-WebUI', '7860', 'body=\"Chat with Open Large Language Models\"', '无', '/v1/models, /v1/chat/completions');
 INSERT INTO `serviceinfo` VALUES (3, 'GPT4ALL', '4891', 'body=\"GPT4All Server is running.\"', '无', '/completion, /chat');
 INSERT INTO `serviceinfo` VALUES (4, 'llama.cpp', '8080', 'titile==\"🦙 llama.cpp - 聊天 --- 🦙 llama.cpp - chat\"', '无', NULL);
