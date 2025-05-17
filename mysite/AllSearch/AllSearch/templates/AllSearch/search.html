@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键搜索</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #f8fbfe;
+            --accent-blue: #4ab4f4;
+            --accent-purple: #8c7ae6;
+            --accent-green: #45e6b3;
+            --text-primary: #2a4a8b;
+            --text-secondary: #5a7ab8;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-card: rgba(255, 255, 255, 0.7);
+            --border-light: rgba(74, 180, 244, 0.2);
+            --shadow-sm: 0 5px 15px rgba(74, 180, 244, 0.1);
+            --shadow-md: 0 8px 30px rgba(74, 180, 244, 0.2);
+            --gradient-primary: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f4fe 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 动态背景 */
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* 标题样式 */
+        .search-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-title h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            padding: 0 30px;
+            display: inline-block;
+            position: relative;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { filter: brightness(1) drop-shadow(0 10px 20px rgba(74, 180, 244, 0.2)); }
+            50% { filter: brightness(1.1) drop-shadow(0 15px 30px rgba(74, 180, 244, 0.4)); }
+        }
+
+        /* 搜索框容器 */
+        .search-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 毛玻璃搜索框 */
+        .search-box {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 搜索表单 */
+        .search-form {
+            display: flex;
+            gap: 15px;
+            position: relative;
+        }
+
+        /* 搜索输入框 */
+        #id_query {
+            flex: 1;
+            padding: 16px 25px 16px 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(74, 180, 244, 0.3);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        #id_query:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 25px rgba(74, 180, 244, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* 搜索图标 */
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-blue);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        #id_query:focus ~ .search-icon {
+            transform: translateY(-50%) scale(1.2);
+            color: var(--accent-purple);
+        }
+
+        /* 搜索按钮 */
+        .search-btn {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 0 30px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .search-btn:hover::before {
+            left: 100%;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(74, 180, 244, 0.4);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .search-title h1 {
+                font-size: 2rem;
+            }
+
+            .search-container {
+                padding: 20px;
+            }
+
+            .search-box {
+                padding: 20px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态粒子背景 -->
+    <canvas class="dynamic-bg" id="particle-canvas"></canvas>
+
+    <!-- 标题区域 -->
+    <div class="search-title">
+        <h1><i class="fas fa-search me-2"></i>一键搜索</h1>
+    </div>
+
+    <!-- 搜索框容器 -->
+    <div class="search-container">
+        <div class="search-box">
+            <form method="get" action="{% url 'search' %}">
+                <div class="search-form">
+                    <input type="text" id="id_query" name="query" placeholder="输入IP/域名进行威胁分析...">
+                    <i class="fas fa-search search-icon"></i>
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-radar"></i>
+                        深度检索
+                        <i class="fas fa-angle-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 粒子背景动画
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        // 粒子类
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > width) this.x = 0;
+                if (this.x < 0) this.x = width;
+                if (this.y > height) this.y = 0;
+                if (this.y < 0) this.y = height;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(74, 180, 244, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // 创建粒子
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+
+        // 动画循环
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // 窗口大小改变时重置画布
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // 开始动画
+        animate();
+    </script>
+</body>
+</html> 
