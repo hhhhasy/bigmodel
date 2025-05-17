@@ -1,3 +1,4 @@
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -572,70 +573,103 @@
             background-color: var(--accent-green);
         }
 
-        /* 固定大小并添加滚动条 */
-        .fixed-table-container {
-            position: relative;
-            max-height: 450px;
-            overflow-y: auto;
-            border: 20px solid var(--border-light);
-            border-radius: 12px;
-            margin: 0;
-            padding: 0;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: var(--shadow-md);
-            animation: fadeInUp 0.8s ease-out forwards;
-            animation-delay: 0.2s;
-            opacity: 0;
-        }
-
-        .fixed-table-container:nth-child(2) {
-            animation-delay: 0.4s;
-        }
-
-        .fixed-table-container table {
-            width: 100%;
+        .cyber-table {
+            min-width: 100%;
             border-collapse: collapse;
+            margin: 0 auto;
+            display: table;
+            width: 100%;
         }
 
-        .fixed-table-container th {
-            position: sticky;
-            top: 0;
+        .cyber-table thead {
             background: linear-gradient(90deg,
                     rgba(74, 180, 244, 0.1) 0%,
                     rgba(69, 230, 179, 0.1) 100%);
-            padding: 15px;
+        }
+
+        .cyber-table th {
+            padding: 18px;
             font-weight: 600;
             text-align: left;
             color: var(--accent-blue);
             border-bottom: 1px solid rgba(74, 180, 244, 0.1);
-            z-index: 1;
         }
 
-        .fixed-table-container th i {
-            margin-right: 8px;
-            color: var(--accent-blue);
-        }
-
-        .fixed-table-container td {
-            padding: 15px;
+        .cyber-table td {
+            padding: 16px;
             border-bottom: 1px solid rgba(74, 180, 244, 0.1);
-            transition: all 0.2s ease;
         }
 
-        .fixed-table-container tbody tr {
-            transition: all 0.2s ease;
+        .cyber-table tbody tr:hover {
+            background: rgba(74, 180, 244, 0.03);
         }
 
-        .fixed-table-container tbody tr:hover {
-            background: rgba(74, 180, 244, 0.05);
-            transform: translateX(5px);
+        /* FOFA 查询结果表格 - 添加滑动特效 */
+        .fofa-table-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 20px;
+            padding: 0 30px 30px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-blue) var(--primary-bg);
+            width: 100%;
         }
 
-        /* 表格内容居中 */
-        .fixed-table-container .no-result {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-secondary);
+        .fofa-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            display: table;
+        }
+
+        .fofa-table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .fofa-table-container::-webkit-scrollbar-track {
+            background: var(--primary-bg);
+            border-radius: 10px;
+        }
+
+        .fofa-table-container::-webkit-scrollbar-thumb {
+            background-color: var(--accent-blue);
+            border-radius: 10px;
+        }
+
+        .fofa-table-container::-webkit-scrollbar-thumb:hover {
+            background-color: var(--accent-green);
+        }
+
+        .fofa-table {
+            min-width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            display: table;
+            width: 100%;
+        }
+
+        .fofa-table thead {
+            background: linear-gradient(90deg,
+                    rgba(74, 180, 244, 0.1) 0%,
+                    rgba(69, 230, 179, 0.1) 100%);
+        }
+
+        .fofa-table th {
+            padding: 18px;
+            font-weight: 600;
+            text-align: left;
+            color: var(--accent-blue);
+            border-bottom: 1px solid rgba(74, 180, 244, 0.1);
+        }
+
+        .fofa-table td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(74, 180, 244, 0.1);
+        }
+
+        .fofa-table tbody tr:hover {
+            background: rgba(74, 180, 244, 0.03);
         }
 
         /* 威胁时间线样式 */
@@ -809,6 +843,13 @@
             max-width: 80%;
         }
 
+        .model-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
         /* 模型选择器 - 增强版 */
         .model-selector-container {
             margin-bottom: 25px;
@@ -892,49 +933,20 @@
             color: white;
         }
 
-        /* 安全仪表盘 */
-        .security-dashboard {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* 威胁指示器 */
-        .threat-indicator {
-            padding: 18px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.1rem;
+        .model-option {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: var(--shadow-sm);
-            animation: fadeIn 0.5s ease-out forwards;
+            font-size: 14px;
         }
 
-        .threat-indicator i {
-            font-size: 1.3rem;
-        }
-
-        .threat-indicator.low {
-            background-color: rgba(69, 230, 179, 0.15);
-            color: #2e7d32;
-            border-left: 4px solid #2e7d32;
-        }
-
-        .threat-indicator.medium {
-            background-color: rgba(255, 159, 67, 0.15);
-            color: #ff8f00;
-            border-left: 4px solid #ff8f00;
-        }
-
-        .threat-indicator.high {
-            background-color: rgba(244, 67, 54, 0.15);
-            color: #c62828;
-            border-left: 4px solid #c62828;
+        .model-option:hover,
+        .model-option.selected {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+            color: white;
         }
 
         /* 报告摘要 */
@@ -983,51 +995,6 @@
             color: var(--accent-blue);
         }
 
-        /* 加固建议 */
-        .recommendations {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid var(--border-light);
-            animation: fadeIn 0.5s ease-out forwards;
-            animation-delay: 0.4s;
-        }
-
-        .recommendations h4 {
-            color: var(--text-primary);
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .recommendations h4 i {
-            color: var(--accent-green);
-        }
-
-        #suggestionList {
-            padding-left: 20px;
-        }
-
-        #suggestionList li {
-            margin-bottom: 12px;
-            position: relative;
-            padding-left: 5px;
-        }
-
-        #suggestionList li::before {
-            content: '';
-            position: absolute;
-            left: -20px;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent-green);
-        }
-
         /* 下载按钮 */
         .download-btn {
             display: inline-flex;
@@ -1050,6 +1017,56 @@
             transform: translateY(-3px);
             box-shadow: var(--shadow-md);
             color: white;
+        }
+
+         /* 安全仪表盘 */
+         .security-dashboard {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 威胁指示器 */
+        .threat-indicator {
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-sm);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .threat-indicator i {
+            font-size: 1.3rem;
+        }
+
+        .threat-indicator.low {
+            background-color: rgba(69, 230, 179, 0.15);
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .threat-indicator.medium {
+            background-color: rgba(255, 159, 67, 0.15);
+            color: #ff8f00;
+            border-left: 4px solid #ff8f00;
+        }
+
+        .threat-indicator.high {
+            background-color: rgba(244, 67, 54, 0.15);
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        /* 隐藏类 */
+        .hidden {
+            display: none;
         }
 
         /* 分析按钮 */
@@ -1151,9 +1168,222 @@
             }
         }
 
-        /* 隐藏类 */
-        .hidden {
-            display: none;
+        /* 固定大小并添加滚动条 */
+        .fixed-table-container {
+            position: relative;
+            max-height: 450px;
+            overflow-y: auto;
+            border: 20px solid var(--border-light);
+            border-radius: 12px;
+            margin: 0;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: var(--shadow-md);
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        .fixed-table-container:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .fixed-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .fixed-table-container th {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(90deg,
+                    rgba(74, 180, 244, 0.1) 0%,
+                    rgba(69, 230, 179, 0.1) 100%);
+            padding: 15px;
+            font-weight: 600;
+            text-align: left;
+            color: var(--accent-blue);
+            border-bottom: 1px solid rgba(74, 180, 244, 0.1);
+            z-index: 1;
+        }
+
+        .fixed-table-container th i {
+            margin-right: 8px;
+            color: var(--accent-blue);
+        }
+
+        .fixed-table-container td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(74, 180, 244, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .fixed-table-container tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .fixed-table-container tbody tr:hover {
+            background: rgba(74, 180, 244, 0.05);
+            transform: translateX(5px);
+        }
+
+        /* 表格内容居中 */
+        .fixed-table-container .no-result {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-secondary);
+        }
+
+        .fixed-table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .fixed-table-container::-webkit-scrollbar-track {
+            background: var(--primary-bg);
+            border-radius: 10px;
+        }
+
+        .fixed-table-container::-webkit-scrollbar-thumb {
+            background-color: var(--accent-blue);
+            border-radius: 10px;
+        }
+
+        .fixed-table-container::-webkit-scrollbar-thumb:hover {
+            background-color: var(--accent-green);
+        }
+
+        /* 模型选择器 */
+        .model-selector-container {
+            margin-bottom: 20px;
+        }
+
+        .model-selector-container h4 {
+            margin-bottom: 10px;
+        }
+
+        .model-selector-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .model-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .model-btn:hover,
+        .model-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+            color: white;
+        }
+
+        /* FOFA 部分样式 */
+        .fofa-section {
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .fofa-header {
+            margin-bottom: 20px;
+        }
+
+        .fofa-header h3 {
+            color: var(--accent-blue);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .fofa-description {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .fofa-description p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .fofa-description ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 15px;
+        }
+
+        .fofa-description li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .fofa-description li:before {
+            content: "•";
+            color: var(--accent-blue);
+            position: absolute;
+            left: 0;
+        }
+
+        .fofa-description strong {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .fofa-note {
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* AI分析报告模块新增样式 */
+        .ai-service-summary-list {
+            margin-bottom: 20px;
+        }
+
+        .ai-service-summary-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .ai-service-summary-card h4 {
+            margin-bottom: 10px;
+        }
+
+        .ai-summary-content {
+            margin-bottom: 10px;
+        }
+
+        .ai-model-info {
+            color: #4ab4f4;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .cve-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 4px;
+            padding: 2px 8px;
+            margin: 2px 4px 2px 0;
+            font-size: 0.98em;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
         /* 错误消息 */
@@ -1167,291 +1397,243 @@
             text-align: center;
             border-left: 3px solid var(--accent-red);
         }
+
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 
 <body>
-    <!-- 动态粒子背景 -->
-    <canvas class="dynamic-bg" id="particle-canvas"></canvas>
+    <div class="cyber-container">
+        <div class="cyber-title">
+            <h1>威胁情报分析报告</h1>
+        </div>
 
-    <!-- 标题区域 - 独立于容器 -->
-    <div class="cyber-title">
-        <h1><i class="fas fa-shield-alt me-2"></i>威胁情报分析报告</h1>
-    </div>
-
-    <!-- 主搜索卡片 - 现在是全屏的 -->
-    <div class="cyber-search-box">
-        <form method="get" action="{% url 'search' %}">
-            <div class="cyber-input-group">
-                <input type="text" id="id_query" name="query"
-                    placeholder="输入IP/域名进行威胁分析..." value="{{ form.query.value|default:'' }}">
-                <i class="fas fa-search search-icon"></i>
-                <button type="submit" class="cyber-search-btn">
-                    <i class="fas fa-radar"></i>
-                    深度检索
-                    <i class="fas fa-angle-right"></i>
-                </button>
+        <!-- 主搜索卡片 -->
+        <div class="cyber-card">
+            <div class="cyber-search-box">
+                <form method="get" action="{% url 'search' %}">
+                    <div class="cyber-input-group">
+                        <input type="text" id="id_query" name="query"
+                            placeholder="输入IP/域名进行威胁分析..." value="{{ form.query.value|default:'' }}">
+                        <button type="submit" class="cyber-search-btn">
+                            🔍 深度检索
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
 
-    <!-- 显示搜索结果 -->
-    {% if form.query.value %}
-    <!-- 地图和服务信息区域 -->
-    <div class="geo-visualization">
-        <div class="map-container">
-            <div class="map-loading" id="map-loading">
-                <div class="pulsing-circle"></div>
-            </div>
-            <div id="threatMap" style="width:100%; height:100%;"></div>
-        </div>
-
-        <!-- 服务信息表格 - 动态生成 -->
-        <div class="service-info-container">
-            <table class="service-info-table">
-                <thead>
-                    <tr>
-                        <th><i class="fas fa-network-wired me-1"></i>IP</th>
-                        <th><i class="fas fa-info-circle me-1"></i>Status</th>
-                        <th><i class="fas fa-exchange-alt me-1"></i>Protocol</th>
-                        <th><i class="far fa-clock me-1"></i>Timestamp</th>
-                        <th><i class="fas fa-terminal me-1"></i>Status Line</th>
-                        <th><i class="fas fa-tag me-1"></i>Proto Name</th>
-                        <th><i class="fas fa-code-branch me-1"></i>Body Ver</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if db_rows %}
-                        {% for row in db_rows %}
-                        <tr>
-                            <td>{{ row.ip }}</td>
-                            <td>{{ row.status }}</td>
-                            <td>{{ row.protocol }}</td>
-                            <td>{{ row.timestamp }}</td>
-                            <td>{{ row.status_line }}</td>
-                            <td>{{ row.protocol_name }}</td>
-                            <td>{{ row.body_version }}</td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="7" style="text-align: center;">
-                                未找到相关服务信息
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- 威胁数据表格 - 使用新的分组布局 -->
-    <div class="tables-section">
-        <!-- 威胁数据表格 -->
-        <div class="fixed-table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th><i class="fas fa-globe me-2"></i>IP地址</th>
-                        <th><i class="fas fa-map-marker-alt me-2"></i>地理位置</th>
-                        <th><i class="fas fa-exclamation-triangle me-2"></i>威胁等级</th>
-                        <th><i class="far fa-calendar-alt me-2"></i>最近活跃</th>
-                        <th><i class="fas fa-link me-2"></i>关联事件</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if results %}
-                        {% for item in results %}
-                        <tr>
-                            <td>{{ item.ip_address }}</td>
-                            <td>
-                                <div class="location-info">
-                                    <span class="country-flag">🌐</span>
-                                    {{ item.country|default:"-" }} / {{ item.city|default:"-" }}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="threat-level level-{% if item.threat_level %}{{ item.threat_level }}{% else %}1{% endif %}">
-                                    {% if item.get_threat_level_display %}
-                                        {{ item.get_threat_level_display }}
-                                    {% else %}
-                                        低风险
-                                    {% endif %}
-                                </div>
-                            </td>
-                            <td>
-                                {% if item.last_active %}
-                                    {{ item.last_active|date:"Y-m-d" }}
-                                {% else %}
-                                    无记录
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if item.related_events %}
-                                    {{ item.related_events }}
-                                {% else %}
-                                    0
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="no-result">
-                                <i class="fas fa-exclamation-circle fa-2x mb-3" style="color: var(--accent-blue);"></i>
-                                <div>未找到相关IP信息</div>
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-
-        <!-- FOFA 查询结果 -->
-        <div class="fixed-table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th><i class="fas fa-network-wired me-2"></i>IP</th>
-                        <th><i class="fas fa-door-open me-2"></i>端口</th>
-                        <th><i class="fas fa-exchange-alt me-2"></i>协议</th>
-                        <th><i class="fas fa-server me-2"></i>主机</th>
-                        <th><i class="fas fa-globe me-2"></i>域名</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if results2 %}
-                        {% for item in results2 %}
-                        <tr>
-                            <td>{{ item.0 }}</td>
-                            <td>{{ item.1 }}</td>
-                            <td>{{ item.2 }}</td>
-                            <td>{{ item.3 }}</td>
-                            <td>{{ item.4 }}</td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="no-result">
-                                <i class="fas fa-database fa-2x mb-3" style="color: var(--accent-blue);"></i>
-                                <div>未找到FOFA查询结果</div>
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- 威胁时间线 -->
-    <div class="timeline-wrapper">
-        <h3><i class="fas fa-history"></i>威胁时间线</h3>
-        <div class="timeline-container">
-            {% if db_rows %}
-            <div class="timeline-item">
-                <div class="timeline-marker"><i class="fas fa-exclamation"></i></div>
-                <div class="timeline-content">
-                    <div class="timeline-date">{{ db_rows.0.timestamp|default:"-" }}</div>
-                    <div class="timeline-desc">检测到活动：{{ db_rows.0.protocol_name|default:"数据访问" }}</div>
+            <!-- 显示搜索结果 -->
+            {% if form.query.value %}
+            <!-- 地图和服务信息区域 -->
+            <div class="geo-visualization">
+                <div class="map-container" id="threatMap"></div>
+                <!-- 新的IP服务信息表格 -->
+                <div class="service-info-container">
+                    <table class="service-info-table">
+                        <thead>
+                            <tr>
+                                <th>IP</th>
+                                <th>服务</th>
+                                <th>时间</th>
+                                <th>地区</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if ip_service_table_data and ip_service_table_data|length > 0 %}
+                                {% for row in ip_service_table_data %}
+                                <tr>
+                                    <td>{{ row.ip }}</td>
+                                    <td>{{ row.service }}</td>
+                                    <td>{{ row.date }}</td>
+                                    <td>{{ row.location }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">未找到相关IP信息</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            {% if db_rows|length > 1 %}
-            <div class="timeline-item">
-                <div class="timeline-marker"><i class="fas fa-bug"></i></div>
-                <div class="timeline-content">
-                    <div class="timeline-date">{{ db_rows.1.timestamp|default:"-" }}</div>
-                    <div class="timeline-desc">发现服务：{{ db_rows.1.protocol_name|default:"网络服务" }} 运行于端口 {{ db_rows.1.status|default:"未知" }}</div>
+
+            <!-- 威胁数据表格 -->
+            <div class="fixed-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>IP地址</th>
+                            <th>地理位置</th>
+                            <th>威胁等级</th>
+                            <th>最近活跃</th>
+                            <th>关联事件</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if results %}
+                            {% for item in results %}
+                            <tr>
+                                <td>{{ item.ip_address }}</td>
+                                <td>
+                                    <div class="location-info">
+                                        <span class="country-flag">🌐</span>
+                                        {{ item.country|default:"-" }} / {{ item.city|default:"-" }}
+                                    </div>
+                                </td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" style="text-align: center;">
+                                    未找到相关IP信息
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- FOFA 查询结果 -->
+            <div class="fofa-section cyber-card">
+                <div class="fofa-header">
+                    <h3>FOFA 网络空间测绘数据</h3>
+                    <div class="fofa-description">
+                        <p>FOFA是一款网络空间测绘引擎，通过搜索语法可以快速定位网络空间中的资产。本表格展示了通过FOFA查询到的相关资产信息，包括：</p>
+                        <ul>
+                            <li><strong>IP:端口</strong>：目标服务器的IP和端口（如1.2.3.4:80）</li>
+                            <li><strong>IP</strong>：目标服务器的IP地址</li>
+                            <li><strong>端口</strong>：开放的服务端口</li>
+                            <li><strong>协议</strong>：使用的网络协议（如HTTP、HTTPS等）</li>
+                            <li><strong>域名</strong>：关联的域名信息</li>
+                        </ul>
+                        <p class="fofa-note">注：数据来源于FOFA网络空间测绘引擎，字段顺序与FOFA API返回一致。</p>
+                    </div>
+                </div>
+                <div class="fixed-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>IP:端口</th> <!-- item.0 host -->
+                                <th>IP</th>     <!-- item.1 ip -->
+                                <th>端口</th>   <!-- item.2 port -->
+                                <th>协议</th>   <!-- item.3 protocol -->
+                                <th>主机</th>   <!-- item.4 server -->
+                                <th>域名</th>   <!-- item.5 domain -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if results2 %}
+                                {% for item in results2 %}
+                                <tr>
+                                    <td>{{ item.0 }}</td>
+                                    <td>{{ item.1 }}</td>
+                                    <td>{{ item.2 }}</td>
+                                    <td>{{ item.3 }}</td>
+                                    <td>{{ item.4 }}</td>
+                                    <td>{{ item.5 }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" style="text-align: center;">未找到FOFA查询结果</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 威胁时间线 -->
+            <div class="timeline-wrapper">
+                <h3>威胁时间线</h3>
+                {% if ip_service_table_data %}
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">{{ ip_service_table_data.0.date|default:"-" }}</div>
+                        <div class="timeline-desc">检测到活动</div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">-</div>
+                        <div class="timeline-desc">无活动记录</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- AI分析报告模块 -->
+            <div class="ai-analysis-module">
+                <div class="ai-analysis-header">
+                    <h3>AI威胁分析报告</h3>
+                    <p>选择AI模型生成详细分析报告</p>
+                </div>
+                <!-- 新增：多服务AI摘要展示 -->
+                {% if ai_service_reports and ai_service_reports|length > 0 %}
+                    <div class="ai-service-summary-list">
+                        {% for report in ai_service_reports %}
+                        <div class="ai-service-summary-card">
+                            <h4>服务：{{ report.service }}</h4>
+                            <textarea id="full_report_{{ report.service }}" style="display:none;">{{ report.full_report }}</textarea>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div style="color:#888;">未检测到与该IP相关的服务或暂无AI分析结果。</div>
+                {% endif %}
+                <!-- 下面保留原有模型选择等内容 -->
+                <div class="model-selector-container">
+                    <h4>选择分析模型</h4>
+                    <div class="model-selector-buttons">
+                        <button class="model-btn active" data-model="deepseek">DeepSeek</button>
+                        <button class="model-btn" data-model="ernie">文心一言</button>
+                        <button class="model-btn" data-model="qwen">通义千问</button>
+                        <button class="model-btn" data-model="spark">讯飞星火</button>
+                        <button class="model-btn" data-model="zhipu">智谱AI</button>
+                    </div>
+                </div>
+                <div class="security-dashboard">
+                    <!-- 威胁指示器 -->
+                    <div class="threat-indicator hidden" id="threatIndicator">
+                        <span id="threatText"></span>
+                    </div>
+            
+                    <!-- 报告摘要 -->
+                    <div class="report-summary hidden" id="reportSummary">
+                        <h3>检测到潜在风险：</h3>
+                        <ul id="riskList"></ul>
+                        <button class="download-btn" onclick="downloadReport()">下载完整报告</button>
+                    </div>
+            
+                    <!-- 加固建议 -->
+                    <div class="recommendations hidden" id="recommendations">
+                        <h4> </h4>
+                        <ol id="suggestionList"></ol>
+                    </div>
+            
+                    
+            
+                    <button onclick="startAnalysis()" id="analyzeBtn">开始安全分析</button>
+                    <div id="error" class="hidden" style="color:red; margin-top:10px;"></div>
                 </div>
             </div>
             {% endif %}
-            {% else %}
-            <div class="timeline-item">
-                <div class="timeline-marker"><i class="fas fa-info"></i></div>
-                <div class="timeline-content">
-                    <div class="timeline-date">-</div>
-                    <div class="timeline-desc">无活动记录</div>
-                </div>
-            </div>
-            {% endif %}
         </div>
     </div>
-
-    <!-- AI分析报告模块 -->
-    <div class="ai-analysis-module">
-        <!-- 神经网络背景动画 -->
-        <div class="neural-network" id="neural-network"></div>
-        
-        <div class="ai-analysis-content">
-            <!-- AI助手icon -->
-            <div class="ai-assistant-icon">
-                <i class="fas fa-brain"></i>
-            </div>
-
-            <div class="ai-analysis-header">
-                <h3><i class="fas fa-robot"></i>AI威胁分析引擎</h3>
-                <p>选择大语言模型生成详细分析报告，利用最新的威胁情报进行深度解析</p>
-            </div>
-
-            <!-- 模型选择器 -->
-            <div class="model-selector-container">
-                <h4><i class="fas fa-microchip"></i>选择分析模型</h4>
-                <div class="model-selector-buttons">
-                    <button class="model-btn active" data-model="deepseek">
-                        <i class="fas fa-brain"></i>DeepSeek
-                    </button>
-                    <button class="model-btn" data-model="ernie">
-                        <i class="fas fa-comment-dots"></i>文心一言
-                    </button>
-                    <button class="model-btn" data-model="qwen">
-                        <i class="fas fa-robot"></i>通义千问
-                    </button>
-                    <button class="model-btn" data-model="spark">
-                        <i class="fas fa-fire"></i>讯飞星火
-                    </button>
-                    <button class="model-btn" data-model="zhipu">
-                        <i class="fas fa-lightbulb"></i>智谱AI
-                    </button>
-                </div>
-            </div>
-
-            <div class="security-dashboard">
-                <!-- 威胁指示器 -->
-                <div class="threat-indicator hidden" id="threatIndicator">
-                    <i class="fas fa-shield-alt"></i>
-                    <span id="threatText"></span>
-                </div>
-        
-                <!-- 报告摘要 -->
-                <div class="report-summary hidden" id="reportSummary">
-                    <h3><i class="fas fa-exclamation-triangle"></i>检测到潜在风险：</h3>
-                    <ul id="riskList"></ul>
-                    <a href="#" class="download-btn" onclick="downloadReport()">
-                        <i class="fas fa-file-download"></i>下载完整报告
-                    </a>
-                </div>
-        
-                <!-- 加固建议 -->
-                <div class="recommendations hidden" id="recommendations">
-                    <h4><i class="fas fa-shield-alt"></i>建议应对措施：</h4>
-                    <ol id="suggestionList"></ol>
-                </div>
-        
-                <div id="error" class="hidden"></div>
-
-                <button onclick="startAnalysis()" id="analyzeBtn">
-                    <i class="fas fa-radar"></i>
-                    开始安全分析
-                </button>
-            </div>
-        </div>
-    </div>
-    {% endif %}
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
         // 当前选择的模型
         let selectedModel = 'deepseek';
+        // 这里定义全局的 services 数组
+        const services = [{% for s in services %}'{{ s }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
 
         // 模拟模型API端点
         const modelEndpoints = {
@@ -1650,96 +1832,28 @@
 
         // 初始化地图
         function initMap() {
-            // 创建更专业的地图样式
-            const map = L.map('threatMap', {
-                zoomControl: false,
-                attributionControl: false
-            }).setView([30, 110], 3);
+            const map = L.map('threatMap').setView([30, 110], 3);
             
-            // 使用更现代的地图瓦片样式
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                subdomains: 'abcd',
-                maxZoom: 19
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-            
-            // 添加自定义控制
-            L.control.zoom({
-                position: 'bottomright'
-            }).addTo(map);
-            
-            // 添加图层控制
-            const threatLayers = L.layerGroup().addTo(map);
-            const connectionLayers = L.layerGroup().addTo(map);
-            
-            // 自定义图标样式
-            const threatIcon = L.divIcon({
-                className: 'custom-threat-icon',
-                html: '<div class="threat-marker" style="background-color: rgba(255, 120, 0, 0.8); width: 15px; height: 15px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 15px rgba(255, 120, 0, 0.8);"></div>',
-                iconSize: [15, 15],
-                iconAnchor: [7, 7]
-            });
 
             // 添加标记点 - 使用Django模板数据
             {% if results %}
-                const markers = [];
                 {% for item in results %}
                     {% if item.latitude and item.longitude %}
-                    const marker = L.marker([{{ item.latitude }}, {{ item.longitude }}], {
-                        icon: threatIcon
-                    });
-                    
-                    const popupContent = `
-                        <div class="custom-popup-content">
-                            <h3 style="color: #4ab4f4; margin: 0 0 10px; font-size: 16px; border-bottom: 1px solid rgba(74, 180, 244, 0.2); padding-bottom: 5px;">
-                                <i class="fas fa-network-wired" style="margin-right: 5px;"></i> IP: {{ item.ip_address }}
-                            </h3>
-                            <div style="display: flex; flex-direction: column; gap: 5px;">
-                                <div style="display: flex; align-items: center;">
-                                    <i class="fas fa-map-marker-alt" style="color: #ff7800; width: 20px;"></i> 
-                                    <span>{{ item.country|default:"Unknown" }} / {{ item.city|default:"Unknown" }}</span>
-                                </div>
-                                <div style="display: flex; align-items: center;">
-                                    <i class="fas fa-exclamation-triangle" style="color: #ff6b6b; width: 20px;"></i> 
-                                    <span>{{ item.get_threat_level_display|default:"Low Risk" }}</span>
-                                </div>
-                                <div style="display: flex; align-items: center;">
-                                    <i class="far fa-calendar-alt" style="color: #45e6b3; width: 20px;"></i> 
-                                    <span>最近活跃: {{ item.last_active|date:"Y-m-d"|default:"Unknown" }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    marker.bindPopup(popupContent, {
-                        className: 'custom-popup',
-                        maxWidth: 300
-                    }).addTo(threatLayers);
-                    
-                    markers.push({
-                        latLng: [{{ item.latitude }}, {{ item.longitude }}],
-                        marker: marker
-                    });
+                    L.circleMarker([{{ item.latitude }}, {{ item.longitude }}], {
+                        radius: 8,
+                        fillColor: "#ff7800",
+                        color: "#000",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    }).addTo(map)
+                    .bindPopup(`<b>IP:</b> {{ item.ip_address }}<br><b>国家:</b> {{ item.country|default:"-" }}<br><b>城市:</b> {{ item.city|default:"-" }}`);
                     {% endif %}
                 {% endfor %}
-                
-                // 添加连接线以显示关联
-                if (markers.length > 1) {
-                    for (let i = 0; i < markers.length - 1; i++) {
-                        const line = L.polyline([markers[i].latLng, markers[i+1].latLng], {
-                            color: 'rgba(74, 180, 244, 0.4)',
-                            weight: 1,
-                            className: 'connection-line',
-                            dashArray: '5, 10'
-                        }).addTo(connectionLayers);
-                    }
-                }
             {% endif %}
-            
-            // 添加地图完成加载后的处理
-            setTimeout(function() {
-                document.getElementById('map-loading').classList.add('loaded');
-            }, 1000);
         }
 
         // 从页面数据生成安全分析数据
@@ -1747,12 +1861,10 @@
             const openPorts = new Set();
             const highRiskIPs = new Set();
             const attackPatterns = new Set();
-            const services = new Set();
             
             // 从服务信息中提取开放端口和服务
             {% for row in db_rows %}
                 openPorts.add(parseInt('{{ row.status }}'));
-                services.add('{{ row.protocol_name }}');
                 if ('{{ row.protocol_name }}'.includes('SQL') || '{{ row.protocol_name }}'.includes('MySQL')) {
                     attackPatterns.add('SQL注入');
                 }
@@ -1789,136 +1901,115 @@
                 openPorts: Array.from(openPorts).sort((a, b) => a - b),
                 highRiskIPs: Array.from(highRiskIPs),
                 attackPatterns: Array.from(attackPatterns),
-                services: Array.from(services),
+                services: services,
                 confidence: Math.min(confidence, 95)
             };
         }
 
-        // 生成神经网络动画
-        function createNeuralNetwork() {
-            const neuralNetwork = document.getElementById('neural-network');
-            
-            // 如果已有内容，清空
-            neuralNetwork.innerHTML = '';
-            
-            // 创建旋转容器
-            const wrapper = document.createElement('div');
-            wrapper.className = 'neural-network-wrapper';
-            neuralNetwork.appendChild(wrapper);
-            
-            // 创建节点和连线
-            const nodeCount = 25;
-            const nodes = [];
-            
-            // 创建节点
-            for (let i = 0; i < nodeCount; i++) {
-                const node = document.createElement('div');
-                node.className = 'neural-node';
-                
-                // 使用3D空间排布节点
-                const angle1 = Math.random() * Math.PI * 2;
-                const angle2 = Math.random() * Math.PI * 2;
-                const radius = 120 * Math.random();
-                
-                const x = Math.cos(angle1) * Math.sin(angle2) * radius + 150;
-                const y = Math.sin(angle1) * Math.sin(angle2) * radius + 150;
-                const z = Math.cos(angle2) * radius;
-                
-                node.style.left = `${x}px`;
-                node.style.top = `${y}px`;
-                node.style.transform = `translateZ(${z}px)`;
-                node.style.animationDelay = `${Math.random() * 3}s`;
-                
-                wrapper.appendChild(node);
-                nodes.push({node, x, y, z});
-            }
-            
-            // 创建连线
-            for (let i = 0; i < nodeCount; i++) {
-                for (let j = i + 1; j < nodeCount; j++) {
-                    // 只连接一部分节点，否则会过于密集
-                    if (Math.random() > 0.7) continue;
-                    
-                    const line = document.createElement('div');
-                    line.className = 'neural-line';
-                    
-                    const start = nodes[i];
-                    const end = nodes[j];
-                    
-                    // 计算两点间距离
-                    const dx = end.x - start.x;
-                    const dy = end.y - start.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    // 只连接较近的节点
-                    if (distance > 100) continue;
-                    
-                    // 计算旋转角度
-                    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-                    
-                    // 设置线条样式
-                    line.style.width = `${distance}px`;
-                    line.style.left = `${start.x}px`;
-                    line.style.top = `${start.y}px`;
-                    line.style.transform = `rotate(${angle}deg)`;
-                    line.style.transformOrigin = '0 0';
-                    line.style.opacity = `${1 - distance / 120}`;
-                    line.style.animationDelay = `${Math.random() * 3}s`;
-                    
-                    wrapper.appendChild(line);
-                }
-            }
-        }
-
-        // 主分析函数
+        // 修改 startAnalysis 函数，保存securityData到全局变量
         async function startAnalysis() {
             const analyzeBtn = document.getElementById('analyzeBtn');
+            //const loading = document.getElementById('loading');
             const error = document.getElementById('error');
-            const neuralNetwork = document.getElementById('neural-network');
+            const reportSummary = document.getElementById('reportSummary');
+            const recommendations = document.getElementById('recommendations');
+            const threatIndicator = document.getElementById('threatIndicator');
             
             try {
                 // 重置状态
                 analyzeBtn.disabled = true;
+                //loading.classList.remove('hidden');
                 error.classList.add('hidden');
                 
-                // 激活神经网络动画
-                createNeuralNetwork();
-                neuralNetwork.classList.add('active');
+                // 隐藏之前的分析结果（如果有）
+                reportSummary.classList.add('hidden');
+                recommendations.classList.add('hidden');
+                threatIndicator.classList.add('hidden');
                 
                 // 准备请求数据
                 const securityData = getSecurityData();
+                // 保存到全局变量，供downloadReport使用
+                window.lastSecurityData = securityData;
+                
                 const prompt = `作为专业的网络安全分析师，请基于以下数据生成非常非常详细的安全评估报告，格式要规整一点，对于每一项都要有详细的解释：
 
 ## 分析数据
-- 开放端口: ${securityData.openPorts.join(', ') || '无'}
+
 - 检测到的服务: ${securityData.services.join(', ') || '无'}
-- 风险IP地址: ${securityData.highRiskIPs.join(', ') || '无'}
-- 可能的攻击模式: ${securityData.attackPatterns.join(', ') || '无'}
+
+
 
 ## 报告要求
-请按照以下结构组织报告内容：
+对于每个检测到的服务请按照以下结构组织报告内容：
+### 一、服务基础信息
+1. 服务组件分析
+   - 检测到的服务: ${securityData.services.join('、') || '无'}
+   - 服务版本信息（如可获取）
+   - 网络架构拓扑（如可绘制）
 
-1. 执行摘要
-   - 总体风险评估
-   - 关键发现
+### 二、漏洞分析（CVE专项）
+1. 近三年相关CVE（需标注CNVD编号）
+   - 高危漏洞清单（CVSS≥7.0）
+     - [示例，实际生成的要更详细一点] CVE-2023-1234（CNVD-2023-56789） 
+       • 漏洞类型：远程代码执行
+       • 影响版本：v1.0-v2.2
+       • 利用方式：通过API注入攻击
+   - 漏洞利用链分析（如存在）
 
-2. 详细分析
-   - 端口与服务分析
-   - IP威胁分析
-   - 攻击模式分析
+2. 国内特有风险
+   - 数据出境风险（依据《数据出境安全评估办法》）
+   - 敏感词过滤机制缺陷
+   - 境内镜像源污染可能性
 
-3. 风险评估
-   - 风险等级评估
-   - 置信度说明
+### 三、攻击面分析
+1. 端口与服务矩阵
+    示例如下：
+   | 端口 | 服务类型 | 等保2.0对应要求 | 暴露风险 |
+   |------|----------|------------------|----------|
+   | 443  | HTTPS    | 安全通信要求     | 中风险   |
 
-4. 建议措施
-   - 立即行动建议
-   - 长期改进建议
-   - 监控与响应建议
+2. IP威胁画像
+   - 境内恶意IP关联分析（对接微步在线API）
+   - 僵尸网络C2服务器通信特征
 
-5. 附录
-   - 分析数据详情
-   - 参考标准`;
+### 四、安全态势评估
+1. 风险矩阵
+    示例如下：
+   | 风险项         | 可能性（1-5） | 影响程度（1-5） | 综合评级 |
+   |----------------|--------------|----------------|----------|
+   | 训练数据泄露   | 4            | 5              | 高危     |
+
+2. 置信度说明
+   - 采用ATT&CK框架进行战术映射
+   - 置信度分级：确证/高/中/低
+
+### 五、防护建议
+1. 紧急处置（24小时内）
+   - 关闭非必要API端口
+   - 部署WAF规则（需提供具体规则样例）
+
+2. 长期加固
+   - 等保三级合规改造路线图
+   - 国产密码算法改造建议（SM2/SM3/SM4）
+
+3. 监测方案
+   - 建议部署态势感知平台（如奇安信NGSOC）
+   - 日志留存满足《网络安全法》第21条要求
+
+### 六、附录
+1. 分析依据
+   - 参考标准：GB/T 22239-2019、GB/T 28448-2019
+   - 威胁情报源：CNVD、CNNVD、奇安信威胁情报中心
+
+2. 支持数据
+   - 原始流量包特征（如有）
+   - 可疑行为日志片段
+
+请特别注意：
+1. 所有技术术语需提供中文标准译名
+2. 需标注引用的国内法律法规条款
+3. 关键建议需区分云服务商责任和用户责任
+4. 包含针对AI模型的特殊攻击防护（如提示词注入）`;
 
                 // 调用当前选择的模型API
                 const aiResponse = await callModelAPI(selectedModel, prompt);
@@ -1930,12 +2021,169 @@
             } catch (err) {
                 error.textContent = `错误: ${err.message}`;
                 error.classList.remove('hidden');
-                neuralNetwork.classList.remove('active');
             } finally {
                 analyzeBtn.disabled = false;
-                loading.classList.add('hidden');
-                // 保持神经网络动画激活状态，这样在结果显示时继续有动画效果
+                //loading.classList.add('hidden');
             }
+        }
+
+        // 修改 updateUI 函数
+        function updateUI(data) {
+            // 威胁指示器
+            const threatIndicator = document.getElementById('threatIndicator');
+            threatIndicator.className = `threat-indicator ${data.status}`;
+            
+            let threatText = '';
+            switch(data.status) {
+                case 'high':
+                    threatText = '⚠️ 严重威胁: 发现多个高危安全风险';
+                    break;
+                case 'medium':
+                    threatText = '⚠️ 中等威胁: 发现潜在安全风险';
+                    break;
+                default:
+                    threatText = '✅ 低风险: 未发现重大安全威胁';
+            }
+            threatIndicator.querySelector('#threatText').textContent = threatText;
+            threatIndicator.classList.remove('hidden');
+
+            // 不显示风险摘要部分
+            document.getElementById('reportSummary').classList.add('hidden');
+
+            // 建议列表
+            const suggestionList = document.getElementById('suggestionList');
+            // 只显示有效建议
+            const validSuggestions = data.suggestions.filter(s => s.replace(/^\s*-/, '').trim() !== '未能从报告中提取具体建议');
+            suggestionList.innerHTML = validSuggestions.map(s => `<li>${s.replace(/^\s*-/, '').trim()}</li>`).join('');
+            
+            // 显示建议应对措施
+            const recommendations = document.getElementById('recommendations');
+            recommendations.classList.remove('hidden');
+            
+            // 在建议应对措施下方添加下载报告按钮
+            if (!document.getElementById('downloadReportBtn')) {
+                const downloadBtn = document.createElement('button');
+                downloadBtn.id = 'downloadReportBtn';
+                downloadBtn.className = 'download-btn';
+                downloadBtn.onclick = function() { downloadReport(); };
+                downloadBtn.textContent = '下载完整报告';
+                recommendations.appendChild(downloadBtn);
+            }
+
+            // 保存完整报告用于下载
+            window.lastGeneratedReport = data.fullReport;
+        }
+
+        // 修改 downloadReport 函数，优先使用保存的securityData
+        function downloadReport(service) {
+            // 优先使用startAnalysis中保存的securityData，如果没有再重新获取
+            const securityData = window.lastSecurityData || getSecurityData();
+            const currentDate = new Date().toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // 如果指定了服务，则获取该服务的报告
+            let reportContent = window.lastGeneratedReport;
+            if (service) {
+                const reportElement = document.getElementById(`full_report_${service}`);
+                if (reportElement) {
+                    reportContent = reportElement.value;
+                }
+            }
+            
+            // 确保服务名称正确显示在报告中
+            const serviceNames = securityData.services.length > 0 ? securityData.services.join(', ') : '无';
+            
+            reportContent = reportContent || `# 网络安全分析报告
+## 报告生成时间
+${currentDate}
+
+## 分析数据
+
+- 检测到的服务: ${serviceNames}
+
+
+## 报告内容
+### 一、服务基础信息
+1. 服务组件分析
+   - 检测到的服务: ${serviceNames}
+   - 服务版本信息（如可获取）
+   - 网络架构拓扑（如可绘制）
+
+### 二、漏洞分析（CVE专项）
+1. 近三年相关CVE（需标注CNVD编号）
+   - 高危漏洞清单（CVSS≥7.0）
+     - [示例] CVE-2023-1234（CNVD-2023-56789） 
+       • 漏洞类型：远程代码执行
+       • 影响版本：v1.0-v2.2
+       • 利用方式：通过API注入攻击
+   - 漏洞利用链分析（如存在）
+
+2. 国内特有风险
+   - 数据出境风险（依据《数据出境安全评估办法》）
+   - 敏感词过滤机制缺陷
+   - 境内镜像源污染可能性
+
+### 三、攻击面分析
+1. 端口与服务矩阵
+   | 端口 | 服务类型 | 等保2.0对应要求 | 暴露风险 |
+   |------|----------|------------------|----------|
+   | 443  | HTTPS    | 安全通信要求     | 中风险   |
+
+2. IP威胁画像
+   - 境内恶意IP关联分析（对接微步在线API）
+   - 僵尸网络C2服务器通信特征
+
+### 四、安全态势评估
+1. 风险矩阵
+   | 风险项         | 可能性（1-5） | 影响程度（1-5） | 综合评级 |
+   |----------------|--------------|----------------|----------|
+   | 训练数据泄露   | 4            | 5              | 高危     |
+
+2. 置信度说明
+   - 采用ATT&CK框架进行战术映射
+   - 置信度分级：确证/高/中/低
+
+### 五、防护建议
+1. 紧急处置（24小时内）
+   - 关闭非必要API端口
+   - 部署WAF规则（需提供具体规则样例）
+
+2. 长期加固
+   - 等保三级合规改造路线图
+   - 国产密码算法改造建议（SM2/SM3/SM4）
+
+3. 监测方案
+   - 建议部署态势感知平台（如奇安信NGSOC）
+   - 日志留存满足《网络安全法》第21条要求
+
+### 六、附录
+1. 分析依据
+   - 参考标准：GB/T 22239-2019、GB/T 28448-2019
+   - 威胁情报源：CNVD、CNNVD、奇安信威胁情报中心
+
+2. 支持数据
+   - 原始流量包特征（如有）
+   - 可疑行为日志片段
+
+## 分析元数据
+- 分析模型: ${selectedModel}安全分析模型
+- 报告版本: 1.0
+- 置信度: ${securityData.confidence}%`;
+
+            const blob = new Blob([reportContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `网络安全报告_${new Date().toISOString().slice(0,10)}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
         // 解析AI响应 - 更强大的解析逻辑
@@ -2011,112 +2259,7 @@
             return 'low';
         }
 
-        // 更新界面 - 更丰富的展示
-        function updateUI(data) {
-            // 威胁指示器
-            const threatIndicator = document.getElementById('threatIndicator');
-            threatIndicator.className = `threat-indicator ${data.status}`;
-            
-            let threatText = '';
-            switch(data.status) {
-                case 'high':
-                    threatText = '⚠️ 严重威胁: 发现多个高危安全风险';
-                    break;
-                case 'medium':
-                    threatText = '⚠️ 中等威胁: 发现潜在安全风险';
-                    break;
-                default:
-                    threatText = '✅ 低风险: 未发现重大安全威胁';
-            }
-            threatIndicator.querySelector('#threatText').textContent = threatText;
-            threatIndicator.classList.remove('hidden');
-
-            // 风险摘要
-            const riskList = document.getElementById('riskList');
-            riskList.innerHTML = `
-                <li>检测到 ${data.summary.openPorts} 个开放端口</li>
-                <li>发现 ${data.summary.riskIPs} 个可疑IP地址</li>
-                <li>识别 ${data.summary.attackPatterns} 种攻击模式</li>
-                <li>分析置信度: ${data.summary.confidence}%</li>
-            `;
-            
-            // 添加关键发现
-            if (data.summary.keyFindings && data.summary.keyFindings.length > 0) {
-                const findingsList = document.createElement('ul');
-                findingsList.style.marginTop = '10px';
-                findingsList.innerHTML = '<h4>关键发现:</h4>' + 
-                    data.summary.keyFindings.map(f => `<li>${f.replace(/^\s*-/, '').trim()}</li>`).join('');
-                riskList.appendChild(findingsList);
-            }
-            
-            document.getElementById('reportSummary').classList.remove('hidden');
-
-            // 建议列表
-            const suggestionList = document.getElementById('suggestionList');
-            suggestionList.innerHTML = data.suggestions
-                .map(s => `<li>${s.replace(/^\s*-/, '').trim()}</li>`)
-                .join('');
-            document.getElementById('recommendations').classList.remove('hidden');
-
-            // 保存完整报告用于下载
-            window.lastGeneratedReport = data.fullReport;
-        }
-
-        // 下载报告函数 - 生成更专业的报告
-        function downloadReport() {
-            const securityData = getSecurityData();
-            const currentDate = new Date().toLocaleString('zh-CN', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            
-            const reportContent = window.lastGeneratedReport || `# 网络安全分析报告
-## 报告生成时间
-${currentDate}
-
-## 1. 分析数据概览
-### 开放端口
-${securityData.openPorts.join(', ') || '无'}
-
-### 检测到的服务
-${securityData.services.join(', ') || '无'}
-
-### 风险IP地址
-${securityData.highRiskIPs.join('\n- ') || '无'}
-
-### 可能的攻击模式
-${securityData.attackPatterns.join(', ') || '无'}
-
-## 2. AI分析结果
-${document.getElementById('suggestionList').innerHTML
-    .replace(/<li>/g, '### ')
-    .replace(/<\/li>/g, '\n')
-    .replace(/<[^>]+>/g, '')}
-
-## 3. 完整分析报告
-${document.getElementById('suggestionList').innerHTML
-    .replace(/<li>/g, '- ')
-    .replace(/<\/li>/g, '\n')
-    .replace(/<[^>]+>/g, '')}
-
-## 4. 分析元数据
-- 分析模型: ${selectedModel}安全分析模型
-- 报告版本: 1.0
-- 置信度: ${securityData.confidence}%`;
-
-            const blob = new Blob([reportContent], { type: 'text/markdown' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `网络安全报告_${new Date().toISOString().slice(0,10)}.md`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
+        
 
         // 模型选择功能
         document.querySelectorAll('.model-btn').forEach(btn => {
@@ -2130,12 +2273,12 @@ ${document.getElementById('suggestionList').innerHTML
         // 页面加载完成后初始化地图
         document.addEventListener('DOMContentLoaded', function() {
             initMap();
-            
-            // 设置标记加载完成
-            setTimeout(function() {
-                document.getElementById('map-loading').classList.add('loaded');
-            }, 1500);
         });
+
+        // 此函数已被整合到downloadReport函数中
+        function downloadAIReport(service) {
+            downloadReport(service);
+        }
     </script>
 </body>
 </html>
