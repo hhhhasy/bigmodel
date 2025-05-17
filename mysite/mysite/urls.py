@@ -9,4 +9,9 @@ urlpatterns = [
     path('Ollama/search/', include('ipsearch.urls')),
     path('Ollama/distribution/', include('ipmap.urls')),
     path('Search/', include('AllSearch.urls')),
+    path('AnythingLLM/', include('anythingllmhome.urls')),
+    path('Dify/', include('difyhome.urls')),
+    path('OpenLLM/', include('openllmhome.urls')),
+    path('OpenWebUI/', include('openwebuihome.urls')),
+    path('Xinference/', include('xinferencehome.urls')),
 ]

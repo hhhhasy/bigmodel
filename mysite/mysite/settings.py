@@ -22,7 +22,12 @@ INSTALLED_APPS = [
     'ollamahome',
     'probinghome',
     'home',
-    'AllSearch'
+    'AllSearch',
+    'anythingllmhome',
+    'difyhome',
+    'openllmhome',
+    'openwebuihome',
+    'xinferencehome',
 ]
 
 # 中间件配置
