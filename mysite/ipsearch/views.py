@@ -59,7 +59,7 @@ def search(request):
             'longitude': float(item.longitude) if item.longitude else None,
             'count': item.count
         })
-
+    
     context = {
         'form': form,
         'results': serialized_results,
