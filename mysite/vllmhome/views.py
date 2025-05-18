@@ -6,7 +6,7 @@ DynamicModelsCounts = get_latest_models_counts_model()
 
 def dashboard(request):
     # 获取最近7天的日活数据
-    daily_qs = DailyExpose.objects.order_by('-date')[:7]
+    daily_qs = list(reversed(DailyExpose.objects.order_by('-date')[:7]))
     
     # 准备图表数据
     daily_data = {
