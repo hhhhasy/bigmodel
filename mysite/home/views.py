@@ -22,3 +22,7 @@ def getearth(request):
     response['Content-Type'] = 'video/mp4'  # 设置 MIME 类型
     response['Content-Disposition'] = 'inline; filename="earth.mp4"'  # 浏览器尝试直接播放
     return response
+
+def vllm_home(request):
+    """渲染vLLM服务页面"""
+    return render(request, 'vllm/home.html')
