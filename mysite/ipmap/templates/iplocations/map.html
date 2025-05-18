@@ -485,7 +485,7 @@
             <!-- 添加全球地图解释文本框 -->
             <div class="map-info-box">
                 <i class="fas fa-info-circle"></i>
-                <p>此地图展示了 OLLAMA 服务暴露的全球 IP 分布情况，通过不同颜色和数值体现各个国家的 IP 数量。</p>
+                <p>此地图展示了 <span id="service-name"></span> 服务暴露的全球 IP 分布情况，通过不同颜色和数值体现各个国家的 IP 数量。</p>
             </div>
         </div>
 
@@ -514,7 +514,7 @@
             <!-- 添加中国地图解释文本框 -->
             <div class="map-info-box">
                 <i class="fas fa-info-circle"></i>
-                <p>此地图展示了 OLLAMA 服务暴露的中国 IP 分布情况，通过不同颜色和数值体现各个省份的 IP 数量。</p>
+                <p>此地图展示了 <span id="service-name-china"></span> 服务暴露的中国 IP 分布情况，通过不同颜色和数值体现各个省份的 IP 数量。</p>
             </div>
         </div>
     
@@ -1640,8 +1640,8 @@
 
         // 数据加载
         Promise.all([
-            fetch('get_world_data/').then(r => r.json()),
-            fetch('get_china_data/').then(r => r.json())
+            fetch(`get_world_data/?server=${new URLSearchParams(window.location.search).get('server')}`).then(r => r.json()),
+            fetch(`get_china_data/?server=${new URLSearchParams(window.location.search).get('server')}`).then(r => r.json())
         ]).then(([worldRes, chinaRes]) => {
             // 处理世界数据
             const worldData = processWorldData(worldRes);
@@ -1767,6 +1767,11 @@
                 });
             });
         });
+
+        // 获取服务名称并更新显示
+        const serviceName = new URLSearchParams(window.location.search).get('server');
+        document.getElementById('service-name').textContent = serviceName;
+        document.getElementById('service-name-china').textContent = serviceName;
     </script>
 </body>
 </html>

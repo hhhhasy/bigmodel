@@ -755,7 +755,8 @@
         <!-- 搜索卡片 -->
         <div class="cyber-card glow-border">
             <div class="cyber-form">
-                <form method="get" action="{% url 'ipsearch' %}">
+                <form method="get" action="{% url 'ipsearch:search' %}">
+                    <input type="hidden" name="server" value="{{ request.GET.server|default:'ollama' }}">
                     <div class="cyber-input-group">
                         {{ form.query }}
                         <i class="fas fa-radar input-icon"></i>

@@ -15,30 +15,37 @@ def index(request):
 
 def search(request):
     form = SearchForm(request.GET)
-    query=[]
+    query = []
     results = []
 
-    server = request.GET.get('server', 'ollama')
-
+    # 从URL参数获取服务名称
+    server = request.GET.get('server', 'ollama')  # 默认使用ollama
+    print(server)
+    # 根据server获取对应的数据表
     table_name = get_latest_table_name(server)
+    print(table_name)
+    
+    # 从表名中提取日期
+    exposure_date = None
+    if table_name:
+        try:
+            date_str = table_name.split('_')[1]  # 获取YYYYMMDD部分
+            exposure_date = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
+        except:
+            pass
+
     if table_name:
         IPModel = create_dynamic_ip_model(table_name)
-    else:
-        IPModel = None
-
-
-    if form.is_valid() and IPModel:
-        query = form.cleaned_data['query']
-        if query:
+        
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            # 执行搜索
             results = IPModel.objects.filter(
                 Q(ip_address__icontains=query) |
                 Q(country__icontains=query) |
                 Q(city__icontains=query) |
-                Q(latitude__icontains=query) |
-                Q(longitude__icontains=query)
-            )
-    else:
-        results = IPModel.objects.none()
+                Q(postal_code__icontains=query)
+            ).order_by('-count')  # 按count降序排序
 
     # 序列化处理
     serialized_results = []
@@ -47,63 +54,17 @@ def search(request):
             'ip_address': item.ip_address,
             'country': item.country,
             'city': item.city,
+            'postal_code': item.postal_code,
             'latitude': float(item.latitude) if item.latitude else None,
             'longitude': float(item.longitude) if item.longitude else None,
+            'count': item.count
         })
 
-
-
-    # 组合 FOFA 查询： user_query AND ollma
-    results2 = []
-    if query:
-        fofa_query = f"{query} && ollama"
-        qbase64 = base64.b64encode(fofa_query.encode()).decode()
-
-        # 直接在 URL 参数中带上 key 和 qbase64
-        params = {
-            'key': "68abfba96124fb292689693c1c892f54",
-            'qbase64': qbase64,
-            'size': 100,
-            'full': 'false',
-        }
-
-
-        try:
-
-            resp = requests.get(
-                "http://fofa.xmint.cn/api/v1/search/all",
-                params=params,
-                timeout=10
-            )
-            resp.raise_for_status()
-            data = resp.json()  # 将响应体解析成 dict
-            results2 = data.get("results", [])
-
-        except requests.RequestException:
-            # 如果请求失败，不打断流程，只记录日志即可
-            pass
-
-    db_rows=[]
-    if form.is_valid():
-        if query:
-            db_rows = OllamaSearch49.objects.filter(
-                Q(ip__icontains=query) |
-                Q(status__icontains=query) |
-                Q(protocol__icontains=query) |
-                Q(timestamp__icontains=query) |
-                Q(status_line__icontains=query) |
-                Q(status_code__icontains=query) |
-                Q(protocol_name__icontains=query) |
-                Q(body_version__icontains=query)
-            )
-    else:
-        # 返回空查询集而不是普通列表
-        db_rows = OllamaSearch49.objects.none()
     context = {
         'form': form,
-        'results': serialized_results,  # 使用序列化后的数据
-        'results2':results2,
-        'db_rows':db_rows
+        'results': serialized_results,
+        'current_server': server,
+        'exposure_date': exposure_date
     }
 
     return render(request, 'ipsearch/result.html', context)

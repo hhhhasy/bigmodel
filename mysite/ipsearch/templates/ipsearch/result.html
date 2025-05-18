@@ -43,6 +43,7 @@
             font-family: 'Inter', system-ui, sans-serif;
             position: relative;
             overflow-x: hidden;
+            padding: 20px;
         }
 
         /* 滚动条美化 */
@@ -793,7 +794,7 @@
 
     <!-- 主搜索框区域 - 全宽 -->
     <div class="cyber-search-box">
-        <form method="get" action="{% url 'ipsearch' %}">
+        <form method="get" action="{% url 'search' %}">
             <div class="cyber-input-group">
                 <input type="text" id="id_query" name="query" 
                        placeholder="输入IP/域名进行威胁分析..." 
@@ -817,42 +818,55 @@
             <div id="threatMap" style="width:100%; height:100%;"></div>
         </div>
 
-        {{ results2|json_script:"fofa-json-data" }}
-
         <div class="json-card">
-            <h3><i class="fas fa-code"></i>JSON返回（共 {{ results2|length }} 条）</h3>
-            <pre id="fofa-raw-json" class="raw-json-block"></pre>
-            <h3 style="margin-top:1.5em;"><i class="fas fa-server"></i>相关服务信息</h3>
+            <h3><i class="fas fa-network-wired"></i>Nmap 扫描信息</h3>
             <div class="table-container">
                 <table class="db-table">
-                  <thead>
-                    <tr>
-                      <th><i class="fas fa-network-wired me-1"></i>IP</th>
-                      <th><i class="fas fa-info-circle me-1"></i>Status</th>
-                      <th><i class="fas fa-exchange-alt me-1"></i>Protocol</th>
-                      <th><i class="far fa-clock me-1"></i>Timestamp</th>
-                      <th><i class="fas fa-terminal me-1"></i>Status Line</th>
-                      <th><i class="fas fa-tag me-1"></i>Proto Name</th>
-                      <th><i class="fas fa-code-branch me-1"></i>Version</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for row in db_rows %}
-                    <tr>
-                      <td>{{ row.ip }}</td>
-                      <td>{{ row.status }}</td>
-                      <td>{{ row.protocol }}</td>
-                      <td>{{ row.timestamp }}</td>
-                      <td>{{ row.status_line }}</td>
-                      <td>{{ row.protocol_name }}</td>
-                      <td>{{ row.body_version }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                      <td colspan="8" style="text-align:center;">无记录</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-network-wired me-1"></i>端口</th>
+                            <th><i class="fas fa-info-circle me-1"></i>状态</th>
+                            <th><i class="fas fa-exchange-alt me-1"></i>协议</th>
+                            <th><i class="fas fa-server me-1"></i>服务</th>
+                            <th><i class="fas fa-code-branch me-1"></i>版本</th>
+                            <th><i class="fas fa-shield-alt me-1"></i>安全风险</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for scan in nmap_scans %}
+                        <tr>
+                            <td>{{ scan.port }}</td>
+                            <td>
+                                <span class="badge {% if scan.state == 'open' %}bg-success{% else %}bg-secondary{% endif %}">
+                                    {{ scan.state }}
+                                </span>
+                            </td>
+                            <td>{{ scan.protocol }}</td>
+                            <td>{{ scan.service }}</td>
+                            <td>{{ scan.version|default:"-" }}</td>
+                            <td>
+                                {% if scan.risk_level == 'high' %}
+                                <span class="badge bg-danger">高风险</span>
+                                {% elif scan.risk_level == 'medium' %}
+                                <span class="badge bg-warning">中风险</span>
+                                {% elif scan.risk_level == 'low' %}
+                                <span class="badge bg-info">低风险</span>
+                                {% else %}
+                                <span class="badge bg-secondary">未知</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align:center;">
+                                <div class="empty-state">
+                                    <i class="fas fa-search fa-3x mb-3" style="color: #ccc;"></i>
+                                    <p>暂无扫描数据</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -863,10 +877,8 @@
             <thead>
                 <tr>
                     <th><i class="fas fa-globe me-2"></i>IP地址</th>
-                    <th><i class="fas fa-map-marker-alt me-2"></i>地理位置</th>
-                    <th><i class="fas fa-exclamation-triangle me-2"></i>威胁等级</th>
-                    <th><i class="far fa-calendar-alt me-2"></i>最近活跃</th>
-                    <th><i class="fas fa-link me-2"></i>关联事件</th>
+                    <th><i class="fas fa-map-marker-alt me-2"></i>国家地区</th>
+                    <th><i class="far fa-calendar-alt me-2"></i>暴露时间</th>
                 </tr>
             </thead>
             <tbody>
@@ -880,17 +892,11 @@
                             {{ result.city|default:"-" }}
                         </div>
                     </td>
-                    <td>
-                        <div class="threat-level level-{{ result.threat_level }}">
-                            {{ result.get_threat_level_display }}
-                        </div>
-                    </td>
-                    <td>{{ result.last_active|date:"Y-m-d" }}</td>
-                    <td>{{ result.related_events }}</td>
+                    <td>{{ result.exposure_date|date:"Y-m-d" }}</td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="no-result">
+                    <td colspan="3" class="no-result">
                         <img src="{% static 'images/no-data.svg' %}" 
                              alt="无结果"
                              class="empty-state">
@@ -1052,8 +1058,8 @@
             attributionControl: false
         }).setView([30, 104], 4);
     
-        // 使用深色主题地图
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        // 使用浅色主题地图
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
             attribution: null
         }).addTo(threatMap);
@@ -1099,10 +1105,12 @@
 
         // 创建标记
         const validPoints = resultsData.filter(item => 
-            !isNaN(item.latitude) && 
-            !isNaN(item.longitude) &&
-            Math.abs(item.latitude) <= 90 &&
-            Math.abs(item.longitude) <= 180
+            item.latitude && 
+            item.longitude && 
+            !isNaN(parseFloat(item.latitude)) && 
+            !isNaN(parseFloat(item.longitude)) &&
+            Math.abs(parseFloat(item.latitude)) <= 90 &&
+            Math.abs(parseFloat(item.longitude)) <= 180
         );
         
         // 创建标记簇
@@ -1175,11 +1183,6 @@
                 row.classList.toggle('active');
             });
         });
-
-        // JSON数据渲染
-        const raw = document.getElementById('fofa-json-data').textContent;
-        document.getElementById('fofa-raw-json').textContent =
-            JSON.stringify(JSON.parse(raw), null, 2);
 
         // 启动统计数字动画
         document.addEventListener('DOMContentLoaded', () => {
