@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Q
-# from .models import IPInfo
-from .models import get_latest_table_name, create_dynamic_ip_model
+from .models import IPInfo
 from .models import OllamaSearch49
 from .forms import SearchForm
 
@@ -16,21 +15,12 @@ def index(request):
 def search(request):
     form = SearchForm(request.GET)
     query=[]
+
     results = []
-
-    server = request.GET.get('server', 'ollama')
-
-    table_name = get_latest_table_name(server)
-    if table_name:
-        IPModel = create_dynamic_ip_model(table_name)
-    else:
-        IPModel = None
-
-
-    if form.is_valid() and IPModel:
+    if form.is_valid():
         query = form.cleaned_data['query']
         if query:
-            results = IPModel.objects.filter(
+            results = IPInfo.objects.filter(
                 Q(ip_address__icontains=query) |
                 Q(country__icontains=query) |
                 Q(city__icontains=query) |
@@ -38,7 +28,7 @@ def search(request):
                 Q(longitude__icontains=query)
             )
     else:
-        results = IPModel.objects.none()
+        results = IPInfo.objects.none()
 
     # 序列化处理
     serialized_results = []
