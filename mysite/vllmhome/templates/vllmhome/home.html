@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnythingLLM 模型分析中心</title>
+    <title>VLLM 服务安全分析</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,12 +94,8 @@
             transform: translateX(3px);
         }
 
-        .logo i {
-            font-size: 2.2rem;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .logo img {
+            height: 40px;
         }
 
         .logo h1 {
@@ -978,8 +974,8 @@
     <!-- 导航栏 -->
     <nav class="navbar" id="navbar">
         <div class="logo">
-            <img src="/static/Xinference1.svg" alt="Xinference Logo" style="height: 40px;">
-            <h1>Xinference 服务安全分析</h1>
+            <img src="/static/logo-vllm.svg" alt="vLLM Logo" style="height: 40px;">
+            <h1>vLLM 服务安全分析</h1>
         </div>
     </nav>
 
@@ -990,12 +986,12 @@
         
         <div class="hero-box">
             <div class="hero-text">
-                <h1>Xinference: <span>分布式推理框架</span></h1>
-                <p>Xinference 是一个强大的分布式推理框架，支持多种模型格式和部署方式。它提供了灵活的模型管理、高效的资源调度和可扩展的部署方案，让用户能够轻松构建和管理大规模 AI 推理服务。</p>
+                <h1>vLLM: <span>高性能推理框架</span></h1>
+                <p>vLLM 是一个高性能的 LLM 推理和服务框架，采用 PagedAttention 技术实现高效的 KV 缓存管理，支持多种开源模型的高效部署。它提供了简单易用的 API 接口，让用户能够轻松构建和扩展 AI 应用。</p>
                 <div class="btn btn-primary" id="scroll-btn">了解更多 <i class="fas fa-arrow-right"></i></div>
             </div>
             <div class="hero-image">
-                <img src="/static/Xinference1.svg" alt="Xinference Logo">
+                <img src="/static/logo-vllm.svg" alt="vLLM Logo">
             </div>
         </div>
         
@@ -1009,30 +1005,30 @@
             <!-- 区块标题 -->
             <div class="section-header">
                 <h2 class="section-title">核心功能</h2>
-                <p class="section-desc">基于先进的数据分析技术，为您的推理服务提供全方位的监控与优化</p>
+                <p class="section-desc">基于先进的数据分析技术，为您的 Web 界面提供全方位的监控与优化</p>
             </div>
             
             <!-- 核心功能区块 -->
             <div class="model-functions">
-                <div class="neon-card" onclick="location.href='http://127.0.0.1:8000/xinference/distribution/'">
+                <div class="neon-card" onclick="location.href='http://127.0.0.1:8000/openwebui/distribution/'">
                     <div class="card-header">
                         <i class="fas fa-globe-asia card-icon"></i>
-                        <h2 class="card-title">推理分布分析</h2>
+                        <h2 class="card-title">界面分布分析</h2>
                     </div>
                     <p class="card-desc">
-                        实时追踪全球推理服务部署情况，可视化计算节点分布，
-                        支持多维度性能监控与资源利用率分析
+                        实时追踪全球 Web 界面部署情况，可视化用户分布，
+                        支持多维度性能监控与用户体验分析
                     </p>
                 </div>
 
-                <div class="neon-card" onclick="location.href='http://127.0.0.1:8000/xinference/search'">
+                <div class="neon-card" onclick="location.href='http://127.0.0.1:8000/openwebui/search'">
                     <div class="card-header">
                         <i class="fas fa-search-location card-icon"></i>
-                        <h2 class="card-title">智能推理检索</h2>
+                        <h2 class="card-title">智能组件检索</h2>
                     </div>
                     <p class="card-desc">
-                        支持自然语言检索与特征搜索，毫秒级匹配推理服务，
-                        提供版本追踪、性能指标与部署建议
+                        支持自然语言检索与特征搜索，毫秒级匹配 UI 组件，
+                        提供版本追踪、性能指标与使用建议
                     </p>
                 </div>
             </div>
@@ -1046,11 +1042,12 @@
 
                 <!-- 日活量折线图 -->
                 <div class="neon-card chart-card">
-                    <h3 class="chart-title">过去七天日活量</h3>
+                    <h3 class="chart-title">VLLM服务过去七天日活量</h3>
                     <canvas id="dailyActiveChart"></canvas>
                 </div>
+                                <!-- 模型TOP10柱状图 -->
                 <div class="neon-card chart-card">
-                    <h3 class="chart-title">xinference当日托管模型选择TOP10</h3>
+                    <h3 class="chart-title">VLLM当日托管模型选择TOP10</h3>
                     <canvas id="modelTopChart"></canvas>
                 </div>
             </div>
@@ -1058,7 +1055,7 @@
             <!-- 安全分析区块 -->
             <div class="section-header" style="margin-top: 4rem;">
                 <h2 class="section-title">安全分析</h2>
-                <p class="section-desc">及时了解Anything 相关的安全风险与最新动态</p>
+                <p class="section-desc">及时了解 OpenWebUI 相关的安全风险与最新动态</p>
             </div>
 
             <div class="chart-container">
@@ -1073,12 +1070,12 @@
                             <div class="vul-item critical">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 <span class="cve-id">CVE-2024-37032</span>
-                                <span class="vul-desc">路径遍历代码执行</span>
+                                <span class="vul-desc">XSS 跨站脚本攻击</span>
                             </div>
                             <div class="vul-item high">
                                 <i class="fas fa-exclamation-circle"></i>
                                 <span class="cve-id">CVE-2024-39720</span>
-                                <span class="vul-desc">越界读取导致DoS攻击</span>
+                                <span class="vul-desc">CSRF 跨站请求伪造</span>
                             </div>
                             <div class="vul-item medium">
                                 <i class="fas fa-exclamation"></i>
@@ -1104,23 +1101,23 @@
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    模型资产窃取
+                                    界面劫持攻击
                                 </div>
-                                <div class="case-detail">通过/api/push接口导出私有模型</div>
+                                <div class="case-detail">通过 XSS 漏洞劫持用户界面</div>
                             </div>
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    算力资源滥用
+                                    会话劫持
                                 </div>
-                                <div class="case-detail">GPU资源占用导致账单暴涨300%</div>
+                                <div class="case-detail">利用 CSRF 漏洞窃取用户会话</div>
                             </div>
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    系统沦陷案例
+                                    数据泄露案例
                                 </div>
-                                <div class="case-detail">利用漏洞植入XMRig矿机程序</div>
+                                <div class="case-detail">通过注入攻击获取敏感信息</div>
                             </div>
                         </div>
                     </div>
@@ -1130,17 +1127,17 @@
                     </div>
                 </div>
 
-                <!-- 最新 Ollama 服务暴露 -->
+                <!-- 最新服务暴露 -->
                 <div class="neon-card chart-card" onclick="window.open('https://nsfocusglobal.com/ollama-unauthorized-access-vulnerability-due-to-misconfiguration-cnvd-2025-04094','_blank')">
                     <div class="card-header">
                         <i class="fas fa-server card-icon"></i>
-                        <h3 class="card-title">最新AnythingLLM服务暴露</h3>
+                        <h3 class="card-title">最新 OpenWebUI 服务暴露</h3>
                     </div>
                     <div class="card-desc">
                         <ul class="risk-list">
-                            <li><strong>7,000+ 个 API 实例暴露公网</strong>（截至 2025-02-07）</li>
-                            <li>默认 11434 端口无认证机制</li>
-                            <li>可执行模型窃取／数据投毒／DDoS 攻击</li>
+                            <li><strong>5,000+ 个 Web 实例暴露公网</strong>（截至 2025-02-07）</li>
+                            <li>默认 3000 端口无认证机制</li>
+                            <li>可执行界面劫持／会话窃取／数据泄露</li>
                             <li>CNVD 编号：CNVD-2025-04094</li>
                         </ul>
                     </div>
@@ -1156,11 +1153,10 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
     {# 把数据安全地传给前端 #}
     {{ daily_data|json_script:"daily-data" }}
     {{ model_data|json_script:"model-data" }}
-    
+
     <script>
     // 导航栏滚动效果
     const navbar = document.getElementById('navbar');

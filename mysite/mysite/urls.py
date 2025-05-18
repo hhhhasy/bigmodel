@@ -14,4 +14,5 @@ urlpatterns = [
     path('OpenLLM/', include('openllmhome.urls')),
     path('OpenWebUI/', include('openwebuihome.urls')),
     path('Xinference/', include('xinferencehome.urls')),
+    path('vllmhome/', include('vllmhome.urls')),
 ]

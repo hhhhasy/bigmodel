@@ -23,5 +23,6 @@ def dashboard(request):
 
     return render(request, 'xinferencehome/home.html', {
         'daily_data': daily_data,
+        'model_data': model_data,
     })
 

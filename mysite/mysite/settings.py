@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'openllmhome',
     'openwebuihome',
     'xinferencehome',
+    'vllmhome',
 ]
 
 # 中间件配置
