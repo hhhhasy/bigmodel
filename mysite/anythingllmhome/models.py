@@ -6,5 +6,5 @@ class DailyExpose(models.Model):
     counts = models.IntegerField()
 
     class Meta:
-        db_table  = 'daily_expose'
+        db_table  = 'anythingllm_daily_expose'
         managed   = False
