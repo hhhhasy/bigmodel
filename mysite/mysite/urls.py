@@ -8,7 +8,7 @@ urlpatterns = [
     path('Probing/', include('probinghome.urls')),
     path('ipsearch/', include('ipsearch.urls')),
     path('distribution/', include('ipmap.urls')),
-    path('Search/', include('AllSearch.urls')),
+    path('AllSearch/', include('AllSearch.urls')),
     path('AnythingLLM/', include('anythingllmhome.urls')),
     path('Dify/', include('difyhome.urls')),
     path('OpenLLM/', include('openllmhome.urls')),

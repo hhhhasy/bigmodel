@@ -7,13 +7,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS Variables */
         :root {
-            --color-primary: #591BC5;
-            --color-secondary: #FC415A;
-            --color-bg-dark: #212335;
-            --color-bg-light: #EFEEF5;
+            /*--color-primary: #58e4a7;   
+            --color-secondary: #82eb68; 
+            --color-bg-dark: #48d1a8;    
+            --color-text: #FFFFFF;     
+            --color-bg-light: #F5F9F8;  */ 
+
+
+            --color-primary: #d16ba5;    /* 起始色 */
+            --color-secondary: #69bff8;  /* 中间色 */
+            --color-bg-dark: #5ffbf1;    /* 结束色 */
+            --color-text: #FFFFFF;       /* 纯白色文字 */
+            --color-bg-light: #F5F9F8;   /* 极浅的背景色 */
             --font-main: 'Inter', sans-serif;
-            --transition-speed: 0.3s;
+            --transition-speed: 0.2s;
+            --icon-size: 50px;
+            --icon-opacity: 0.5;
         }
 
         * {
@@ -25,9 +36,9 @@
         body {
             font-family: var(--font-main);
             min-height: 100vh;
-            background: linear-gradient(132deg, var(--color-secondary), var(--color-primary), var(--color-bg-dark));
+            background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
             background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            animation: gradientShift 5s ease infinite;
             color: var(--color-bg-light);
         }
 
@@ -126,6 +137,25 @@
             margin-bottom: 15px;
             color: var(--color-secondary);
         }
+
+        /* Banner / Hero */
+        .hero {
+            background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+            background-size: 400% 400%;
+            animation: gradientShift 5s ease infinite;
+            color: var(--color-text);
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        /* Statistics Section Styles */
+        .statistics {
+            background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+            background-size: 400% 400%;
+            animation: gradientShift 5s ease infinite;
+            color: var(--color-text);
+            padding: 80px;
+        }
     </style>
 </head>
 <body>
@@ -135,7 +165,7 @@
         </div>
         <nav class="nav-links">
             <div class="nav-item">
-                <a href="/Search">一键搜索</a>
+                <a href="/AllSearch">一键搜索</a>
             </div>
             <div class="nav-item">
                 <a href="/Probing">数据探测</a>

@@ -13,13 +13,14 @@
   <style>
     /* CSS Variables */
     :root {
-      --color-primary: #591BC5;
-      --color-secondary: #FC415A;
-      --color-bg-dark: #212335;
-      --color-bg-light: #EFEEF5;
+      --color-primary: #d16ba5;    /* 起始色 */
+      --color-secondary: #69bff8;  /* 中间色 */
+      --color-bg-dark: #5ffbf1;    /* 结束色 */
+      --color-text: #FFFFFF;       /* 纯白色文字 */
+      --color-bg-light: #F5F9F8;   /* 极浅的背景色 */
       --font-main: 'Inter', sans-serif;
       --transition-speed: 0.2s;
-      --icon-size: 50px; /* 修改为更合适的尺寸 */
+      --icon-size: 50px;
       --icon-opacity: 0.5;
     }
 
@@ -48,10 +49,10 @@
 
     /* Banner / Hero */
     .hero {
-      background: linear-gradient(132deg, var(--color-secondary), var(--color-primary), var(--color-bg-dark));
+      background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
       background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      color: var(--color-bg-light);
+      animation: gradientShift 5s ease infinite;
+      color: var(--color-text);
       overflow: hidden;
       flex-direction: column;
     }
@@ -91,8 +92,16 @@
     }
     .nav-links { display: flex; gap: 20px; }
     .nav-item { position: relative; }
-    .nav-item > a { font-size: 20px; color: var(--color-bg-light); transition: color var(--transition-speed); }
-    .nav-item:hover > a { color: var(--color-primary); }
+    .nav-item > a { 
+      font-size: 20px; 
+      color: var(--color-text); 
+      transition: all var(--transition-speed);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .nav-item:hover > a { 
+      color: var(--color-secondary);
+      transform: translateY(-2px);
+    }
     .dropdown-menu {
       display: none;
       position: absolute;
@@ -113,18 +122,39 @@
       margin-top: 20vh;
       z-index: 1;
     }
-    .hero-content h1 { font-size: 3em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
-    .hero-content p { font-size: 1.1em; line-height: 1.6; max-width: 600px; margin: 0 auto 30px; }
-    .btn-primary {
-      padding: 10px 20px;
-      border: 1px solid var(--color-bg-light);
-      background: var(--color-bg-light);
-      color: var(--color-primary);
-      border-radius: 20px;
-      cursor: pointer;
-      transition: border-radius var(--transition-speed);
+    .hero-content h1 { 
+      font-size: 3em; 
+      text-transform: uppercase; 
+      letter-spacing: 1px; 
+      margin-bottom: 20px;
+      color: var(--color-text);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-    .btn-primary:hover { border-radius: 0; }
+    .hero-content p { 
+      font-size: 1.1em; 
+      line-height: 1.6; 
+      max-width: 600px; 
+      margin: 0 auto 30px;
+      color: var(--color-text);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .btn-primary {
+      padding: 12px 24px;
+      border: 2px solid var(--color-text);
+      background: transparent;
+      color: var(--color-text);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all var(--transition-speed);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .btn-primary:hover { 
+      background: var(--color-text);
+      color: var(--color-bg-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
     /* About Section */
     #about { background: #F9F3F3; flex-direction: row; padding: 0 80px; }
@@ -136,10 +166,10 @@
 
     /* Statistics Section Styles */
     .statistics {
-      background: linear-gradient(132deg, var(--color-secondary), var(--color-primary), var(--color-bg-dark));
+      background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
       background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      color: var(--color-bg-light);
+      animation: gradientShift 5s ease infinite;
+      color: var(--color-text);
       padding: 80px;
     }
 
@@ -152,25 +182,28 @@
       text-align: center;
       font-size: 2.5em;
       margin-bottom: 50px;
-      color: var(--color-bg-light);
+      color: var(--color-text);
       text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
     .stats-table {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
-      border-radius: 15px;
+      border-radius: 20px;
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     }
 
     .stats-header {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
       padding: 20px;
       font-weight: bold;
       font-size: 1.2em;
+      color: var(--color-text);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
     .stats-body {
@@ -182,7 +215,8 @@
       grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
       padding: 15px 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
+      color: var(--color-text);
     }
 
     .stats-row:last-child {
@@ -190,7 +224,8 @@
     }
 
     .stats-row:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
     }
 
     .stats-cell {
@@ -221,12 +256,12 @@
     <img class="hero-icon" src="{% static 'guard.svg' %}" alt="" />
 
     <div class="header">
-      <div class="logo"><a href="#" style="color: var(--color-bg-light); font-weight: 700; font-size: 1.5em;">ModelGuard</a></div>
+      <div class="logo"><a href="{% url 'home:index' %}" style="color: var(--color-bg-light); font-weight: 700; font-size: 1.5em;">ModelGuard</a></div>
       <nav class="nav-links">
         <div class="nav-item">
           <a href="/service-details">服务详情</a>
         </div>
-        <div class="nav-item"><a href="/Search">一键搜索</a></div>
+        <div class="nav-item"><a href="{% url 'AllSearch:search_page' %}">一键搜索</a></div>
         <div class="nav-item"><a href="/Probing">数据探测</a></div>
       </nav>
     </div>
