@@ -133,6 +133,85 @@
     .about-text p { font-size: 1em; line-height: 1.6; color: #333; }
     .tag-sphere { flex: 1; width: 400px; height: 400px; position: relative; perspective: 800px; }
     .tag-sphere span { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d; white-space: nowrap; user-select: none; cursor: default; transition: transform 0.3s, opacity 0.3s; }
+
+    /* Statistics Section Styles */
+    .statistics {
+      background: linear-gradient(132deg, var(--color-secondary), var(--color-primary), var(--color-bg-dark));
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: var(--color-bg-light);
+      padding: 80px;
+    }
+
+    .stats-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stats-title {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 50px;
+      color: var(--color-bg-light);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .stats-table {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stats-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .stats-body {
+      padding: 10px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    .stats-row:last-child {
+      border-bottom: none;
+    }
+
+    .stats-row:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .stats-cell {
+      padding: 10px;
+      text-align: center;
+      font-size: 1.1em;
+    }
+
+    .stats-cell:first-child {
+      text-align: left;
+      font-weight: bold;
+    }
+
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stats-cell.animate {
+      animation: countUp 1s ease-out forwards;
+    }
   </style>
 </head>
 <body>
@@ -166,6 +245,73 @@
       <p>ModelGuard 是一款专为大模型生产环境设计的风险评估与可视化工具。它能够接入多种模型部署框架，实时采集预测结果与模型行为指标，通过多维日志分析和异常检测算法，帮助您发现潜在的安全漏洞与性能瓶颈，并提供可操作的优化建议和应急方案。</p>
     </div>
     <div class="tag-sphere" id="tag-sphere"></div>
+  </section>
+
+  <!-- Statistics Section -->
+  <section id="statistics" class="statistics">
+    <div class="stats-container">
+      <h2 class="stats-title">服务暴露统计</h2>
+      <div class="stats-table">
+        <div class="stats-header">
+          <div class="stats-cell">服务名称</div>
+          <div class="stats-cell">暴露IP数量</div>
+          <div class="stats-cell">覆盖国家数</div>
+          <div class="stats-cell">中国IP数量</div>
+          <div class="stats-cell">海外IP数量</div>
+        </div>
+        <div class="stats-body">
+          <div class="stats-row" data-service="ollama">
+            <div class="stats-cell">Ollama</div>
+            <div class="stats-cell" id="ollama-total">0</div>
+            <div class="stats-cell" id="ollama-countries">0</div>
+            <div class="stats-cell" id="ollama-china">0</div>
+            <div class="stats-cell" id="ollama-overseas">0</div>
+          </div>
+          <div class="stats-row" data-service="openwebui">
+            <div class="stats-cell">OpenWebUI</div>
+            <div class="stats-cell" id="openwebui-total">0</div>
+            <div class="stats-cell" id="openwebui-countries">0</div>
+            <div class="stats-cell" id="openwebui-china">0</div>
+            <div class="stats-cell" id="openwebui-overseas">0</div>
+          </div>
+          <div class="stats-row" data-service="dify">
+            <div class="stats-cell">Dify</div>
+            <div class="stats-cell" id="dify-total">0</div>
+            <div class="stats-cell" id="dify-countries">0</div>
+            <div class="stats-cell" id="dify-china">0</div>
+            <div class="stats-cell" id="dify-overseas">0</div>
+          </div>
+          <div class="stats-row" data-service="xinference">
+            <div class="stats-cell">Xinference</div>
+            <div class="stats-cell" id="xinference-total">0</div>
+            <div class="stats-cell" id="xinference-countries">0</div>
+            <div class="stats-cell" id="xinference-china">0</div>
+            <div class="stats-cell" id="xinference-overseas">0</div>
+          </div>
+          <div class="stats-row" data-service="anythingllm">
+            <div class="stats-cell">AnythingLLM</div>
+            <div class="stats-cell" id="anythingllm-total">0</div>
+            <div class="stats-cell" id="anythingllm-countries">0</div>
+            <div class="stats-cell" id="anythingllm-china">0</div>
+            <div class="stats-cell" id="anythingllm-overseas">0</div>
+          </div>
+          <div class="stats-row" data-service="openllm">
+            <div class="stats-cell">OpenLLM</div>
+            <div class="stats-cell" id="openllm-total">0</div>
+            <div class="stats-cell" id="openllm-countries">0</div>
+            <div class="stats-cell" id="openllm-china">0</div>
+            <div class="stats-cell" id="openllm-overseas">0</div>
+          </div>
+          <div class="stats-row" data-service="vllm">
+            <div class="stats-cell">vLLM</div>
+            <div class="stats-cell" id="vllm-total">0</div>
+            <div class="stats-cell" id="vllm-countries">0</div>
+            <div class="stats-cell" id="vllm-china">0</div>
+            <div class="stats-cell" id="vllm-overseas">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- JavaScript (模块化) -->
@@ -241,6 +387,77 @@
       });
       window.addEventListener('mouseup', () => { isDragging = false; });
     })();
+
+    // 修改统计数据获取和动画效果
+    async function fetchStats() {
+      try {
+        const services = ['ollama', 'openwebui', 'dify', 'xinference', 'anythingllm', 'openllm', 'vllm'];
+        for (const service of services) {
+          // 获取全球数据
+          const worldResponse = await fetch(`/distribution/get_world_data/?server=${service}`);
+          const worldData = await worldResponse.json();
+          
+          if (worldData.status) {
+            const totalIPs = worldData.data.counts.reduce((a, b) => a + b, 0);
+            const countries = new Set(worldData.data.countries).size;
+            
+            // 获取中国数据
+            const chinaResponse = await fetch(`/distribution/get_china_data/?server=${service}`);
+            const chinaData = await chinaResponse.json();
+            const chinaIPs = chinaData.status ? chinaData.data.counts.reduce((a, b) => a + b, 0) : 0;
+            const overseasIPs = totalIPs - chinaIPs;
+
+            // 更新所有统计数据
+            animateNumber(document.getElementById(`${service}-total`), totalIPs);
+            animateNumber(document.getElementById(`${service}-countries`), countries);
+            animateNumber(document.getElementById(`${service}-china`), chinaIPs);
+            animateNumber(document.getElementById(`${service}-overseas`), overseasIPs);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      }
+    }
+
+    // 数字动画函数
+    function animateNumber(element, finalValue) {
+      if (!element) return; // 防止元素不存在的情况
+      
+      let start = 0;
+      const duration = 2000;
+      const startTime = performance.now();
+      
+      function updateNumber(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const currentValue = Math.floor(progress * finalValue);
+        element.textContent = currentValue.toLocaleString();
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateNumber);
+        }
+      }
+      
+      requestAnimationFrame(updateNumber);
+    }
+
+    // 当统计部分进入视口时加载数据
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          fetchStats();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const statsSection = document.getElementById('statistics');
+      if (statsSection) {
+        observer.observe(statsSection);
+      }
+    });
   </script>
 </body>
 </html>
