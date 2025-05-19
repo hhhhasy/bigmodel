@@ -1278,13 +1278,13 @@
                     max: Math.max(...data.map(d => d.value)),
                     inRange: { color: gradientColors },
                     textStyle: { color: '#fff' },
-                    bottom: 30,
-                    left: 'center',
-                    calculable: true,
+                    right: 20, // 距离右侧 20 像素
+                    bottom: 30, // 距离底部 30 像素
+                    orient: 'vertical', // 垂直方向
                     itemWidth: 15,
                     itemHeight: 200,
-                    orient: 'vertical',
-                    padding: [5, 10]
+                    padding: [5, 10],
+                    calculable: true
                 },
                 series: [{
                     type: 'map',
@@ -1477,13 +1477,13 @@
                     max: Math.max(...data.map(d => d.value)),
                     inRange: { color: gradientColors },
                     textStyle: { color: '#fff' },
-                    bottom: 30,
-                    left: 'center',
-                    calculable: true,
+                    right: 20, // 距离右侧 20 像素
+                    bottom: 30, // 距离底部 30 像素
+                    orient: 'vertical', // 垂直方向
                     itemWidth: 15,
                     itemHeight: 200,
-                    orient: 'vertical',
-                    padding: [5, 10]
+                    padding: [5, 10],
+                    calculable: true
                 },
                 series: [{
                     type: 'map',
