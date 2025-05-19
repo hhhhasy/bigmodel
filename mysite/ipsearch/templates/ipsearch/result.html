@@ -489,6 +489,9 @@
             border-radius: 12px;
             border: 20px solid var(--border-light);
             box-shadow: var(--shadow-sm);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .json-card h3 {
@@ -505,15 +508,16 @@
         }
 
         .raw-json-block {
+            flex: 1;
             background: rgba(0, 32, 63, 0.02);
             color: #334155;
             padding: 15px;
             border-radius: 8px;
             font-family: "Consolas", monospace;
             font-size: 0.85rem;
-            max-height: 150px;
-            overflow: auto;
+            overflow-y: auto;
             border: 1px solid rgba(74, 180, 244, 0.1);
+            margin: 0;
         }
 
         /* 表格容器 */
@@ -818,56 +822,16 @@
             <div id="threatMap" style="width:100%; height:100%;"></div>
         </div>
 
-        <div class="json-card">
+        <div class="json-card" style="height: 100%; display: flex; flex-direction: column;">
             <h3><i class="fas fa-network-wired"></i>Nmap 扫描信息</h3>
-            <div class="table-container">
-                <table class="db-table">
-                    <thead>
-                        <tr>
-                            <th><i class="fas fa-network-wired me-1"></i>端口</th>
-                            <th><i class="fas fa-info-circle me-1"></i>状态</th>
-                            <th><i class="fas fa-exchange-alt me-1"></i>协议</th>
-                            <th><i class="fas fa-server me-1"></i>服务</th>
-                            <th><i class="fas fa-code-branch me-1"></i>版本</th>
-                            <th><i class="fas fa-shield-alt me-1"></i>安全风险</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for scan in nmap_scans %}
-                        <tr>
-                            <td>{{ scan.port }}</td>
-                            <td>
-                                <span class="badge {% if scan.state == 'open' %}bg-success{% else %}bg-secondary{% endif %}">
-                                    {{ scan.state }}
-                                </span>
-                            </td>
-                            <td>{{ scan.protocol }}</td>
-                            <td>{{ scan.service }}</td>
-                            <td>{{ scan.version|default:"-" }}</td>
-                            <td>
-                                {% if scan.risk_level == 'high' %}
-                                <span class="badge bg-danger">高风险</span>
-                                {% elif scan.risk_level == 'medium' %}
-                                <span class="badge bg-warning">中风险</span>
-                                {% elif scan.risk_level == 'low' %}
-                                <span class="badge bg-info">低风险</span>
-                                {% else %}
-                                <span class="badge bg-secondary">未知</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="6" style="text-align:center;">
-                                <div class="empty-state">
-                                    <i class="fas fa-search fa-3x mb-3" style="color: #ccc;"></i>
-                                    <p>暂无扫描数据</p>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div class="raw-json-block" style="flex: 1; font-family: 'Consolas', monospace; white-space: pre-wrap; background: rgba(0, 32, 63, 0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(74, 180, 244, 0.1); overflow-y: auto; margin: 0;">
+                {% if nmap_scans %}
+                    {% for scan in nmap_scans %}
+                        {{ scan.raw_output|default:"No scan results available" }}
+                    {% endfor %}
+                {% else %}
+                    No scan results available
+                {% endif %}
             </div>
         </div>
     </div>
@@ -1192,6 +1156,116 @@
                 animateCounter('attack-counter', 24);
                 animateCounter('source-counter', 37);
             }, 500);
+        });
+
+        // 服务端口映射（修正版）
+        const servicePorts = {
+            'ollama': '11434',     // API服务
+            'openwebui': '3000',   // 前端界面
+            'dify': '80',          // 生产环境HTTP端口
+            'xinference': '9997',  // 模型推理服务
+            'anythingllm': '3000', // 默认后端端口
+            'openllm': '3002',     // 避免与openwebui冲突
+            'vllm': '8000'         // 高速推理API
+        };
+
+        // 获取当前服务名称（从URL或其他地方）
+        function getCurrentService() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('service') || 'ollama'; // 默认使用ollama
+        }
+
+        // 执行Nmap扫描
+        async function performNmapScan(ip, port) {
+            try {
+                const response = await fetch(`/api/nmap-scan/?ip=${ip}&port=${port}`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Nmap扫描失败:', error);
+                return null;
+            }
+        }
+
+        // 更新Nmap扫描结果表格
+        function updateNmapTable(scanResult) {
+            const tbody = document.querySelector('.db-table tbody');
+            if (!scanResult || !scanResult.ports) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center;">
+                            <div class="empty-state">
+                                <i class="fas fa-search fa-3x mb-3" style="color: #ccc;"></i>
+                                <p>暂无扫描数据</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = scanResult.ports.map(port => `
+                <tr>
+                    <td>${port.port}</td>
+                    <td>
+                        <span class="badge ${port.state === 'open' ? 'bg-success' : 'bg-secondary'}">
+                            ${port.state}
+                        </span>
+                    </td>
+                    <td>${port.protocol || '-'}</td>
+                    <td>${port.service || '-'}</td>
+                    <td>${port.version || '-'}</td>
+                    <td>
+                        <span class="badge ${getRiskLevelBadge(port.risk_level)}">
+                            ${getRiskLevelText(port.risk_level)}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 获取风险等级对应的样式
+        function getRiskLevelBadge(level) {
+            switch(level) {
+                case 'high': return 'bg-danger';
+                case 'medium': return 'bg-warning';
+                case 'low': return 'bg-info';
+                default: return 'bg-secondary';
+            }
+        }
+
+        // 获取风险等级文本
+        function getRiskLevelText(level) {
+            switch(level) {
+                case 'high': return '高风险';
+                case 'medium': return '中风险';
+                case 'low': return '低风险';
+                default: return '未知';
+            }
+        }
+
+        // 页面加载完成后执行扫描
+        document.addEventListener('DOMContentLoaded', async () => {
+            const currentService = getCurrentService();
+            const port = servicePorts[currentService];
+            const ip = new URLSearchParams(window.location.search).get('ip');
+            
+            if (ip && port) {
+                // 显示加载状态
+                const tbody = document.querySelector('.db-table tbody');
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center;">
+                            <div class="pulsing-circle"></div>
+                            <p>正在扫描中...</p>
+                        </td>
+                    </tr>
+                `;
+
+                // 执行扫描
+                const scanResult = await performNmapScan(ip, port);
+                updateNmapTable(scanResult);
+            }
         });
     </script>
 </body>

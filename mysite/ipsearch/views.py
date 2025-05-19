@@ -8,6 +8,9 @@ from .forms import SearchForm
 import base64
 import json
 import requests
+import subprocess
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 
 def index(request):
     form = SearchForm()
@@ -59,12 +62,99 @@ def search(request):
             'longitude': float(item.longitude) if item.longitude else None,
             'count': item.count
         })
+
+    # 服务端口映射
+    service_ports = {
+        'ollama': '11434',
+        'openwebui': '3000',
+        'dify': '5000',
+        'xinference': '9997',
+        'anythingllm': '3001',
+        'openllm': '3000',
+        'vllm': '8000'
+    }
+
+    # 执行Nmap扫描
+    nmap_scans = []
+    if results and query:
+        try:
+            port = service_ports.get(server, '11434')  # 默认使用ollama端口
+            cmd = f'nmap {query} -p {port} --unprivileged'
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+            
+            # 直接使用原始输出
+            nmap_scans.append({
+                'raw_output': result.stdout
+            })
+        except Exception as e:
+            print(f"Nmap scan error: {str(e)}")
+            nmap_scans.append({
+                'raw_output': f"Error during scan: {str(e)}"
+            })
     
     context = {
         'form': form,
         'results': serialized_results,
         'current_server': server,
-        'exposure_date': exposure_date
+        'exposure_date': exposure_date,
+        'nmap_scans': nmap_scans  # 添加nmap扫描结果到context
     }
 
     return render(request, 'ipsearch/result.html', context)
+
+@require_http_methods(["GET"])
+def nmap_scan(request):
+    ip = request.GET.get('ip')
+    port = request.GET.get('port')
+    
+    if not ip or not port:
+        return JsonResponse({'error': 'Missing IP or port'}, status=400)
+    
+    try:
+        # 构建nmap命令
+        cmd = f'nmap {ip} -p {port} --unprivileged'
+        
+        # 执行nmap扫描
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        
+        # 解析nmap输出
+        output = result.stdout
+        
+        # 提取端口信息
+        port_info = {
+            'port': port,
+            'state': 'closed',
+            'protocol': 'tcp',
+            'service': None,
+            'version': None,
+            'risk_level': 'low'
+        }
+        
+        # 检查端口是否开放
+        if 'open' in output:
+            port_info['state'] = 'open'
+            
+            # 尝试提取服务信息
+            if 'tcp' in output:
+                port_info['protocol'] = 'tcp'
+            if 'udp' in output:
+                port_info['protocol'] = 'udp'
+                
+            # 提取服务名称和版本
+            service_line = [line for line in output.split('\n') if port in line]
+            if service_line:
+                service_info = service_line[0].split()
+                if len(service_info) > 2:
+                    port_info['service'] = service_info[2]
+                if len(service_info) > 3:
+                    port_info['version'] = ' '.join(service_info[3:])
+        
+        return JsonResponse({
+            'status': 'success',
+            'ports': [port_info]
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'error': str(e)
+        }, status=500)
