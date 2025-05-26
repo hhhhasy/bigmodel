@@ -13,15 +13,90 @@
   <style>
     /* CSS Variables */
     :root {
-      --color-primary: #d16ba5;    /* 起始色 */
-      --color-secondary: #69bff8;  /* 中间色 */
-      --color-bg-dark: #5ffbf1;    /* 结束色 */
-      --color-text: #FFFFFF;       /* 纯白色文字 */
-      --color-bg-light: #F5F9F8;   /* 极浅的背景色 */
-      --font-main: 'Inter', sans-serif;
-      --transition-speed: 0.2s;
-      --icon-size: 50px;
-      --icon-opacity: 0.5;
+      /* 主色调系统 */
+      --color-primary: #3a6df0;          /* 主色调：现代蓝色 */
+      --color-primary-light: #5a83f3;    /* 主色调亮色版 */
+      --color-primary-dark: #2a5ad0;     /* 主色调暗色版 */
+      --color-primary-transparent: rgba(58, 109, 240, 0.15); /* 主色调透明版 */
+      
+      /* 辅助色系统 */
+      --color-secondary: #6c5ce7;        /* 辅助色：紫色 */
+      --color-secondary-light: #8c7cf7;  /* 辅助色亮色版 */
+      --color-secondary-dark: #5c4cd7;   /* 辅助色暗色版 */
+      --color-secondary-transparent: rgba(108, 92, 231, 0.15); /* 辅助色透明版 */
+      
+      /* 强调色系统 */
+      --color-accent: #00d2d3;           /* 强调色：青色 */
+      --color-accent-light: #20e2e3;     /* 强调色亮色版 */
+      --color-accent-dark: #00b2b3;      /* 强调色暗色版 */
+      --color-accent-transparent: rgba(0, 210, 211, 0.15); /* 强调色透明版 */
+      
+      /* 渐变色系统 */
+      --color-gradient-start: #3a6df0;   /* 渐变起始色 */
+      --color-gradient-mid: #6c5ce7;     /* 渐变中间色 */
+      --color-gradient-end: #00d2d3;     /* 渐变结束色 */
+      
+      /* 文字颜色系统 */
+      --color-text: #FFFFFF;             /* 亮色背景上的文字 */
+      --color-text-dark: #2d3436;        /* 深色文字 */
+      --color-text-secondary: #636e72;   /* 次要文字 */
+      --color-text-muted: #b2bec3;       /* 弱化文字 */
+      
+      /* 背景色系统 */
+      --color-bg: #ffffff;               /* 主背景色 */
+      --color-bg-secondary: #f8f9fa;     /* 次要背景色 */
+      --color-bg-tertiary: #f1f3f5;      /* 第三级背景色 */
+      --color-card-bg: #ffffff;          /* 卡片背景色 */
+      --color-card-bg-hover: #fafbfc;    /* 卡片悬停背景色 */
+      
+      /* 边框和分隔线 */
+      --color-border: rgba(0,0,0,0.1);   /* 边框颜色 */
+      --color-border-light: rgba(0,0,0,0.05); /* 浅色边框 */
+      --color-border-focus: rgba(58, 109, 240, 0.5); /* 聚焦边框 */
+      
+      /* 状态颜色 */
+      --color-success: #2ecc71;          /* 成功状态 */
+      --color-warning: #f39c12;          /* 警告状态 */
+      --color-danger: #e74c3c;           /* 危险状态 */
+      --color-info: #3498db;             /* 信息状态 */
+      
+      /* 字体系统 */
+      --font-main: 'Inter', sans-serif;  /* 主字体 */
+      --font-size-xs: 0.75rem;           /* 12px */
+      --font-size-sm: 0.875rem;          /* 14px */
+      --font-size-md: 1rem;              /* 16px */
+      --font-size-lg: 1.125rem;          /* 18px */
+      --font-size-xl: 1.25rem;           /* 20px */
+      --font-size-2xl: 1.5rem;           /* 24px */
+      --font-size-3xl: 1.875rem;         /* 30px */
+      --font-size-4xl: 2.25rem;          /* 36px */
+      --font-size-5xl: 3rem;             /* 48px */
+      
+      /* 间距系统 */
+      --spacing-xs: 0.25rem;             /* 4px */
+      --spacing-sm: 0.5rem;              /* 8px */
+      --spacing-md: 1rem;                /* 16px */
+      --spacing-lg: 1.5rem;              /* 24px */
+      --spacing-xl: 2rem;                /* 32px */
+      --spacing-2xl: 3rem;               /* 48px */
+      --spacing-3xl: 4rem;               /* 64px */
+      
+      /* 布局系统 */
+      --container-max-width: 1200px;     /* 容器最大宽度 */
+      --container-padding: 5%;           /* 容器内边距 */
+      --border-radius-sm: 6px;           /* 小圆角 */
+      --border-radius: 12px;             /* 中圆角 */
+      --border-radius-lg: 20px;          /* 大圆角 */
+      --border-radius-full: 9999px;      /* 完全圆角 */
+      
+      /* 效果系统 */
+      --box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* 基础阴影 */
+      --box-shadow-sm: 0 2px 8px rgba(0,0,0,0.05); /* 小阴影 */
+      --box-shadow-lg: 0 20px 40px rgba(0,0,0,0.1); /* 大阴影 */
+      --box-shadow-inset: inset 0 2px 4px rgba(0,0,0,0.05); /* 内阴影 */
+      --transition-speed: 0.3s;          /* 过渡速度 */
+      --transition-speed-fast: 0.15s;    /* 快速过渡 */
+      --transition-speed-slow: 0.5s;     /* 慢速过渡 */
     }
 
     /* Reset & Base */
@@ -49,12 +124,23 @@
 
     /* Banner / Hero */
     .hero {
-      background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
-      background-size: 400% 400%;
-      animation: gradientShift 4s ease infinite;
+      background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
       color: var(--color-text);
       overflow: hidden;
       flex-direction: column;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      pointer-events: none;
     }
     @keyframes gradientShift {
       0% { background-position: 0% 50%; }
@@ -65,7 +151,7 @@
     /* Hero Icon (SVG) */
     .hero-icon {
       position: absolute;
-      top: 30%;
+      top: 20%;
       left: 50%;
       transform: translateX(-50%);
       width: 120px;
@@ -81,118 +167,325 @@
 
     /* Header & Nav */
     .header {
-      position: absolute;
+      position: fixed;
       top: 0; left: 0;
       width: 100%;
-      z-index: 10;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 30px 90px;
+      padding: 20px 5%;
+      transition: all var(--transition-speed);
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.05);
     }
-    .nav-links { display: flex; gap: 20px; }
-    .nav-item { position: relative; }
+    .header.scrolled {
+      background: rgba(58, 109, 240, 0.95);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      padding: 15px 5%;
+    }
+    .logo a {
+      font-weight: 700; 
+      font-size: 1.5em;
+      color: var(--color-text);
+      letter-spacing: 0.5px;
+      position: relative;
+      display: inline-block;
+    }
+    .logo a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--color-accent);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition-speed);
+    }
+    .logo a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-links { 
+      display: flex; 
+      gap: 30px; 
+    }
+    .nav-item { 
+      position: relative; 
+    }
     .nav-item > a { 
-      font-size: 20px; 
+      font-size: 16px; 
+      font-weight: 500;
       color: var(--color-text); 
       transition: all var(--transition-speed);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      padding: 8px 0;
+      position: relative;
     }
-    .nav-item:hover > a { 
-      color: var(--color-secondary);
-      transform: translateY(-2px);
+    .nav-item > a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--color-accent);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition-speed);
+    }
+    .nav-item:hover > a::after { 
+      transform: scaleX(1);
+      transform-origin: left;
     }
     .dropdown-menu {
       display: none;
       position: absolute;
       top: 100%; left: 0;
-      background: var(--color-bg-light);
-      border-radius: 6px;
+      background: var(--color-bg-card);
+      border-radius: var(--border-radius);
       margin-top: 10px;
       padding: 10px 0;
       white-space: nowrap;
+      box-shadow: var(--box-shadow);
+      border: 1px solid var(--color-border);
     }
-    .dropdown-item a { display: block; padding: 8px 20px; color: var(--color-primary); font-size: 16px; }
+    .dropdown-item a { 
+      display: block; 
+      padding: 8px 20px; 
+      color: var(--color-text-dark); 
+      font-size: 14px;
+      transition: all var(--transition-speed);
+    }
+    .dropdown-item a:hover {
+      background: rgba(0,0,0,0.03);
+      color: var(--color-primary);
+    }
     .nav-item.dropdown:hover .dropdown-menu { display: block; }
+    
+    /* Mobile Nav Toggle */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--color-text);
+      font-size: 24px;
+      cursor: pointer;
+    }
 
     /* Hero Content */
     .hero-content {
       text-align: center;
-      padding: 0 20px;
-      margin-top: 20vh;
+      padding: 0 5%;
+      margin-top: 22vh;
       z-index: 1;
+      max-width: 900px;
+      width: 100%;
     }
     .hero-content h1 { 
-      font-size: 3em; 
-      text-transform: uppercase; 
-      letter-spacing: 1px; 
-      margin-bottom: 20px;
+      font-size: clamp(2.5rem, 5vw, 4rem); 
+      font-weight: 800;
+      letter-spacing: -0.5px; 
+      margin-bottom: 24px;
       color: var(--color-text);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      animation: fadeInUp 1s ease-out;
     }
     .hero-content p { 
-      font-size: 1.1em; 
-      line-height: 1.6; 
-      max-width: 600px; 
-      margin: 0 auto 30px;
-      color: var(--color-text);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      font-size: clamp(1rem, 2vw, 1.25rem); 
+      line-height: 1.7; 
+      max-width: 700px; 
+      margin: 0 auto 40px;
+      color: rgba(255, 255, 255, 0.9);
+      animation: fadeInUp 1s ease-out 0.2s backwards;
     }
     .btn-primary {
-      padding: 12px 24px;
-      border: 2px solid var(--color-text);
-      background: transparent;
-      color: var(--color-text);
-      border-radius: 30px;
+      padding: 14px 32px;
+      border: none;
+      background: var(--color-text);
+      color: var(--color-primary);
+      border-radius: 50px;
       cursor: pointer;
       transition: all var(--transition-speed);
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 1rem;
       letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 1s ease-out 0.4s backwards;
+      display: inline-block;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0));
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
     }
     .btn-primary:hover { 
-      background: var(--color-text);
-      color: var(--color-bg-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .btn-primary:hover::before {
+      transform: translateX(100%);
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* About Section */
-    #about { background: #F9F3F3; flex-direction: row; padding: 0 80px; }
-    .about-text { flex: 1; }
-    .about-text h2 { font-size: 2em; margin-bottom: 20px; color: var(--color-primary); }
-    .about-text p { font-size: 1em; line-height: 1.6; color: #333; }
-    .tag-sphere { flex: 1; width: 400px; height: 400px; position: relative; perspective: 800px; }
-    .tag-sphere span { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d; white-space: nowrap; user-select: none; cursor: default; transition: transform 0.3s, opacity 0.3s; }
+    #about { 
+      background: var(--color-bg-light); 
+      flex-direction: row; 
+      padding: 0 5%; 
+      position: relative;
+      overflow: hidden;
+    }
+    #about::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(58, 109, 240, 0.1), rgba(0, 210, 211, 0.1));
+      top: -150px;
+      left: -150px;
+      z-index: 0;
+    }
+    #about::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(58, 109, 240, 0.1));
+      bottom: -100px;
+      right: -100px;
+      z-index: 0;
+    }
+    .about-text { 
+      flex: 1; 
+      z-index: 1;
+      padding: 60px 0;
+    }
+    .about-text h2 { 
+      font-size: 2.5rem; 
+      margin-bottom: 30px; 
+      color: var(--color-text-dark); 
+      position: relative;
+      display: inline-block;
+    }
+    .about-text h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--color-primary);
+      border-radius: 2px;
+    }
+    .about-text p { 
+      font-size: 1.1rem; 
+      line-height: 1.8; 
+      color: var(--color-text-muted); 
+      margin-bottom: 30px;
+      max-width: 600px;
+    }
+    .tag-sphere { 
+      flex: 1; 
+      width: 400px; 
+      height: 400px; 
+      position: relative; 
+      perspective: 800px;
+      z-index: 1;
+    }
+    .tag-sphere span { 
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform-style: preserve-3d; 
+      white-space: nowrap; 
+      user-select: none; 
+      cursor: default; 
+      transition: transform 0.3s, opacity 0.3s; 
+      font-weight: 500;
+    }
 
     /* Statistics Section Styles */
     .statistics {
-      background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
-      background-size: 400% 400%;
-      animation: gradientShift 4s ease infinite;
+      background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
       color: var(--color-text);
-      padding: 80px;
+      padding: 100px 5%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .statistics::before {
+      content: '';
+      position: absolute;
+      top: 20;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      pointer-events: none;
     }
 
     .stats-container {
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 10 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .stats-title {
       text-align: center;
-      font-size: 2.5em;
-      margin-bottom: 50px;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0px;
       color: var(--color-text);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      position: relative;
+      display: inline-block;
+      left: 10%;
+      transform: translateX(-50%);
+    }
+    
+    .stats-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--color-text);
+      border-radius: 2px;
     }
 
     .stats-table {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
-      border-radius: 20px;
+      border-radius: var(--border-radius);
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     }
 
     .stats-header {
@@ -200,10 +493,10 @@
       grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
       background: rgba(255, 255, 255, 0.15);
       padding: 20px;
-      font-weight: bold;
-      font-size: 1.2em;
+      font-weight: 600;
+      font-size: 1rem;
       color: var(--color-text);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      letter-spacing: 0.5px;
     }
 
     .stats-body {
@@ -215,7 +508,7 @@
       grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
       padding: 15px 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
+      transition: all var(--transition-speed);
       color: var(--color-text);
     }
 
@@ -225,18 +518,32 @@
 
     .stats-row:hover {
       background: rgba(255, 255, 255, 0.15);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
 
     .stats-cell {
-      padding: 10px;
+      padding: 12px;
       text-align: center;
-      font-size: 1.1em;
+      font-size: 1.1rem;
+      font-weight: 500;
     }
 
     .stats-cell:first-child {
       text-align: left;
-      font-weight: bold;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .stats-cell:first-child::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-accent);
     }
 
     @keyframes countUp {
@@ -246,6 +553,972 @@
 
     .stats-cell.animate {
       animation: countUp 1s ease-out forwards;
+    }
+
+    /* 功能展示通用样式 */
+    .feature-section {
+      min-height: 100vh;
+      padding: 80px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .feature-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    .feature-container.reverse {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .feature-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .feature-title {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    .feature-subtitle {
+      font-size: 1.2em;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .feature-content {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .feature-card {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border-radius: 50%;
+      color: white;
+      font-size: 2em;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .feature-card p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .feature-action {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .text-left {
+      text-align: left;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      border-radius: 30px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .alt-bg {
+      background-color: #f8f9fa;
+    }
+
+    /* AI评测部分样式 */
+    .feature-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    
+    .feature-image::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: var(--color-primary-transparent);
+      filter: blur(40px);
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    .feature-text {
+      flex: 1;
+      padding: 0 var(--spacing-xl);
+    }
+
+    .feature-description {
+      font-size: var(--font-size-lg);
+      line-height: 1.8;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .feature-list li {
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      position: relative;
+      padding-left: var(--spacing-md);
+    }
+    
+    .feature-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent);
+    }
+
+    .feature-list i {
+      color: var(--color-primary);
+      font-size: var(--font-size-lg);
+      margin-top: 3px;
+    }
+
+    .assessment-demo {
+      width: 380px;
+      perspective: 1000px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .assessment-card {
+      background: var(--color-card-bg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow-lg);
+      transform: rotateY(-5deg) rotateX(5deg);
+      transition: all var(--transition-speed) ease;
+      border: 1px solid var(--color-border-light);
+    }
+
+    .assessment-card:hover {
+      transform: rotateY(0) rotateX(0);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+      border-color: var(--color-accent-transparent);
+    }
+
+    .assessment-header {
+      padding: var(--spacing-lg);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .assessment-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v20h2v2H20v-1.5zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .assessment-badge {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: rgba(255,255,255,0.2);
+      border-radius: var(--border-radius-full);
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(5px);
+    }
+
+    .assessment-badge.high {
+      background: var(--color-danger);
+    }
+
+    .assessment-score {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .assessment-detail {
+      padding: var(--spacing-lg);
+    }
+
+    .assessment-item {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .item-name {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-xs);
+      font-weight: 500;
+      color: var(--color-text-dark);
+      font-size: var(--font-size-sm);
+    }
+    
+    .item-name span:last-child {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--color-bg-tertiary);
+      border-radius: var(--border-radius-full);
+      overflow: hidden;
+      box-shadow: var(--box-shadow-inset);
+    }
+
+    .progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      border-radius: var(--border-radius-full);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+      transform: translateX(-100%);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    /* 搜索部分样式 */
+    .search-demo {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto var(--spacing-2xl);
+      position: relative;
+    }
+    
+    .search-demo::before {
+      content: '';
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: var(--color-accent-transparent);
+      top: -75px;
+      right: -75px;
+      filter: blur(40px);
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .search-box {
+      display: flex;
+      overflow: hidden;
+      border-radius: var(--border-radius-full);
+      box-shadow: var(--box-shadow);
+      margin-bottom: var(--spacing-lg);
+      border: 1px solid var(--color-border-light);
+      position: relative;
+      z-index: 1;
+      transition: all var(--transition-speed);
+    }
+    
+    .search-box:focus-within {
+      box-shadow: var(--box-shadow-lg);
+      border-color: var(--color-border-focus);
+      transform: translateY(-2px);
+    }
+
+    .search-input {
+      flex: 1;
+      padding: var(--spacing-md) var(--spacing-xl);
+      border: none;
+      outline: none;
+      font-size: var(--font-size-lg);
+      color: var(--color-text-dark);
+      font-family: var(--font-main);
+    }
+    
+    .search-input::placeholder {
+      color: var(--color-text-muted);
+    }
+
+    .search-button {
+      width: 60px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border: none;
+      color: white;
+      font-size: var(--font-size-xl);
+      cursor: pointer;
+      transition: all var(--transition-speed);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .search-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+      opacity: 0;
+      transition: opacity var(--transition-speed);
+    }
+    
+    .search-button:hover::before {
+      opacity: 1;
+    }
+    
+    .search-button i {
+      position: relative;
+      z-index: 1;
+    }
+
+    .search-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .search-tag {
+      padding: var(--spacing-xs) var(--spacing-md);
+      background: var(--color-bg-tertiary);
+      border-radius: var(--border-radius-full);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-speed);
+      border: 1px solid transparent;
+    }
+
+    .search-tag:hover {
+      background: var(--color-bg-secondary);
+      transform: translateY(-2px);
+      color: var(--color-primary);
+      border-color: var(--color-primary-transparent);
+      box-shadow: var(--box-shadow-sm);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .feature-grid-item {
+      text-align: center;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .feature-grid-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+
+    .feature-grid-item i {
+      font-size: 2em;
+      color: var(--color-primary);
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .feature-grid-item h4 {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .feature-grid-item p {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    /* 监控部分样式 */
+    .monitor-demo {
+      width: 450px;
+      background: var(--color-bg-card);
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      box-shadow: var(--box-shadow-lg);
+      border: 1px solid var(--color-border-light);
+      transition: all var(--transition-speed);
+      position: relative;
+    }
+    
+    .monitor-demo:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-xl);
+    }
+    
+    .monitor-demo::before {
+      content: '';
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: var(--color-primary-transparent);
+      bottom: -75px;
+      left: -75px;
+      filter: blur(40px);
+      z-index: 0;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .monitor-header {
+      padding: var(--spacing-md) var(--spacing-lg);
+      background: linear-gradient(135deg, var(--color-gradient-dark-start), var(--color-gradient-dark-end));
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .monitor-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .monitor-title {
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-lg);
+      position: relative;
+      padding-left: var(--spacing-sm);
+    }
+    
+    .monitor-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 70%;
+      background: var(--color-accent);
+      border-radius: var(--border-radius-sm);
+    }
+
+    .monitor-date {
+      font-size: var(--font-size-sm);
+      opacity: 0.8;
+      font-weight: var(--font-weight-medium);
+    }
+
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-md);
+      padding: var(--spacing-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .monitor-card {
+      background: var(--color-bg-secondary);
+      border-radius: var(--border-radius-md);
+      padding: var(--spacing-md);
+      text-align: center;
+      transition: all var(--transition-speed);
+      border: 1px solid var(--color-border-light);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .monitor-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-md);
+      border-color: var(--color-border);
+    }
+    
+    .monitor-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50px;
+      height: 50px;
+      background: var(--color-primary-transparent);
+      border-radius: 0 0 0 100%;
+      opacity: 0;
+      transition: opacity var(--transition-speed);
+      pointer-events: none;
+    }
+    
+    .monitor-card:hover::after {
+      opacity: 0.1;
+    }
+
+    .monitor-card-header {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-sm);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .monitor-card-value {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--spacing-xs);
+      color: var(--color-text-dark);
+      transition: all var(--transition-speed);
+    }
+    
+    .monitor-card:hover .monitor-card-value {
+      transform: scale(1.05);
+      color: var(--color-primary);
+    }
+
+    .monitor-card-trend {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+
+    .monitor-card-trend.up {
+      color: var(--color-success);
+    }
+
+    .monitor-card-trend.down {
+      color: var(--color-danger);
+    }
+
+    .monitor-card-trend.stable {
+      color: var(--color-primary);
+    }
+
+    /* 联系我们部分样式 */
+    .contact-section {
+      background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+      color: white;
+      padding: var(--spacing-3xl) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    
+    .contact-section::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: var(--color-accent-transparent);
+      top: -150px;
+      right: -150px;
+      filter: blur(80px);
+      z-index: 0;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .contact-container {
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0 var(--spacing-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-header {
+      text-align: center;
+      margin-bottom: var(--spacing-2xl);
+      position: relative;
+    }
+    
+    .contact-header::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--color-accent);
+      border-radius: var(--border-radius-sm);
+    }
+
+    .contact-title {
+      font-size: var(--font-size-3xl);
+      margin-bottom: var(--spacing-md);
+      color: white;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .contact-subtitle {
+      font-size: var(--font-size-lg);
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .contact-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-2xl);
+      margin-top: var(--spacing-2xl);
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+      transition: all var(--transition-speed);
+      padding: var(--spacing-sm);
+      border-radius: var(--border-radius-md);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .contact-item:hover {
+      transform: translateX(5px);
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .contact-item i {
+      font-size: var(--font-size-xl);
+      opacity: 0.9;
+      color: var(--color-accent);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+    }
+    
+    .contact-item-text {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .contact-item-label {
+      font-size: var(--font-size-sm);
+      opacity: 0.7;
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .contact-item-value {
+      font-weight: var(--font-weight-medium);
+    }
+
+    .contact-social {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-xl);
+    }
+
+    .social-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: all var(--transition-speed);
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .social-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--color-accent);
+      opacity: 0;
+      transition: opacity var(--transition-speed);
+      z-index: 0;
+    }
+    
+    .social-icon:hover::before {
+      opacity: 0.2;
+    }
+    
+    .social-icon i {
+      position: relative;
+      z-index: 1;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .contact-form {
+      flex: 1;
+      min-width: 300px;
+      background: rgba(255,255,255,0.05);
+      padding: var(--spacing-xl);
+      border-radius: var(--border-radius-lg);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(5px);
+      transition: all var(--transition-speed);
+    }
+    
+    .contact-form:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: var(--spacing-md) var(--spacing-lg);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--border-radius-md);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      outline: none;
+      transition: all var(--transition-speed);
+      font-family: var(--font-main);
+      font-size: var(--font-size-md);
+    }
+    
+    .form-control::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+    
+    .form-control:focus {
+      background: rgba(255,255,255,0.15);
+      border-color: var(--color-accent-transparent);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-control::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .form-control:focus {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .contact-btn {
+      background: white;
+      color: var(--color-primary);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 992px) {
+      .feature-container.reverse {
+        flex-direction: column;
+      }
+      .feature-image, .feature-text {
+        width: 100%;
+      }
+      .assessment-demo, .monitor-demo {
+        margin: 0 auto 40px;
+      }
+      .feature-card {
+        min-width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 20px 30px;
+      }
+      .hero-content h1 {
+        font-size: 2.5em;
+      }
+      .feature-title {
+        font-size: 2em;
+      }
+      .stats-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      .stats-title {
+        text-align: center;
+        margin-bottom: var(--spacing-lg);
+      }
+      .stats-table {
+        width: 100%;
+      }
+      .stats-header, .stats-row {
+        grid-template-columns: 2fr 1fr 1fr;
+      }
+      .stats-cell:nth-child(4), .stats-cell:nth-child(5) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .header {
+        padding: 15px 20px;
+      }
+      .nav-item > a {
+        font-size: 16px;
+      }
+      .hero-content h1 {
+        font-size: 1.5em;
+      }
+      .hero-content p {
+        font-size: 1em;
+      }
+      .feature-section {
+        padding: 50px 0;
+      }
+      .feature-container {
+        padding: 0 20px;
+      }
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      .monitor-grid {
+        grid-template-columns: 1fr;
+      }
+      .monitor-demo {
+        width: 100%;
+      }
+      .assessment-demo {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -258,11 +1531,9 @@
     <div class="header">
       <div class="logo"><a href="{% url 'home:index' %}" style="color: var(--color-bg-light); font-weight: 700; font-size: 1.5em;">ModelGuard</a></div>
       <nav class="nav-links">
-        <div class="nav-item">
-          <a href="/service-details">服务详情</a>
-        </div>
         <div class="nav-item"><a href="{% url 'AllSearch:search_page' %}">一键搜索</a></div>
         <div class="nav-item"><a href="/Probing">数据探测</a></div>
+        <div class="nav-item"><a href="/service-details">服务详情</a></div>
       </nav>
     </div>
 
@@ -285,65 +1556,277 @@
   <!-- Statistics Section -->
   <section id="statistics" class="statistics">
     <div class="stats-container">
-      <h2 class="stats-title">大模型服务暴露统计</h2>
-      <div class="stats-table">
-        <div class="stats-header">
-          <div class="stats-cell">服务名称</div>
-          <div class="stats-cell">暴露IP数量</div>
-          <div class="stats-cell">覆盖国家数</div>
-          <div class="stats-cell">中国IP数量</div>
-          <div class="stats-cell">海外IP数量</div>
+      <div class="stats-content" style="display: flex; height: 100%;">
+        <div style="flex: 1; display: flex; align-items: center; justify-content: flex-start; padding-left: 50px;">
+          <h2 class="stats-title" style="margin: 0;">大模型服务暴露统计</h2>
         </div>
-        <div class="stats-body">
-          <div class="stats-row" data-service="ollama">
-            <div class="stats-cell">Ollama</div>
-            <div class="stats-cell" id="ollama-total">0</div>
-            <div class="stats-cell" id="ollama-countries">0</div>
-            <div class="stats-cell" id="ollama-china">0</div>
+        <div style="flex: 2; display: flex; align-items: flex-start; justify-content: center; padding-top: 70px;">
+          <div class="stats-table">
+          <div class="stats-header">
+            <div class="stats-cell">服务名称</div>
+            <div class="stats-cell">暴露IP数量</div>
+            <div class="stats-cell">覆盖国家数</div>
+            <div class="stats-cell">中国IP数量</div>
             <div class="stats-cell" id="ollama-overseas">0</div>
           </div>
-          <div class="stats-row" data-service="openwebui">
-            <div class="stats-cell">OpenWebUI</div>
-            <div class="stats-cell" id="openwebui-total">0</div>
-            <div class="stats-cell" id="openwebui-countries">0</div>
-            <div class="stats-cell" id="openwebui-china">0</div>
-            <div class="stats-cell" id="openwebui-overseas">0</div>
+          <div class="stats-body">
+            <div class="stats-row" data-service="ollama">
+              <div class="stats-cell">Ollama</div>
+              <div class="stats-cell" id="ollama-total">0</div>
+              <div class="stats-cell" id="ollama-countries">0</div>
+              <div class="stats-cell" id="ollama-china">0</div>
+              <div class="stats-cell" id="ollama-overseas">0</div>
+            </div>
+            <div class="stats-row" data-service="openwebui">
+              <div class="stats-cell">OpenWebUI</div>
+              <div class="stats-cell" id="openwebui-total">0</div>
+              <div class="stats-cell" id="openwebui-countries">0</div>
+              <div class="stats-cell" id="openwebui-china">0</div>
+              <div class="stats-cell" id="openwebui-overseas">0</div>
+            </div>
+            <div class="stats-row" data-service="dify">
+              <div class="stats-cell">Dify</div>
+              <div class="stats-cell" id="dify-total">0</div>
+              <div class="stats-cell" id="dify-countries">0</div>
+              <div class="stats-cell" id="dify-china">0</div>
+              <div class="stats-cell" id="dify-overseas">0</div>
+            </div>
+            <div class="stats-row" data-service="xinference">
+              <div class="stats-cell">Xinference</div>
+              <div class="stats-cell" id="xinference-total">0</div>
+              <div class="stats-cell" id="xinference-countries">0</div>
+              <div class="stats-cell" id="xinference-china">0</div>
+              <div class="stats-cell" id="xinference-overseas">0</div>
+            </div>
+            <div class="stats-row" data-service="anythingllm">
+              <div class="stats-cell">AnythingLLM</div>
+              <div class="stats-cell" id="anythingllm-total">0</div>
+              <div class="stats-cell" id="anythingllm-countries">0</div>
+              <div class="stats-cell" id="anythingllm-china">0</div>
+              <div class="stats-cell" id="anythingllm-overseas">0</div>
+            </div>
+            <div class="stats-row" data-service="openllm">
+              <div class="stats-cell">OpenLLM</div>
+              <div class="stats-cell" id="openllm-total">0</div>
+              <div class="stats-cell" id="openllm-countries">0</div>
+              <div class="stats-cell" id="openllm-china">0</div>
+              <div class="stats-cell" id="openllm-overseas">0</div>
+            </div>
+            <div class="stats-row" data-service="vllm">
+              <div class="stats-cell">vLLM</div>
+              <div class="stats-cell" id="vllm-total">0</div>
+              <div class="stats-cell" id="vllm-countries">0</div>
+              <div class="stats-cell" id="vllm-china">0</div>
+              <div class="stats-cell" id="vllm-overseas">0</div>
+            </div>
           </div>
-          <div class="stats-row" data-service="dify">
-            <div class="stats-cell">Dify</div>
-            <div class="stats-cell" id="dify-total">0</div>
-            <div class="stats-cell" id="dify-countries">0</div>
-            <div class="stats-cell" id="dify-china">0</div>
-            <div class="stats-cell" id="dify-overseas">0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 分布分析功能 Section -->
+  <section id="distribution" class="feature-section">
+    <div class="feature-container">
+      <div class="feature-header">
+        <h2 class="feature-title">全球分布分析</h2>
+        <p class="feature-subtitle">实时监控大模型服务的全球分布情况，掌握潜在风险</p>
+      </div>
+      <div class="feature-content">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-globe-americas"></i>
           </div>
-          <div class="stats-row" data-service="xinference">
-            <div class="stats-cell">Xinference</div>
-            <div class="stats-cell" id="xinference-total">0</div>
-            <div class="stats-cell" id="xinference-countries">0</div>
-            <div class="stats-cell" id="xinference-china">0</div>
-            <div class="stats-cell" id="xinference-overseas">0</div>
+          <h3>地理分布可视化</h3>
+          <p>通过交互式地图直观展示全球各地区大模型服务的分布密度，快速识别高风险区域。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
           </div>
-          <div class="stats-row" data-service="anythingllm">
-            <div class="stats-cell">AnythingLLM</div>
-            <div class="stats-cell" id="anythingllm-total">0</div>
-            <div class="stats-cell" id="anythingllm-countries">0</div>
-            <div class="stats-cell" id="anythingllm-china">0</div>
-            <div class="stats-cell" id="anythingllm-overseas">0</div>
+          <h3>趋势分析</h3>
+          <p>追踪服务暴露数量的历史变化趋势，预测未来可能的安全风险点。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-filter"></i>
           </div>
-          <div class="stats-row" data-service="openllm">
-            <div class="stats-cell">OpenLLM</div>
-            <div class="stats-cell" id="openllm-total">0</div>
-            <div class="stats-cell" id="openllm-countries">0</div>
-            <div class="stats-cell" id="openllm-china">0</div>
-            <div class="stats-cell" id="openllm-overseas">0</div>
+          <h3>多维度筛选</h3>
+          <p>按国家、地区、服务类型、IP特征等多维度进行数据筛选，精准定位目标信息。</p>
+        </div>
+      </div>
+      <div class="feature-action">
+        <a href="/distribution" class="btn-secondary">查看分布分析 <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI自动评测 Section -->
+  <section id="ai-assessment" class="feature-section alt-bg">
+    <div class="feature-container reverse">
+      <div class="feature-image">
+        <div class="assessment-demo">
+          <div class="assessment-card">
+            <div class="assessment-header">
+              <div class="assessment-badge high">高风险</div>
+              <div class="assessment-score">85</div>
+            </div>
+            <div class="assessment-detail">
+              <div class="assessment-item">
+                <span class="item-name">访问控制</span>
+                <div class="progress-bar">
+                  <div class="progress" style="width: 30%;"></div>
+                </div>
+              </div>
+              <div class="assessment-item">
+                <span class="item-name">数据加密</span>
+                <div class="progress-bar">
+                  <div class="progress" style="width: 45%;"></div>
+                </div>
+              </div>
+              <div class="assessment-item">
+                <span class="item-name">API安全</span>
+                <div class="progress-bar">
+                  <div class="progress" style="width: 20%;"></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="stats-row" data-service="vllm">
-            <div class="stats-cell">vLLM</div>
-            <div class="stats-cell" id="vllm-total">0</div>
-            <div class="stats-cell" id="vllm-countries">0</div>
-            <div class="stats-cell" id="vllm-china">0</div>
-            <div class="stats-cell" id="vllm-overseas">0</div>
+        </div>
+      </div>
+      <div class="feature-text">
+        <h2 class="feature-title">AI自动评测</h2>
+        <p class="feature-description">利用先进的AI技术，自动评估大模型服务的安全状况，提供专业的风险评分和改进建议。</p>
+        <ul class="feature-list">
+          <li><i class="fas fa-check-circle"></i> 多维度安全评分，覆盖访问控制、数据加密、API安全等关键指标</li>
+          <li><i class="fas fa-check-circle"></i> 智能识别常见安全漏洞，如未授权访问、敏感信息泄露等</li>
+          <li><i class="fas fa-check-circle"></i> 提供针对性的安全加固建议，帮助快速修复风险点</li>
+          <li><i class="fas fa-check-circle"></i> 定期自动扫描，及时发现新出现的安全隐患</li>
+        </ul>
+        <div class="feature-action text-left">
+          <a href="/assessment" class="btn-secondary">开始安全评测 <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 智能搜索 Section -->
+  <section id="search" class="feature-section">
+    <div class="feature-container">
+      <div class="feature-header">
+        <h2 class="feature-title">智能搜索引擎</h2>
+        <p class="feature-subtitle">一键搜索，快速定位目标大模型服务</p>
+      </div>
+      <div class="search-demo">
+        <div class="search-box">
+          <input type="text" placeholder="输入关键词、IP地址或模型名称..." class="search-input">
+          <button class="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="search-tags">
+          <span class="search-tag">Ollama</span>
+          <span class="search-tag">Dify</span>
+          <span class="search-tag">OpenWebUI</span>
+          <span class="search-tag">vLLM</span>
+          <span class="search-tag">+更多</span>
+        </div>
+      </div>
+      
+      <div class="feature-action">
+        <a href="{% url 'AllSearch:search_page' %}" class="btn-secondary">体验智能搜索 <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 实时监控 Section -->
+  <section id="monitoring" class="feature-section alt-bg">
+    <div class="feature-container reverse">
+      <div class="feature-image">
+        <div class="monitor-demo">
+          <div class="monitor-header">
+            <div class="monitor-title">实时监控面板</div>
+            <div class="monitor-controls">
+              <span class="monitor-date">最后更新: <span id="last-update-time">2023-06-15 15:30</span></span>
+            </div>
           </div>
+          <div class="monitor-grid">
+            <div class="monitor-card">
+              <div class="monitor-card-header">新增暴露服务</div>
+              <div class="monitor-card-value">+28</div>
+              <div class="monitor-card-trend up">↑ 12%</div>
+            </div>
+            <div class="monitor-card">
+              <div class="monitor-card-header">安全事件</div>
+              <div class="monitor-card-value">5</div>
+              <div class="monitor-card-trend down">↓ 8%</div>
+            </div>
+            <div class="monitor-card">
+              <div class="monitor-card-header">平均响应时间</div>
+              <div class="monitor-card-value">320ms</div>
+              <div class="monitor-card-trend stable">→ 0%</div>
+            </div>
+            <div class="monitor-card">
+              <div class="monitor-card-header">活跃模型数</div>
+              <div class="monitor-card-value">142</div>
+              <div class="monitor-card-trend up">↑ 5%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-text">
+        <h2 class="feature-title">实时监控预警</h2>
+        <p class="feature-description">7×24小时不间断监控大模型服务状态，发现异常立即预警，让您安心无忧。</p>
+        <ul class="feature-list">
+          <li><i class="fas fa-check-circle"></i> 实时监测服务可用性、响应时间、请求量等关键指标</li>
+          <li><i class="fas fa-check-circle"></i> 智能识别异常流量和可疑访问模式</li>
+          <li><i class="fas fa-check-circle"></i> 多渠道告警通知，支持邮件、短信、企业微信等</li>
+          <li><i class="fas fa-check-circle"></i> 可自定义监控规则和告警阈值，灵活适应不同场景需求</li>
+        </ul>
+        <div class="feature-action text-left">
+          <a href="/monitoring" class="btn-secondary">查看监控面板 <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系我们 Section -->
+  <section id="contact" class="contact-section">
+    <div class="contact-container">
+      <div class="contact-header">
+        <h2 class="contact-title">联系我们</h2>
+        <p class="contact-subtitle">有任何问题或建议？请随时与我们联系</p>
+      </div>
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <p>support@modelguard.com</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone-alt"></i>
+            <p>+86 400-888-8888</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>北京市海淀区中关村科技园</p>
+          </div>
+          <div class="contact-social">
+            <a href="#" class="social-icon"><i class="fab fa-weixin"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-weibo"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="contact-form">
+          <div class="form-group">
+            <input type="text" placeholder="您的姓名" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="您的邮箱" class="form-control">
+          </div>
+          <div class="form-group">
+            <textarea placeholder="您的留言" class="form-control textarea"></textarea>
+          </div>
+          <button class="btn-primary contact-btn">发送消息</button>
         </div>
       </div>
     </div>
@@ -354,6 +1837,114 @@
     /* Smooth Scroll */
     document.getElementById('btnExperience').addEventListener('click', () => {
       document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    /* 导航栏滚动效果 */
+    const navbar = document.getElementById('navbar');
+    let lastScrollTop = 0;
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // 添加导航栏背景色
+      if (scrollTop > 50) {
+        navbar.classList.add('navbar-scrolled');
+      } else {
+        navbar.classList.remove('navbar-scrolled');
+      }
+      
+      lastScrollTop = scrollTop;
+    });
+    
+    /* 平滑滚动到各个section */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    
+    /* 添加动画效果 */
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('.feature-card, .feature-grid-item, .assessment-card, .monitor-demo, .search-demo');
+      
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.3;
+        
+        if (elementPosition < screenPosition) {
+          element.classList.add('animate-in');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', animateOnScroll);
+    
+    /* 更新最后更新时间 */
+    const updateLastUpdateTime = () => {
+      const now = new Date();
+      const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      document.getElementById('last-update-time').textContent = formattedDate;
+    };
+    
+    /* 模拟监控数据变化 */
+    const simulateMonitoringData = () => {
+      const monitorCards = document.querySelectorAll('.monitor-card-value');
+      
+      monitorCards.forEach(card => {
+        const currentValue = parseInt(card.textContent);
+        const newValue = currentValue + Math.floor(Math.random() * 5) - 2;
+        if (newValue > 0) {
+          card.textContent = newValue;
+        }
+      });
+    };
+    
+    /* 初始化页面 */
+    document.addEventListener('DOMContentLoaded', () => {
+      // 添加navbar ID
+      document.querySelector('.header').id = 'navbar';
+      
+      // 添加动画类
+      document.head.insertAdjacentHTML('beforeend', `
+        <style>
+          .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+          }
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .navbar-scrolled {
+            background: rgba(209, 107, 165, 0.9);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 15px 90px;
+          }
+          @media (max-width: 768px) {
+            .navbar-scrolled {
+              padding: 15px 30px;
+            }
+          }
+        </style>
+      `);
+      
+      // 初始化监控数据
+      updateLastUpdateTime();
+      
+      // 定时更新监控数据
+      setInterval(() => {
+        simulateMonitoringData();
+      }, 5000);
+      
+      // 触发初始动画
+      setTimeout(animateOnScroll, 500);
     });
 
     /* Tag Sphere Module */
