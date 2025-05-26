@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnythingLLM 模型分析中心</title>
+    <title>Dify 服务分析中心</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1064,91 +1064,91 @@
             </div>
 
             <div class="chart-container">
-                <!-- 历史漏洞利用案例 -->
-                <div class="neon-card chart-card" onclick="window.open('https://jyjszx.symc.edu.cn/info/1013/1962.htm','_blank')">
+                <!-- Dify 安全风险分析 -->
+                <div class="neon-card chart-card" onclick="window.open('https://deepseek.csdn.net/67e384ed552ea4594ed90c67.html','_blank')">
                     <div class="card-header">
-                        <i class="fas fa-bug card-icon"></i>
-                        <h3 class="card-title">历史漏洞武器化攻击</h3>
+                        <i class="fas fa-shield-alt card-icon"></i>
+                        <h3 class="card-title">Dify 安全风险分析</h3>
                     </div>
                     <div class="card-desc">
                         <div class="vulnerability-matrix">
                             <div class="vul-item critical">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                <span class="cve-id">CVE-2024-37032</span>
-                                <span class="vul-desc">路径遍历代码执行</span>
+                                <span class="cve-id">提示注入攻击</span>
+                                <span class="vul-desc">恶意输入绕过安全限制</span>
                             </div>
                             <div class="vul-item high">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span class="cve-id">CVE-2024-39720</span>
-                                <span class="vul-desc">越界读取导致DoS攻击</span>
+                                <span class="cve-id">数据中毒风险</span>
+                                <span class="vul-desc">训练数据被污染导致模型异常</span>
                             </div>
                             <div class="vul-item medium">
                                 <i class="fas fa-exclamation"></i>
-                                <span class="cve-id">CVE-2024-39722</span>
-                                <span class="vul-desc">敏感信息泄露漏洞</span>
+                                <span class="cve-id">隐私信息泄露</span>
+                                <span class="vul-desc">敏感数据通过模型输出泄露</span>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：国家漏洞库CNNVD/南京农业大学通报
+                        来源：DeepSeek技术社区/基于Dify的安全实践
                     </div>
                 </div>
-
-                <!-- 真实攻击事件 -->
-                <div class="neon-card chart-card" onclick="window.open('https://tech.qudong.com/2025/0313/867226.shtml','_blank')">
+            
+                <!-- AI 应用安全挑战 -->
+                <div class="neon-card chart-card" onclick="window.open('https://docs.dify.ai/zh-hans/introduction','_blank')">
                     <div class="card-header">
                         <i class="fas fa-radiation-alt card-icon"></i>
-                        <h3 class="card-title">真实攻击事件分析</h3>
+                        <h3 class="card-title">AI 应用安全挑战</h3>
                     </div>
                     <div class="card-desc">
                         <div class="attack-case">
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    模型资产窃取
+                                    越狱攻击风险
                                 </div>
-                                <div class="case-detail">通过/api/push接口导出私有模型</div>
+                                <div class="case-detail">绕过安全限制获取敏感或有害信息</div>
                             </div>
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    算力资源滥用
+                                    资源滥用问题
                                 </div>
-                                <div class="case-detail">GPU资源占用导致账单暴涨300%</div>
+                                <div class="case-detail">恶意请求导致计算资源消耗激增</div>
                             </div>
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    系统沦陷案例
+                                    幻觉与误导风险
                                 </div>
-                                <div class="case-detail">利用漏洞植入XMRig矿机程序</div>
+                                <div class="case-detail">模型生成不准确信息影响决策</div>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：腾云悦智安全实验室
+                        来源：Dify 官方文档/产品简介
                     </div>
                 </div>
-
-                <!-- 最新 Ollama 服务暴露 -->
-                <div class="neon-card chart-card" onclick="window.open('https://nsfocusglobal.com/ollama-unauthorized-access-vulnerability-due-to-misconfiguration-cnvd-2025-04094','_blank')">
+            
+                <!-- Dify 平台安全建议 -->
+                <div class="neon-card chart-card" onclick="window.open('https://docs.dify.ai/zh-hans/getting-started/cloud','_blank')">
                     <div class="card-header">
                         <i class="fas fa-server card-icon"></i>
-                        <h3 class="card-title">最新AnythingLLM服务暴露</h3>
+                        <h3 class="card-title">Dify 平台安全建议</h3>
                     </div>
                     <div class="card-desc">
                         <ul class="risk-list">
-                            <li><strong>7,000+ 个 API 实例暴露公网</strong>（截至 2025-02-07）</li>
-                            <li>默认 11434 端口无认证机制</li>
-                            <li>可执行模型窃取／数据投毒／DDoS 攻击</li>
-                            <li>CNVD 编号：CNVD-2025-04094</li>
+                            <li><strong>实施严格的访问控制机制</strong>（保护 API 密钥和端点）</li>
+                            <li>定期审计应用程序输入输出日志</li>
+                            <li>使用知识库过滤敏感信息和有害内容</li>
+                            <li>部署代码泄露分析工具保护模型安全</li>
                         </ul>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：NSFOCUS 安全报告／UpGuard 安全实验室
+                        来源：Dify 官方文档/云服务
                     </div>
                 </div>
             </div>

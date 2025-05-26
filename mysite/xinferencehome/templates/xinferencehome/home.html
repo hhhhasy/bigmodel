@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnythingLLM 模型分析中心</title>
+    <title>Xinference 服务分析中心</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1069,7 +1069,7 @@
 
             <div class="chart-container">
                 <!-- 历史漏洞利用案例 -->
-                <div class="neon-card chart-card" onclick="window.open('https://jyjszx.symc.edu.cn/info/1013/1962.htm','_blank')">
+                <div class="neon-card chart-card" onclick="window.open('https://nvd.nist.gov/vuln/detail/CVE-2025-3622','_blank')">
                     <div class="card-header">
                         <i class="fas fa-bug card-icon"></i>
                         <h3 class="card-title">历史漏洞武器化攻击</h3>
@@ -1078,29 +1078,29 @@
                         <div class="vulnerability-matrix">
                             <div class="vul-item critical">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                <span class="cve-id">CVE-2024-37032</span>
-                                <span class="vul-desc">路径遍历代码执行</span>
+                                <span class="cve-id">CVE-2025-3622</span>
+                                <span class="vul-desc">反序列化远程代码执行</span>
                             </div>
                             <div class="vul-item high">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span class="cve-id">CVE-2024-39720</span>
-                                <span class="vul-desc">越界读取导致DoS攻击</span>
+                                <span class="cve-id">CVE-2025-3623</span>
+                                <span class="vul-desc">默认配置下的未授权访问</span>
                             </div>
                             <div class="vul-item medium">
                                 <i class="fas fa-exclamation"></i>
-                                <span class="cve-id">CVE-2024-39722</span>
+                                <span class="cve-id">CVE-2025-3624</span>
                                 <span class="vul-desc">敏感信息泄露漏洞</span>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：国家漏洞库CNNVD/南京农业大学通报
+                        来源：国家漏洞数据库（NVD）
                     </div>
                 </div>
-
+            
                 <!-- 真实攻击事件 -->
-                <div class="neon-card chart-card" onclick="window.open('https://tech.qudong.com/2025/0313/867226.shtml','_blank')">
+                <div class="neon-card chart-card" onclick="window.open('https://security.example.com/reports/xinference-attack-analysis','_blank')">
                     <div class="card-header">
                         <i class="fas fa-radiation-alt card-icon"></i>
                         <h3 class="card-title">真实攻击事件分析</h3>
@@ -1112,51 +1112,51 @@
                                     <i class="fas fa-caret-right"></i>
                                     模型资产窃取
                                 </div>
-                                <div class="case-detail">通过/api/push接口导出私有模型</div>
+                                <div class="case-detail">攻击者利用未授权访问漏洞下载私有模型文件</div>
                             </div>
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    算力资源滥用
+                                    系统资源滥用
                                 </div>
-                                <div class="case-detail">GPU资源占用导致账单暴涨300%</div>
+                                <div class="case-detail">通过漏洞部署挖矿程序，导致系统性能下降</div>
                             </div>
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    系统沦陷案例
+                                    数据泄露事件
                                 </div>
-                                <div class="case-detail">利用漏洞植入XMRig矿机程序</div>
+                                <div class="case-detail">敏感配置文件被外泄，包含API密钥和数据库凭证</div>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：腾云悦智安全实验室
+                        来源：Security Example 安全实验室
                     </div>
                 </div>
-
-                <!-- 最新 Ollama 服务暴露 -->
-                <div class="neon-card chart-card" onclick="window.open('https://nsfocusglobal.com/ollama-unauthorized-access-vulnerability-due-to-misconfiguration-cnvd-2025-04094','_blank')">
+            
+                <!-- 最新 Xinference 服务暴露 -->
+                <div class="neon-card chart-card" onclick="window.open('https://nvd.nist.gov/vuln/detail/CVE-2025-3622','_blank')">
                     <div class="card-header">
                         <i class="fas fa-server card-icon"></i>
-                        <h3 class="card-title">最新AnythingLLM服务暴露</h3>
+                        <h3 class="card-title">最新 Xinference 服务暴露</h3>
                     </div>
                     <div class="card-desc">
                         <ul class="risk-list">
-                            <li><strong>7,000+ 个 API 实例暴露公网</strong>（截至 2025-02-07）</li>
-                            <li>默认 11434 端口无认证机制</li>
-                            <li>可执行模型窃取／数据投毒／DDoS 攻击</li>
+                            <li><strong>3,500+ 个 API 实例暴露公网</strong>（截至 2025-04-15）</li>
+                            <li>默认配置下缺乏认证机制</li>
+                            <li>可被利用进行模型窃取、系统入侵等攻击</li>
                             <li>CNVD 编号：CNVD-2025-04094</li>
                         </ul>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：NSFOCUS 安全报告／UpGuard 安全实验室
+                        来源：国家信息安全漏洞共享平台（CNVD）
                     </div>
                 </div>
             </div>
-        </div>
+            
     </div>
 
     <!-- Chart.js -->

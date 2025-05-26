@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenWebUI 界面分析中心</title>
+    <title>OpenWebUI 服务分析中心</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1061,7 +1061,7 @@
 
             <div class="chart-container">
                 <!-- 历史漏洞利用案例 -->
-                <div class="neon-card chart-card" onclick="window.open('https://jyjszx.symc.edu.cn/info/1013/1962.htm','_blank')">
+                <div class="neon-card chart-card" onclick="window.open('https://nvd.nist.gov/vuln/detail/CVE-2024-12537','_blank')">
                     <div class="card-header">
                         <i class="fas fa-bug card-icon"></i>
                         <h3 class="card-title">历史漏洞武器化攻击</h3>
@@ -1070,29 +1070,29 @@
                         <div class="vulnerability-matrix">
                             <div class="vul-item critical">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                <span class="cve-id">CVE-2024-37032</span>
-                                <span class="vul-desc">XSS 跨站脚本攻击</span>
+                                <span class="cve-id">CVE-2024-12537</span>
+                                <span class="vul-desc">未认证访问导致拒绝服务（DoS）</span>
                             </div>
                             <div class="vul-item high">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span class="cve-id">CVE-2024-39720</span>
-                                <span class="vul-desc">CSRF 跨站请求伪造</span>
+                                <span class="cve-id">CVE-2025-46571</span>
+                                <span class="vul-desc">低权限用户上传 HTML 文件导致 XSS 攻击</span>
                             </div>
                             <div class="vul-item medium">
                                 <i class="fas fa-exclamation"></i>
-                                <span class="cve-id">CVE-2024-39722</span>
-                                <span class="vul-desc">敏感信息泄露漏洞</span>
+                                <span class="cve-id">CVE-2024-8053</span>
+                                <span class="vul-desc">会话固定攻击导致管理员账户接管</span>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：国家漏洞库CNNVD/南京农业大学通报
+                        来源：NVD 国家漏洞数据库
                     </div>
                 </div>
-
+            
                 <!-- 真实攻击事件 -->
-                <div class="neon-card chart-card" onclick="window.open('https://tech.qudong.com/2025/0313/867226.shtml','_blank')">
+                <div class="neon-card chart-card" onclick="window.open('https://security.snyk.io/vuln/SNYK-PYTHON-OPENWEBUI-8179277','_blank')">
                     <div class="card-header">
                         <i class="fas fa-radiation-alt card-icon"></i>
                         <h3 class="card-title">真实攻击事件分析</h3>
@@ -1102,53 +1102,52 @@
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    界面劫持攻击
+                                    任意文件写入与删除
                                 </div>
-                                <div class="case-detail">通过 XSS 漏洞劫持用户界面</div>
+                                <div class="case-detail">攻击者利用 /api/pipelines/upload 接口覆盖或删除系统文件，可能导致远程代码执行</div>
                             </div>
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    会话劫持
+                                    会话固定攻击
                                 </div>
-                                <div class="case-detail">利用 CSRF 漏洞窃取用户会话</div>
+                                <div class="case-detail">通过嵌入恶意 Markdown 图像，窃取管理员会话 Cookie，实现账户接管</div>
                             </div>
                             <div class="case-item">
                                 <div class="case-title">
                                     <i class="fas fa-caret-right"></i>
-                                    数据泄露案例
+                                    CSRF 攻击
                                 </div>
-                                <div class="case-detail">通过注入攻击获取敏感信息</div>
+                                <div class="case-detail">利用缺乏 CSRF 防护的漏洞，非管理员用户可执行任意代码</div>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：腾云悦智安全实验室
+                        来源：Snyk 安全研究
                     </div>
                 </div>
-
+            
                 <!-- 最新服务暴露 -->
-                <div class="neon-card chart-card" onclick="window.open('https://nsfocusglobal.com/ollama-unauthorized-access-vulnerability-due-to-misconfiguration-cnvd-2025-04094','_blank')">
+                <div class="neon-card chart-card" onclick="window.open('https://docs.openwebui.com/getting-started/quick-start/','_blank')">
                     <div class="card-header">
                         <i class="fas fa-server card-icon"></i>
                         <h3 class="card-title">最新 OpenWebUI 服务暴露</h3>
                     </div>
                     <div class="card-desc">
                         <ul class="risk-list">
-                            <li><strong>5,000+ 个 Web 实例暴露公网</strong>（截至 2025-02-07）</li>
-                            <li>默认 3000 端口无认证机制</li>
-                            <li>可执行界面劫持／会话窃取／数据泄露</li>
-                            <li>CNVD 编号：CNVD-2025-04094</li>
+                            <li><strong>默认 3000 端口无认证机制</strong>（未启用 WEBUI_AUTH）</li>
+                            <li>未配置身份验证时，任何人可访问 WebUI 接口</li>
+                            <li>可能导致界面劫持、会话窃取和数据泄露</li>
+                            <li>建议启用身份验证或配置访问控制</li>
                         </ul>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：NSFOCUS 安全报告／UpGuard 安全实验室
+                        来源：OpenWebUI 官方文档
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 
     <!-- Chart.js -->

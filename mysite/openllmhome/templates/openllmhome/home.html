@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnythingLLM 模型分析中心</title>
+    <title>OpenLLM 服务分析中心</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1060,95 +1060,60 @@
             </div>
 
             <div class="chart-container">
-                <!-- 历史漏洞利用案例 -->
-                <div class="neon-card chart-card" onclick="window.open('https://jyjszx.symc.edu.cn/info/1013/1962.htm','_blank')">
+                <!-- OpenLLM 安全风险分析 -->
+                <div class="neon-card chart-card" onclick="window.open('https://wtit.com/blog/2025/04/17/owasp-top-10-for-llm-applications-2025/','_blank')">
                     <div class="card-header">
                         <i class="fas fa-bug card-icon"></i>
-                        <h3 class="card-title">历史漏洞武器化攻击</h3>
+                        <h3 class="card-title">OpenLLM 安全风险分析</h3>
                     </div>
                     <div class="card-desc">
                         <div class="vulnerability-matrix">
                             <div class="vul-item critical">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                <span class="cve-id">CVE-2024-37032</span>
-                                <span class="vul-desc">路径遍历代码执行</span>
+                                <span class="cve-id">提示注入攻击</span>
+                                <span class="vul-desc">恶意输入绕过安全限制，诱导模型生成不当内容</span>
                             </div>
                             <div class="vul-item high">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span class="cve-id">CVE-2024-39720</span>
-                                <span class="vul-desc">越界读取导致DoS攻击</span>
+                                <span class="cve-id">数据中毒风险</span>
+                                <span class="vul-desc">训练数据被污染，导致模型输出偏差或后门行为</span>
                             </div>
                             <div class="vul-item medium">
                                 <i class="fas fa-exclamation"></i>
-                                <span class="cve-id">CVE-2024-39722</span>
-                                <span class="vul-desc">敏感信息泄露漏洞</span>
+                                <span class="cve-id">隐私信息泄露</span>
+                                <span class="vul-desc">模型输出中包含敏感或个人信息</span>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：国家漏洞库CNNVD/南京农业大学通报
+                        来源：OWASP Top 10 for LLM Applications 2025
                     </div>
                 </div>
-
-                <!-- 真实攻击事件 -->
-                <div class="neon-card chart-card" onclick="window.open('https://tech.qudong.com/2025/0313/867226.shtml','_blank')">
+            
+                <!-- OpenLLM 安全最佳实践 -->
+                <div class="neon-card chart-card" onclick="window.open('https://www.cobalt.io/blog/llm-data-leakage-10-best-practices','_blank')">
                     <div class="card-header">
-                        <i class="fas fa-radiation-alt card-icon"></i>
-                        <h3 class="card-title">真实攻击事件分析</h3>
-                    </div>
-                    <div class="card-desc">
-                        <div class="attack-case">
-                            <div class="case-item">
-                                <div class="case-title">
-                                    <i class="fas fa-caret-right"></i>
-                                    模型资产窃取
-                                </div>
-                                <div class="case-detail">通过/api/push接口导出私有模型</div>
-                            </div>
-                            <div class="case-item">
-                                <div class="case-title">
-                                    <i class="fas fa-caret-right"></i>
-                                    算力资源滥用
-                                </div>
-                                <div class="case-detail">GPU资源占用导致账单暴涨300%</div>
-                            </div>
-                            <div class="case-item">
-                                <div class="case-title">
-                                    <i class="fas fa-caret-right"></i>
-                                    系统沦陷案例
-                                </div>
-                                <div class="case-detail">利用漏洞植入XMRig矿机程序</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="citation-tag">
-                        <i class="fas fa-external-link-alt"></i>
-                        来源：腾云悦智安全实验室
-                    </div>
-                </div>
-
-                <!-- 最新 Ollama 服务暴露 -->
-                <div class="neon-card chart-card" onclick="window.open('https://nsfocusglobal.com/ollama-unauthorized-access-vulnerability-due-to-misconfiguration-cnvd-2025-04094','_blank')">
-                    <div class="card-header">
-                        <i class="fas fa-server card-icon"></i>
-                        <h3 class="card-title">最新AnythingLLM服务暴露</h3>
+                        <i class="fas fa-shield-alt card-icon"></i>
+                        <h3 class="card-title">OpenLLM 安全最佳实践</h3>
                     </div>
                     <div class="card-desc">
                         <ul class="risk-list">
-                            <li><strong>7,000+ 个 API 实例暴露公网</strong>（截至 2025-02-07）</li>
-                            <li>默认 11434 端口无认证机制</li>
-                            <li>可执行模型窃取／数据投毒／DDoS 攻击</li>
-                            <li>CNVD 编号：CNVD-2025-04094</li>
+                            <li><strong>实施访问控制</strong>：采用基于角色的访问控制（RBAC）和多因素认证（MFA）</li>
+                            <li><strong>最小化数据输入和存储</strong>：仅收集和保留必要的数据，减少潜在风险</li>
+                            <li><strong>验证和清洗输入数据</strong>：防止恶意代码注入和数据污染</li>
+                            <li><strong>数据加密</strong>：对静态和传输中的数据进行加密处理</li>
+                            <li><strong>保护模型和测试数据</strong>：确保训练数据的安全性，防止未授权访问</li>
+                            <li><strong>监控和审计</strong>：定期审查模型输入输出日志，及时发现异常行为</li>
                         </ul>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：NSFOCUS 安全报告／UpGuard 安全实验室
+                        来源：Cobalt / Pangea 安全指南
                     </div>
                 </div>
             </div>
-        </div>
+            
     </div>
 
     <!-- Chart.js -->
