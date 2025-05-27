@@ -1052,7 +1052,7 @@
     .monitor-header {
       padding: var(--spacing-md) var(--spacing-lg);
       background: linear-gradient(135deg, var(--color-gradient-dark-start), var(--color-gradient-dark-end));
-      color: white;
+      color: var(--color-primary);;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1077,6 +1077,7 @@
       font-size: var(--font-size-lg);
       position: relative;
       padding-left: var(--spacing-sm);
+      color: var(--color-primary);;
     }
     
     .monitor-title::before {
@@ -1087,7 +1088,7 @@
       transform: translateY(-50%);
       width: 3px;
       height: 70%;
-      background: var(--color-accent);
+      background: var(--color-primary);
       border-radius: var(--border-radius-sm);
     }
 
@@ -1628,36 +1629,57 @@
 
   <!-- 分布分析功能 Section -->
   <section id="distribution" class="feature-section">
-    <div class="feature-container">
+    <!-- 添加背景装饰 -->
+    <div class="feature-bg-decoration">
+      <div class="bg-shape shape1"></div>
+      <div class="bg-shape shape2"></div>
+      <div class="bg-shape shape3"></div>
+    </div>
+    
+    <div class="feature-container reveal-section">
       <div class="feature-header">
         <h2 class="feature-title">全球分布分析</h2>
         <p class="feature-subtitle">实时监控大模型服务的全球分布情况，掌握潜在风险</p>
       </div>
       <div class="feature-content">
-        <div class="feature-card">
+        <!-- 为卡片添加动画和图标增强 -->
+        <div class="feature-card card-animation" data-delay="0">
           <div class="feature-icon">
             <i class="fas fa-globe-americas"></i>
+            <!-- 添加装饰元素 -->
+            <div class="icon-decoration"></div>
           </div>
           <h3>地理分布可视化</h3>
           <p>通过交互式地图直观展示全球各地区大模型服务的分布密度，快速识别高风险区域。</p>
+          <!-- 添加悬停时显示的详情按钮 -->
+          <div class="card-detail-btn">
+            <i class="fas fa-arrow-right"></i>
+          </div>
         </div>
-        <div class="feature-card">
+        
+        <div class="feature-card card-animation" data-delay="0.2">
           <div class="feature-icon">
             <i class="fas fa-chart-line"></i>
+            <div class="icon-decoration"></div>
           </div>
           <h3>趋势分析</h3>
           <p>追踪服务暴露数量的历史变化趋势，预测未来可能的安全风险点。</p>
+          <div class="card-detail-btn">
+            <i class="fas fa-arrow-right"></i>
+          </div>
         </div>
-        <div class="feature-card">
+        
+        <div class="feature-card card-animation" data-delay="0.4">
           <div class="feature-icon">
             <i class="fas fa-filter"></i>
+            <div class="icon-decoration"></div>
           </div>
           <h3>多维度筛选</h3>
           <p>按国家、地区、服务类型、IP特征等多维度进行数据筛选，精准定位目标信息。</p>
+          <div class="card-detail-btn">
+            <i class="fas fa-arrow-right"></i>
+          </div>
         </div>
-      </div>
-      <div class="feature-action">
-        <a href="/distribution" class="btn-secondary">查看分布分析 <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   </section>
@@ -1704,9 +1726,6 @@
           <li><i class="fas fa-check-circle"></i> 提供针对性的安全加固建议，帮助快速修复风险点</li>
           <li><i class="fas fa-check-circle"></i> 定期自动扫描，及时发现新出现的安全隐患</li>
         </ul>
-        <div class="feature-action text-left">
-          <a href="/assessment" class="btn-secondary">开始安全评测 <i class="fas fa-arrow-right"></i></a>
-        </div>
       </div>
     </div>
   </section>
@@ -1782,9 +1801,6 @@
           <li><i class="fas fa-check-circle"></i> 多渠道告警通知，支持邮件、短信、企业微信等</li>
           <li><i class="fas fa-check-circle"></i> 可自定义监控规则和告警阈值，灵活适应不同场景需求</li>
         </ul>
-        <div class="feature-action text-left">
-          <a href="/monitoring" class="btn-secondary">查看监控面板 <i class="fas fa-arrow-right"></i></a>
-        </div>
       </div>
     </div>
   </section>
