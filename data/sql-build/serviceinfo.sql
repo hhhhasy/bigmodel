@@ -11,7 +11,7 @@
  Target Server Version : 80036
  File Encoding         : 65001
 
- Date: 17/04/2025 20:18:53
+ Date: 27/05/2025 21:17:26
 */
 
 SET NAMES utf8mb4;
@@ -21,16 +21,15 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for serviceinfo
 -- ----------------------------
 DROP TABLE IF EXISTS `serviceinfo`;
-
-CREATE TABLE `serviceinfo` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) DEFAULT NULL,
-  `port` VARCHAR(255) DEFAULT NULL,
-  `banner` VARCHAR(512) DEFAULT NULL,
-  `auth` VARCHAR(255) DEFAULT NULL,
-  `api` VARCHAR(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB ROW_FORMAT=Dynamic;
+CREATE TABLE `serviceinfo`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `port` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `banner` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `auth` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `api` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 103 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of serviceinfo
@@ -42,7 +41,6 @@ INSERT INTO `serviceinfo` VALUES (5, 'LocalAI', '8080', 'title=\"LocalAI API -v2
 INSERT INTO `serviceinfo` VALUES (6, 'Ollama', '11434', 'body=\"ollama is running\"', '无', 'api/tags');
 INSERT INTO `serviceinfo` VALUES (7, 'Open WebUI', '3000:8080', 'title==\"Open WebUI\"', '有', '/workspace/models');
 INSERT INTO `serviceinfo` VALUES (8, 'OpenLLM', '3000', 'title=\"openllm\"', '可选', NULL);
-INSERT INTO `serviceinfo` VALUES (9, 'Triton Inference Server', NULL, NULL, '无', NULL);
 INSERT INTO `serviceinfo` VALUES (10, 'vLLM', '8000', 'JSON { \"message\": \"Welcome to the vLLM OpenAI-Compatible API server!\" }', '无', '/v1/completions, /v1/chat/completions');
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -58,3 +58,55 @@ def add_service(request):
    
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': e}, status=500)
+
+
+@csrf_exempt
+def scan_service(request):
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': '仅支持POST请求'}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        ip = data.get('ip')
+        port = data.get('port')
+        service_name = data.get('service_name')
+        
+        # 验证参数
+        if not ip or not port:
+            return JsonResponse({'status': 'error', 'message': 'IP和端口不能为空'}, status=400)
+        
+        # 执行nmap扫描
+        import nmap
+        nm = nmap.PortScanner()
+        nm.scan(ip, str(port))
+        
+        result = []
+        for host in nm.all_hosts():
+            host_info = f'主机: {host} ({nm[host].hostname() or "未知主机名"})\n'
+            host_info += f'状态: {nm[host].state()}\n'
+            
+            if port in nm[host].all_tcp():
+                port_info = nm[host]['tcp'][int(port)]
+                host_info += f'端口 {port} - {port_info["name"]}:\n'
+                host_info += f'  状态: {port_info["state"]}\n'
+                host_info += f'  服务: {port_info["product"]} {port_info["version"]}\n'
+                if 'extrainfo' in port_info and port_info['extrainfo']:
+                    host_info += f'  额外信息: {port_info["extrainfo"]}\n'
+            
+            result.append(host_info)
+        
+        # 记录扫描结果
+        scan_result = '\n'.join(result) if result else f'未在 {ip} 的 {port} 端口发现服务'
+        
+        return JsonResponse({
+            'status': 'success',
+            'result': scan_result
+        })
+    
+    except Exception as e:
+        import traceback
+        return JsonResponse({
+            'status': 'error', 
+            'message': str(e),
+            'traceback': traceback.format_exc()
+        }, status=500)
