@@ -284,7 +284,7 @@
       width: 100%;
     }
     .hero-content h1 { 
-      font-size: clamp(2.5rem, 5vw, 4rem); 
+      font-size: clamp(2rem, 4vw, 3.5rem); 
       font-weight: 800;
       letter-spacing: -0.5px; 
       margin-bottom: 24px;
@@ -292,6 +292,7 @@
       line-height: 1.2;
       text-shadow: 0 2px 10px rgba(0,0,0,0.1);
       animation: fadeInUp 1s ease-out;
+      white-space: nowrap; /* 添加这行确保文字在同一行 */
     }
     .hero-content p { 
       font-size: clamp(1rem, 2vw, 1.25rem); 
