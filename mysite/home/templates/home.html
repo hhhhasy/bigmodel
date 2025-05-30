@@ -450,7 +450,7 @@
     }
 
     .stats-container {
-      max-width: 1200px;
+      max-width: 1600px;
       margin: 10 auto;
       position: relative;
       z-index: 1;
@@ -469,15 +469,7 @@
     }
     
     .stats-title::after {
-      content: '';
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: var(--color-text);
-      border-radius: 2px;
+      content: none;
     }
 
     .stats-table {
@@ -491,13 +483,14 @@
 
     .stats-header {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr; /* 调整列宽比例 */
       background: rgba(255, 255, 255, 0.15);
       padding: 20px;
       font-weight: 600;
       font-size: 1rem;
       color: var(--color-text);
       letter-spacing: 0.5px;
+      white-space: nowrap; /* 防止文字换行 */
     }
 
     .stats-body {
@@ -506,7 +499,7 @@
 
     .stats-row {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr; /* 与表头保持一致 */
       padding: 15px 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       transition: all var(--transition-speed);
@@ -539,7 +532,7 @@
     }
     
     .stats-cell:first-child::before {
-      content: '';
+      content: none; /* 改为none，移除绿色点点 */
       display: inline-block;
       width: 8px;
       height: 8px;
@@ -1556,19 +1549,25 @@
 
   <!-- Statistics Section -->
   <section id="statistics" class="statistics">
-    <div class="stats-container">
-      <div class="stats-content" style="display: flex; height: 100%;">
-        <div style="flex: 1; display: flex; align-items: center; justify-content: flex-start; padding-left: 50px;">
-          <h2 class="stats-title" style="margin: 0;">大模型服务暴露统计</h2>
-        </div>
-        <div style="flex: 2; display: flex; align-items: flex-start; justify-content: center; padding-top: 70px;">
-          <div class="stats-table">
+    <div class="stats-container" style="display: flex; align-items: center; justify-content: space-between;">
+      <!-- 左侧：标题和解释文字 -->
+      <div class="stats-text" style="flex: 1; padding-right: 200px; padding-left: 20px;">
+        <h2 class="stats-title" style="text-align: left; margin: 0 0 30px 0; white-space: nowrap; left: 0; transform: none; position: relative;">
+          大模型服务暴露统计
+          <span style="content: ''; position: absolute; bottom: -15px; left: 0; width: 80px; height: 4px; background: var(--color-text); border-radius: 2px; display: block;"></span>
+        </h2>
+        <p style="color: var(--color-text); font-size: 1.1rem; line-height: 1.8; max-width: 600px; margin: 0 0 30px 0;">本平台实时监控全球范围内的大模型服务部署情况，收集并分析各类开源大模型服务的暴露数据。通过多维度统计分析，帮助您了解不同服务的全球分布、区域集中度以及潜在安全风险，为大模型安全治理提供数据支持与决策参考。</p>
+      </div>
+      
+      <!-- 右侧：表格 -->
+      <div class="stats-table-container" style="flex: 1.5;"> <!-- 增加表格区域的宽度比例 -->
+        <div class="stats-table">
           <div class="stats-header">
             <div class="stats-cell">服务名称</div>
             <div class="stats-cell">暴露IP数量</div>
             <div class="stats-cell">覆盖国家数</div>
             <div class="stats-cell">中国IP数量</div>
-            <div class="stats-cell" id="ollama-overseas">0</div>
+            <div class="stats-cell">海外IP数量</div>
           </div>
           <div class="stats-body">
             <div class="stats-row" data-service="ollama">
