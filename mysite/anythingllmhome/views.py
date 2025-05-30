@@ -1,7 +1,9 @@
 # views.py
 from django.shortcuts import render
-from .models import DailyExpose
-
+from .models import DailyExpose, AnythingLLMHoneypot
+from django.db.models.functions import TruncDate
+from django.db.models import Count, Max
+from datetime import datetime, timedelta
 def dashboard(request):
     # 获取最近七天的日活数据
     daily_qs = list(reversed(DailyExpose.objects.order_by('-date')[:7]))
@@ -9,7 +11,69 @@ def dashboard(request):
         'labels': [row.date.strftime('%Y-%m-%d') for row in reversed(daily_qs)],  # 反转顺序以保持时间顺序
         'data':   [row.counts for row in reversed(daily_qs)],  # 反转顺序以保持时间顺序
     }
+        # 获取蜜罐数据的最新日期
+    latest_honeypot = AnythingLLMHoneypot.objects.aggregate(max_timestamp=Max('timestamp'))
+    latest_date = latest_honeypot['max_timestamp']
 
+    # 如果有蜜罐数据，计算最后一天之前的七天；否则使用当前日期作为结束日期
+    if latest_date:
+        # 计算最新日期前一天的结束时间
+        day_before_latest = latest_date - timedelta(days=1)
+        end_date = day_before_latest.replace(hour=23, minute=59, second=59, microsecond=999999)
+        # 从前一天的结束时间往前推算六天作为开始时间
+        start_date = (end_date - timedelta(days=6)).replace(hour=0, minute=0, second=0, microsecond=0)
+    else:
+        # 如果没有数据，仍然使用当前日期前七天作为默认范围
+        end_date = datetime.now().replace(hour=23, minute=59, second=59, microsecond=999999)
+        start_date = (end_date - timedelta(days=6)).replace(hour=0, minute=0, second=0, microsecond=0)
+    # 获取最近7天的蜜罐数据
+    honeypot_attacks_qs = AnythingLLMHoneypot.objects.filter(
+        timestamp__range=(start_date, end_date)
+    ).annotate(date=TruncDate('timestamp')).values('date').annotate(count=Count('timestamp')).order_by('date')
+
+    # 准备蜜罐时间线图数据
+    # Ensure all 7 days in the range are included, even if no attacks
+    date_counts = {item['date'].strftime('%Y-%m-%d'): item['count'] for item in honeypot_attacks_qs}
+    honeypot_timeline_labels = [(start_date + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(7)]
+    honeypot_timeline_data = [date_counts.get(label, 0) for label in honeypot_timeline_labels]
+
+    honeypot_timeline_data_formatted = {
+        'labels': honeypot_timeline_labels,
+        'data': honeypot_timeline_data,
+    }
+
+    # 统计 Top N 攻击数据
+    top_ports = AnythingLLMHoneypot.objects.filter(
+        timestamp__range=(start_date, end_date), port__isnull=False
+    ).values('port').annotate(count=Count('port')).order_by('-count')[:10]
+
+    # Prioritize city, then ip if city is null
+    top_locations = AnythingLLMHoneypot.objects.filter(
+        timestamp__range=(start_date, end_date)
+    ).exclude(ip__isnull=True).values('city', 'ip').annotate(count=Count('timestamp')).order_by('-count')
+    
+    # Aggregate counts by city first, then fallback to IP for display
+    location_counts = {}
+    for item in top_locations:
+        location = item['city'] if item['city'] and item['city'].strip() else item['ip']
+        if location:
+            if location not in location_counts:
+                location_counts[location] = 0
+            location_counts[location] += item['count']
+            
+    top_locations_sorted = sorted(location_counts.items(), key=lambda item: item[1], reverse=True)[:10]
+
+    top_domains = AnythingLLMHoneypot.objects.filter(
+        timestamp__range=(start_date, end_date), domain__isnull=False
+    ).values('domain').annotate(count=Count('domain')).order_by('-count')[:10]
+
+    honeypot_stats = {
+        'top_ports': list(top_ports),
+        'top_locations': top_locations_sorted,
+        'top_domains': list(top_domains),
+    }
     return render(request, 'anythingllmhome/home.html', {
         'daily_data': daily_data,
+        'honeypot_timeline_data': honeypot_timeline_data_formatted,
+        'honeypot_stats': honeypot_stats,
     })

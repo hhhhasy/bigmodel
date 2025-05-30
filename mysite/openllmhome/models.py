@@ -8,3 +8,16 @@ class DailyExpose(models.Model):
     class Meta:
         db_table  = 'openllm_daily_expose'
         managed   = False
+
+class OpenLLMHoneypot(models.Model):
+    ip = models.CharField(max_length=45, null=True, blank=True)
+    port = models.IntegerField(null=True, blank=True)
+    domain = models.CharField(max_length=255, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    province = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    timestamp = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'openllm_honeypots'
+        managed = False

@@ -71,3 +71,17 @@ def get_latest_deepseek_counts_model():
 #     class Meta:
 #         db_table = 'deepseek_counts'
 #         managed  = False
+
+
+class OLLAMAHoneypot(models.Model):
+    ip = models.CharField(max_length=45, null=True, blank=True)
+    port = models.IntegerField(null=True, blank=True)
+    domain = models.CharField(max_length=255, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    province = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    timestamp = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'ollama_honeypots'
+        managed = False

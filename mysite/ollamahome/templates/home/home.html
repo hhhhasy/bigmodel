@@ -491,7 +491,51 @@
             font-size: 1rem;
             margin-bottom: 1.5rem;
         }
+        /* Add scrolling to honeypot stats card description */
+        #honeypotStatsCard .card-desc {
+            max-height: 250px; /* Adjust height as needed */
+            overflow-y: auto;
+            padding-right: 15px; /* Add some padding for the scrollbar */
+        }
 
+        /* Style for Top N stats titles */
+        #honeypotStatsCard h4 {
+            color: var(--accent-color); /* Use accent color for titles */
+            margin-bottom: 0.8rem; /* Add space below title */
+            font-weight: 600; /* Ensure bold */
+            border-bottom: 1px dashed rgba(59, 130, 246, 0.3); /* Add a subtle separator */
+            padding-bottom: 0.5rem;
+            margin-top: 1.5rem; /* Add space above title, except for the first one */
+        }
+
+         #honeypotStatsCard h4:first-child {
+            margin-top: 0; /* No top margin for the first title */
+         }
+
+        /* Style for Top N stats lists */
+        #honeypotStatsCard ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem; /* Add space below list */
+        }
+
+        #honeypotStatsCard ul li {
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0;
+            border-bottom: 1px dotted rgba(148, 163, 184, 0.3); /* Dotted separator for list items */
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+         #honeypotStatsCard ul li:last-child {
+             border-bottom: none; /* No border for the last item */
+             margin-bottom: 0;
+         }
+
+        #honeypotStatsCard ul li strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
         /* 数据面板 */
         .model-stats {
             display: grid;
@@ -1065,6 +1109,41 @@
                     <canvas id="versionTopChart"></canvas>
                 </div>
             </div>
+            <!-- LLM蜜罐信息捕获区块 -->
+            <div class="section-header" style="margin-top: 4rem;">
+                <h2 class="section-title">ollamahome蜜罐信息捕获</h2>
+                <p class="section-desc">模拟真实大模型应用接口，诱捕网络扫描与潜在攻击行为，洞察LLM相关威胁的全貌。</p>
+            </div>
+
+            <div class="chart-container">
+                <!-- 蜜罐访问（攻击）时间线图 -->
+                <div class="neon-card chart-card">
+                    <h3 class="chart-title">蜜罐访问（攻击）频率时间线</h3>
+                    <canvas id="honeypotTimelineChart"></canvas>
+                </div>
+
+                <!-- Top N 攻击统计 -->
+                <div class="neon-card" id="honeypotStatsCard">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar card-icon"></i>
+                        <h3 class="card-title">Top N 攻击统计</h3>
+                    </div>
+                    <div class="card-desc">
+                        <h4>最常使用的端口 Top 10:</h4>
+                        <ul id="topPortsList">
+                            <!-- Top ports will be injected here by JavaScript -->
+                        </ul>
+                        <h4>攻击来源最多的 IP 或城市 Top 10:</h4>
+                        <ul id="topLocationsList">
+                            <!-- Top locations will be injected here by JavaScript -->
+                        </ul>
+                        <h4>最频繁出现的域名（如有）:</h4>
+                        <ul id="topDomainsList">
+                            <!-- Top domains will be injected here by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
             <!-- 安全分析区块 -->
             <div class="section-header" style="margin-top: 4rem;">
@@ -1171,7 +1250,9 @@
     {{ daily_data|json_script:"daily-data" }}
     {{ model_data|json_script:"model-data" }}
     {{ version_data|json_script:"version-data" }}
-    
+    {{ honeypot_timeline_data|json_script:"honeypot-timeline-data" }}
+    {{ honeypot_stats|json_script:"honeypot-stats" }}
+
     <script>
     // 导航栏滚动效果
     const navbar = document.getElementById('navbar');
@@ -1278,7 +1359,8 @@
             const dailyData   = JSON.parse(document.getElementById('daily-data').textContent);
             const modelData   = JSON.parse(document.getElementById('model-data').textContent);
             const versionData = JSON.parse(document.getElementById('version-data').textContent);
-
+            const honeypotTimelineData = JSON.parse(document.getElementById('honeypot-timeline-data').textContent);
+            const honeypotStats = JSON.parse(document.getElementById('honeypot-stats').textContent);
             // 2. 销毁旧图表
             Object.values(charts).forEach(c => c && c.destroy());
 
@@ -1402,6 +1484,81 @@
                     }
                 }
             );
+            // 5. 蜜罐访问（攻击）时间线图
+            const honeypotCtx = document.getElementById('honeypotTimelineChart').getContext('2d');
+            charts.honeypot = new Chart(
+                honeypotCtx,
+                {
+                    type: 'line',
+                    data: {
+                        labels: honeypotTimelineData.labels,
+                        datasets: [{
+                            data: honeypotTimelineData.data,
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#ef4444',
+                            pointHoverRadius: 6,
+                            pointHoverBackgroundColor: '#ef4444',
+                            pointHoverBorderColor: '#fff',
+                            pointHoverBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        ...chartOptions,
+                         plugins: {
+                            ...chartOptions.plugins,
+                            tooltip: {
+                                ...chartOptions.plugins.tooltip,
+                                callbacks: {
+                                     title: function(context) {
+                                        return `${context[0].label}`;
+                                    },
+                                    label: function(context) {
+                                        return `攻击次数: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+
+            // 6. 填充 Top N 攻击统计数据
+            const topPortsList = document.getElementById('topPortsList');
+            topPortsList.innerHTML = '';
+            honeypotStats.top_ports.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>端口 ${item.port}:</strong> ${item.count} 次`;
+                topPortsList.appendChild(li);
+            });
+
+            const topLocationsList = document.getElementById('topLocationsList');
+            topLocationsList.innerHTML = '';
+             honeypotStats.top_locations.forEach(item => {
+                const li = document.createElement('li');
+                 li.innerHTML = `<strong>${item[0]}:</strong> ${item[1]} 次`;
+                topLocationsList.appendChild(li);
+            });
+
+            const topDomainsList = document.getElementById('topDomainsList');
+            topDomainsList.innerHTML = '';
+            if (honeypotStats.top_domains.length > 0) {
+                 honeypotStats.top_domains.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${item.domain}:</strong> ${item.count} 次`;
+                    topDomainsList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = '暂无域名数据';
+                topDomainsList.appendChild(li);
+            }
+
         } catch (err) {
             console.error('图表渲染失败:', err);
             document.querySelector('.chart-container').innerHTML = `
