@@ -168,17 +168,17 @@ def search_view(request):
     # FOFA 查询
     results2 = []
     if query:
-        fofa_query = f"{query} && ollama"
+        fofa_query = f"{query} "
         qbase64 = base64.b64encode(fofa_query.encode()).decode()
         params = {
-            'key': "68abfba96124fb292689693c1c892f54",
+            'key': "m6sqfx3o7efx9qbbcxjzepisuo3tuk8r",
             'qbase64': qbase64,
             'size': 100,
             'full': 'false',
         }
         try:
             resp = requests.get(
-                "http://fofa.xmint.cn/api/v1/search/all",
+                "https://fofoapi.com/",
                 params=params,
                 timeout=10
             )
