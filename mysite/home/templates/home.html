@@ -1629,8 +1629,8 @@
   <section id="distribution" class="feature-section">
     <div class="feature-container">
       <div class="feature-header">
-        <h2 class="feature-title">全球分布分析</h2>
-        <p class="feature-subtitle">实时监控大模型服务的全球分布情况，掌握潜在风险</p>
+        <h2 class="feature-title">数据可视化分析</h2>
+        <p class="feature-subtitle">实时监控大模型服务的分布情况及趋势，掌握潜在风险</p>
       </div>
       <div class="feature-content">
         <div class="feature-card">
@@ -1680,54 +1680,7 @@
     </div>
   </section>
 
-  <!-- AI自动评测 Section -->
-  <section id="ai-assessment" class="feature-section alt-bg">
-    <div class="feature-container reverse">
-      <div class="feature-image">
-        <div class="assessment-demo">
-          <div class="assessment-card">
-            <div class="assessment-header">
-              <div class="assessment-badge high">高风险</div>
-              <div class="assessment-score">85</div>
-            </div>
-            <div class="assessment-detail">
-              <div class="assessment-item">
-                <span class="item-name">访问控制</span>
-                <div class="progress-bar">
-                  <div class="progress" style="width: 30%;"></div>
-                </div>
-              </div>
-              <div class="assessment-item">
-                <span class="item-name">数据加密</span>
-                <div class="progress-bar">
-                  <div class="progress" style="width: 45%;"></div>
-                </div>
-              </div>
-              <div class="assessment-item">
-                <span class="item-name">API安全</span>
-                <div class="progress-bar">
-                  <div class="progress" style="width: 20%;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="feature-text">
-        <h2 class="feature-title">AI自动评测</h2>
-        <p class="feature-description">利用先进的AI技术，自动评估大模型服务的安全状况，提供专业的风险评分和改进建议。</p>
-        <ul class="feature-list">
-          <li><i class="fas fa-check-circle"></i> 多维度安全评分，覆盖访问控制、数据加密、API安全等关键指标</li>
-          <li><i class="fas fa-check-circle"></i> 智能识别常见安全漏洞，如未授权访问、敏感信息泄露等</li>
-          <li><i class="fas fa-check-circle"></i> 提供针对性的安全加固建议，帮助快速修复风险点</li>
-          <li><i class="fas fa-check-circle"></i> 定期自动扫描，及时发现新出现的安全隐患</li>
-        </ul>
-        <div class="feature-action text-left">
-          <a href="/assessment" class="btn-secondary">开始安全评测 <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- 智能搜索 Section -->
   <section id="search" class="feature-section">
@@ -1736,17 +1689,46 @@
         <h2 class="feature-title">智能搜索引擎</h2>
         <p class="feature-subtitle">一键搜索，快速定位目标大模型服务</p>
       </div>
-      <div class="search-demo">
-        <div class="search-box">
-          <input type="text" placeholder="输入关键词、IP地址或模型名称..." class="search-input">
-          <button class="search-button"><i class="fas fa-search"></i></button>
+      
+      <div class="feature-content">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-map-marked-alt"></i> <!-- 修改精确定位展示图标 -->
+          </div>
+          <h3>精确定位展示</h3>
+          <p class="feature-description">通过IP地址和服务指纹，精准定位全球范围内的特定大模型服务实例</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> 精确IP地理位置映射</li>
+            <li><i class="fas fa-check-circle"></i> 大模型服务识别</li>
+            <li><i class="fas fa-check-circle"></i> 地图定位显示</li>
+            
+          </ul>
         </div>
-        <div class="search-tags">
-          <span class="search-tag">Ollama</span>
-          <span class="search-tag">Dify</span>
-          <span class="search-tag">OpenWebUI</span>
-          <span class="search-tag">vLLM</span>
-          <span class="search-tag">+更多</span>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fab fa-foursquare"></i> <!-- 修改FOFA空间测绘图标 -->
+          </div>
+          <h3>FOFA空间测绘</h3>
+          <p class="feature-description">整合FOFA等网络空间搜索引擎数据，定位网络空间中的资产</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> IP、端口、协议、域名展示</li>
+            <li><i class="fas fa-check-circle"></i> 实时展示最新探测结果</li>
+            <li><i class="fas fa-check-circle"></i> 潜在风险漏洞识别</li>
+            
+          </ul>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-secret"></i> 
+          </div>
+          <h3>AI威胁分析报告</h3>
+          <p class="feature-description">利用AI技术，评估大模型服务的安全状况，提供风险评分和改进建议。</p>
+        <ul class="feature-list">
+          <li><i class="fas fa-check-circle"></i> 多维度安全评分</li>
+          <li><i class="fas fa-check-circle"></i> 智能识别常见安全漏洞</li>
+          <li><i class="fas fa-check-circle"></i> 提供针对性的安全加固建议</li>
+          <li><i class="fas fa-check-circle"></i> 及时发现新的安全隐患</li>
+        </ul>
         </div>
       </div>
       
@@ -1759,40 +1741,9 @@
   <!-- 实时监控 Section -->
   <section id="monitoring" class="feature-section alt-bg">
     <div class="feature-container reverse">
-      <div class="feature-image">
-        <div class="monitor-demo">
-          <div class="monitor-header">
-            <div class="monitor-title">实时监控面板</div>
-            <div class="monitor-controls">
-              <span class="monitor-date">最后更新: <span id="last-update-time">2023-06-15 15:30</span></span>
-            </div>
-          </div>
-          <div class="monitor-grid">
-            <div class="monitor-card">
-              <div class="monitor-card-header">新增暴露服务</div>
-              <div class="monitor-card-value">+28</div>
-              <div class="monitor-card-trend up">↑ 12%</div>
-            </div>
-            <div class="monitor-card">
-              <div class="monitor-card-header">安全事件</div>
-              <div class="monitor-card-value">5</div>
-              <div class="monitor-card-trend down">↓ 8%</div>
-            </div>
-            <div class="monitor-card">
-              <div class="monitor-card-header">平均响应时间</div>
-              <div class="monitor-card-value">320ms</div>
-              <div class="monitor-card-trend stable">→ 0%</div>
-            </div>
-            <div class="monitor-card">
-              <div class="monitor-card-header">活跃模型数</div>
-              <div class="monitor-card-value">142</div>
-              <div class="monitor-card-trend up">↑ 5%</div>
-            </div>
-          </div>
-        </div>
-      </div>
+
       <div class="feature-text">
-        <h2 class="feature-title">实时监控预警</h2>
+        <h2 class="feature-title">大模型服务监控</h2>
         <p class="feature-description">7×24小时不间断监控大模型服务状态，发现异常立即预警，让您安心无忧。</p>
         <ul class="feature-list">
           <li><i class="fas fa-check-circle"></i> 实时监测服务可用性、响应时间、请求量等关键指标</li>
@@ -1801,7 +1752,7 @@
           <li><i class="fas fa-check-circle"></i> 可自定义监控规则和告警阈值，灵活适应不同场景需求</li>
         </ul>
         <div class="feature-action text-left">
-          <a href="/monitoring" class="btn-secondary">查看监控面板 <i class="fas fa-arrow-right"></i></a>
+          <a href="/Probing" class="btn-secondary">查看数据探测面板 <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
     </div>
