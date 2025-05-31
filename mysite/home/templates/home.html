@@ -1678,6 +1678,217 @@
         padding: 5px 10px;
       }
     }
+
+    /* 优势展示部分样式 - 紧凑版本 */
+    .advantages-section {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      padding: 40px 5% 30px;
+      position: relative;
+      overflow: hidden;
+      min-height: auto;
+    }
+
+    .advantages-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.2'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .advantages-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .advantages-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .advantages-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      margin-bottom: 0;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* 统计数据展示 - 紧凑版 */
+    .stats-showcase {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .stat-item {
+      background: white;
+      padding: 18px 15px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all var(--transition-speed);
+      border: 1px solid var(--color-border-light);
+    }
+
+    .stat-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    }
+
+    .stat-icon {
+      width: 35px;
+      height: 35px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: white;
+    }
+
+    .stat-item:nth-child(1) .stat-icon {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .stat-item:nth-child(2) .stat-icon {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+    }
+
+    .stat-item:nth-child(3) .stat-icon {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    .stat-item:nth-child(4) .stat-icon {
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      margin-bottom: 5px;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    /* 核心优势网格 - 紧凑版 */
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .advantage-card {
+      background: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all var(--transition-speed);
+      border: 1px solid var(--color-border-light);
+      text-align: center;
+    }
+
+    .advantage-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    }
+
+    .advantage-icon {
+      width: 45px;
+      height: 45px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: white;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    }
+
+    .advantage-card h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--color-text-dark);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .advantage-card p {
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+      margin: 0;
+      font-size: 0.85rem;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 1024px) {
+      .stats-showcase {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .advantages-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .advantages-section {
+        padding: 30px 5% 25px;
+      }
+      
+      .advantages-title {
+        font-size: 1.6rem;
+      }
+      
+      .stats-showcase {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 25px;
+      }
+      
+      .stat-item {
+        padding: 15px 10px;
+      }
+      
+      .stat-number {
+        font-size: 1.3rem;
+      }
+      
+      .stat-label {
+        font-size: 0.75rem;
+      }
+      
+      .advantage-card {
+        padding: 18px;
+      }
+      
+      .advantage-card h4 {
+        font-size: 1rem;
+      }
+      
+      .advantage-card p {
+        font-size: 0.8rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1994,7 +2205,71 @@
   </div>
 </section>
 
-  
+  <!-- 优势展示 Section -->
+  <section class="advantages-section">
+    <div class="advantages-container">
+      <div class="advantages-header">
+        <h2 class="advantages-title">专业、高效、可靠的风险评估服务</h2>
+      </div>
+      
+      <!-- 统计数据展示 -->
+      <div class="stats-showcase">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-number">1000+</div>
+          <div class="stat-label">企业客户</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="stat-number">10000+</div>
+          <div class="stat-label">高质量报告</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="stat-number">98%</div>
+          <div class="stat-label">客户满意度</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-number">&lt;2分钟</div>
+          <div class="stat-label">报告生成时间</div>
+        </div>
+      </div>
+      
+      <!-- 核心优势 -->
+      <div class="advantages-grid">
+        <div class="advantage-card">
+          <div class="advantage-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h4>数据安全保障</h4>
+          <p>严格的数据加密和隐私保护，全面的信息安全，保障用户隐私安全</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h4>精准风险预测</h4>
+          <p>自研风险模型，多维度数据分析，提供精准的风险评估和预测结果</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h4>专业技术支持</h4>
+          <p>大数据专家团队支持，提供全方位的技术与服务支持</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- 联系我们 Section -->
   <section id="contact" class="contact-section">
