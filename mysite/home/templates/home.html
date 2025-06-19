@@ -450,7 +450,7 @@
     }
 
     .stats-container {
-      max-width: 1200px;
+      max-width: 1600px;
       margin: 10 auto;
       position: relative;
       z-index: 1;
@@ -469,15 +469,7 @@
     }
     
     .stats-title::after {
-      content: '';
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: var(--color-text);
-      border-radius: 2px;
+      content: none;
     }
 
     .stats-table {
@@ -491,13 +483,14 @@
 
     .stats-header {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr; /* 调整列宽比例 */
       background: rgba(255, 255, 255, 0.15);
       padding: 20px;
       font-weight: 600;
       font-size: 1rem;
       color: var(--color-text);
       letter-spacing: 0.5px;
+      white-space: nowrap; /* 防止文字换行 */
     }
 
     .stats-body {
@@ -506,7 +499,7 @@
 
     .stats-row {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr; /* 与表头保持一致 */
       padding: 15px 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       transition: all var(--transition-speed);
@@ -539,7 +532,7 @@
     }
     
     .stats-cell:first-child::before {
-      content: '';
+      content: none; /* 改为none，移除绿色点点 */
       display: inline-block;
       width: 8px;
       height: 8px;
@@ -1521,6 +1514,536 @@
         width: 100%;
       }
     }
+
+    /* 紧凑型大模型服务监控样式 */
+    .monitoring-compact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 30px 0 25px 0;
+    }
+
+    .monitoring-compact-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .monitoring-compact-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    }
+
+    .monitoring-compact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+
+    .monitoring-compact-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border-radius: 50%;
+      color: white;
+      font-size: 1.5em;
+    }
+
+    .monitoring-compact-card h4 {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      color: var(--color-text-dark);
+      font-weight: 600;
+    }
+
+    .monitoring-compact-card p {
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+      font-size: 0.85em;
+      margin: 0;
+    }
+
+    .monitoring-bottom-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 25px 0;
+      align-items: start;
+    }
+
+    .services-section h4,
+    .features-section h4 {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: var(--color-text-dark);
+      font-weight: 600;
+    }
+
+    .services-compact-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .service-compact-badge {
+      padding: 6px 12px;
+      background: linear-gradient(135deg, var(--color-primary-transparent), var(--color-accent-transparent));
+      border: 1px solid var(--color-primary);
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 500;
+      color: var(--color-primary);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .service-compact-badge:hover {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .features-compact-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .feature-compact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .feature-compact-item:hover {
+      transform: translateX(3px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .feature-compact-item i {
+      color: var(--color-success);
+      font-size: 0.9em;
+      flex-shrink: 0;
+    }
+
+    .feature-compact-item span {
+      color: var(--color-text-dark);
+      font-size: 0.85em;
+      line-height: 1.3;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 1024px) {
+      .monitoring-compact-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .monitoring-bottom-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .features-compact-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .services-compact-grid {
+        gap: 6px;
+      }
+      
+      .service-compact-badge {
+        font-size: 0.75em;
+        padding: 5px 10px;
+      }
+    }
+
+    /* 优势展示部分样式 - 扩充版本 */
+    .advantages-section {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      padding: 35px 5% 25px;
+      position: relative;
+      overflow: hidden;
+      min-height: auto;
+    }
+
+    .advantages-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.2'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .advantages-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .advantages-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .advantages-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .advantages-subtitle {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 0;
+    }
+
+    /* 统计数据展示 */
+    .stats-showcase {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .stat-item {
+      background: white;
+      padding: 15px 12px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all var(--transition-speed);
+      border: 1px solid var(--color-border-light);
+    }
+
+    .stat-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .stat-icon {
+      width: 30px;
+      height: 30px;
+      margin: 0 auto 8px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: white;
+    }
+
+    .stat-item:nth-child(1) .stat-icon {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .stat-item:nth-child(2) .stat-icon {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+    }
+
+    .stat-item:nth-child(3) .stat-icon {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    .stat-item:nth-child(4) .stat-icon {
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+    }
+
+    .stat-number {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    /* 核心优势网格 */
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .advantage-card {
+      background: white;
+      padding: 18px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all var(--transition-speed);
+      border: 1px solid var(--color-border-light);
+      text-align: center;
+    }
+
+    .advantage-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .advantage-icon {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: white;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    }
+
+    .advantage-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text-dark);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .advantage-card p {
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+      margin: 0;
+      font-size: 0.8rem;
+    }
+
+    /* 章节标题 */
+    .section-subtitle {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--color-text-dark);
+      text-align: center;
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .section-subtitle::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border-radius: 1px;
+    }
+
+    /* 服务特色 */
+    .features-section {
+      margin-bottom: 25px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .feature-item {
+      background: white;
+      padding: 12px;
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: all var(--transition-speed);
+      border: 1px solid var(--color-border-light);
+    }
+
+    .feature-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .feature-icon-small {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .feature-content h5 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text-dark);
+      margin: 0 0 2px 0;
+      line-height: 1.2;
+    }
+
+    .feature-content span {
+      font-size: 0.7rem;
+      color: var(--color-text-secondary);
+      line-height: 1.2;
+    }
+
+    /* 客户案例 */
+    .clients-section {
+      margin-bottom: 25px;
+    }
+
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .client-item {
+      background: white;
+      padding: 12px 8px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: all var(--transition-speed);
+      border: 1px solid var(--color-border-light);
+    }
+
+    .client-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .client-logo {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    .client-item span {
+      font-size: 0.7rem;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+
+    /* 技术优势 */
+    .tech-advantages {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .tech-item {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      padding: 15px 10px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      color: white;
+      transition: all var(--transition-speed);
+    }
+
+    .tech-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .tech-number {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .tech-label {
+      font-size: 0.7rem;
+      opacity: 0.9;
+      line-height: 1.2;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 1024px) {
+      .stats-showcase {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .advantages-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .clients-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .advantages-section {
+        padding: 25px 5% 20px;
+      }
+      
+      .advantages-title {
+        font-size: 1.5rem;
+      }
+      
+      .advantages-subtitle {
+        font-size: 0.85rem;
+      }
+      
+      .stats-showcase {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .clients-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .tech-advantages {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
   </style>
 </head>
 <body>
@@ -1556,19 +2079,25 @@
 
   <!-- Statistics Section -->
   <section id="statistics" class="statistics">
-    <div class="stats-container">
-      <div class="stats-content" style="display: flex; height: 100%;">
-        <div style="flex: 1; display: flex; align-items: center; justify-content: flex-start; padding-left: 50px;">
-          <h2 class="stats-title" style="margin: 0;">大模型服务暴露统计</h2>
-        </div>
-        <div style="flex: 2; display: flex; align-items: flex-start; justify-content: center; padding-top: 70px;">
-          <div class="stats-table">
+    <div class="stats-container" style="display: flex; align-items: center; justify-content: space-between;">
+      <!-- 左侧：标题和解释文字 -->
+      <div class="stats-text" style="flex: 1; padding-right: 200px; padding-left: 20px;">
+        <h2 class="stats-title" style="text-align: left; margin: 0 0 30px 0; white-space: nowrap; left: 0; transform: none; position: relative;">
+          大模型服务暴露统计
+          <span style="content: ''; position: absolute; bottom: -15px; left: 0; width: 80px; height: 4px; background: var(--color-text); border-radius: 2px; display: block;"></span>
+        </h2>
+        <p style="color: var(--color-text); font-size: 1.1rem; line-height: 1.8; max-width: 600px; margin: 0 0 30px 0;">本平台实时监控全球范围内的大模型服务部署情况，收集并分析各类开源大模型服务的暴露数据。通过多维度统计分析，帮助您了解不同服务的全球分布、区域集中度以及潜在安全风险，为大模型安全治理提供数据支持与决策参考。</p>
+      </div>
+      
+      <!-- 右侧：表格 -->
+      <div class="stats-table-container" style="flex: 1.5;"> <!-- 增加表格区域的宽度比例 -->
+        <div class="stats-table">
           <div class="stats-header">
             <div class="stats-cell">服务名称</div>
             <div class="stats-cell">暴露IP数量</div>
             <div class="stats-cell">覆盖国家数</div>
             <div class="stats-cell">中国IP数量</div>
-            <div class="stats-cell" id="ollama-overseas">0</div>
+            <div class="stats-cell">海外IP数量</div>
           </div>
           <div class="stats-body">
             <div class="stats-row" data-service="ollama">
@@ -1630,8 +2159,8 @@
   <section id="distribution" class="feature-section">
     <div class="feature-container">
       <div class="feature-header">
-        <h2 class="feature-title">全球分布分析</h2>
-        <p class="feature-subtitle">实时监控大模型服务的全球分布情况，掌握潜在风险</p>
+        <h2 class="feature-title">数据可视化分析</h2>
+        <p class="feature-subtitle">实时监控大模型服务的分布情况及趋势，掌握潜在风险</p>
       </div>
       <div class="feature-content">
         <div class="feature-card">
@@ -1639,77 +2168,49 @@
             <i class="fas fa-globe-americas"></i>
           </div>
           <h3>地理分布可视化</h3>
-          <p>通过交互式地图直观展示全球各地区大模型服务的分布密度，快速识别高风险区域。</p>
+          <p>通过交互式地图直观展示全球各地区大模型服务的分布密度，快速识别高风险区域</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <i class="fas fa-chart-line"></i>
           </div>
           <h3>趋势分析</h3>
-          <p>追踪服务暴露数量的历史变化趋势，预测未来可能的安全风险点。</p>
+          <p>追踪服务暴露数量的历史变化趋势，预测未来可能的安全风险点</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <i class="fas fa-filter"></i>
           </div>
           <h3>多维度筛选</h3>
-          <p>按国家、地区、服务类型、IP特征等多维度进行数据筛选，精准定位目标信息。</p>
+          <p>按国家、地区、服务类型、IP特征等多维度进行数据筛选，精准定位目标信息</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-secret"></i> <!-- 修改蜜罐攻击捕获图标 -->
+          </div>
+          <h3>蜜罐攻击捕获</h3>
+          <p>记录和分析针对模拟大模型服务的蜜罐节点的攻击事件，揭示攻击者的策略和意图。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i> <!-- 修改安全风险与最新动态图标 -->
+          </div>
+          <h3>安全风险与最新动态</h3>
+          <p>提供关于大模型相关的最新安全漏洞、攻击事件和行业资讯，帮助用户及时了解和应对潜在威胁。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-pie"></i> <!-- 修改模型使用统计图标 -->
+          </div>
+          <h3>模型使用统计</h3>
+          <p>统计不同类型大模型服务的使用频率和分布情况，为资源优化和安全策略调整提供数据支持。</p>
         </div>
       </div>
-      <div class="feature-action">
-        <a href="/distribution" class="btn-secondary">查看分布分析 <i class="fas fa-arrow-right"></i></a>
-      </div>
+      
     </div>
   </section>
 
-  <!-- AI自动评测 Section -->
-  <section id="ai-assessment" class="feature-section alt-bg">
-    <div class="feature-container reverse">
-      <div class="feature-image">
-        <div class="assessment-demo">
-          <div class="assessment-card">
-            <div class="assessment-header">
-              <div class="assessment-badge high">高风险</div>
-              <div class="assessment-score">85</div>
-            </div>
-            <div class="assessment-detail">
-              <div class="assessment-item">
-                <span class="item-name">访问控制</span>
-                <div class="progress-bar">
-                  <div class="progress" style="width: 30%;"></div>
-                </div>
-              </div>
-              <div class="assessment-item">
-                <span class="item-name">数据加密</span>
-                <div class="progress-bar">
-                  <div class="progress" style="width: 45%;"></div>
-                </div>
-              </div>
-              <div class="assessment-item">
-                <span class="item-name">API安全</span>
-                <div class="progress-bar">
-                  <div class="progress" style="width: 20%;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="feature-text">
-        <h2 class="feature-title">AI自动评测</h2>
-        <p class="feature-description">利用先进的AI技术，自动评估大模型服务的安全状况，提供专业的风险评分和改进建议。</p>
-        <ul class="feature-list">
-          <li><i class="fas fa-check-circle"></i> 多维度安全评分，覆盖访问控制、数据加密、API安全等关键指标</li>
-          <li><i class="fas fa-check-circle"></i> 智能识别常见安全漏洞，如未授权访问、敏感信息泄露等</li>
-          <li><i class="fas fa-check-circle"></i> 提供针对性的安全加固建议，帮助快速修复风险点</li>
-          <li><i class="fas fa-check-circle"></i> 定期自动扫描，及时发现新出现的安全隐患</li>
-        </ul>
-        <div class="feature-action text-left">
-          <a href="/assessment" class="btn-secondary">开始安全评测 <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- 智能搜索 Section -->
   <section id="search" class="feature-section">
@@ -1718,17 +2219,46 @@
         <h2 class="feature-title">智能搜索引擎</h2>
         <p class="feature-subtitle">一键搜索，快速定位目标大模型服务</p>
       </div>
-      <div class="search-demo">
-        <div class="search-box">
-          <input type="text" placeholder="输入关键词、IP地址或模型名称..." class="search-input">
-          <button class="search-button"><i class="fas fa-search"></i></button>
+      
+      <div class="feature-content">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-map-marked-alt"></i> <!-- 修改精确定位展示图标 -->
+          </div>
+          <h3>精确定位展示</h3>
+          <p class="feature-description">通过IP地址和服务指纹，精准定位全球范围内的特定大模型服务实例</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> 精确IP地理位置映射</li>
+            <li><i class="fas fa-check-circle"></i> 大模型服务识别</li>
+            <li><i class="fas fa-check-circle"></i> 地图定位显示</li>
+            
+          </ul>
         </div>
-        <div class="search-tags">
-          <span class="search-tag">Ollama</span>
-          <span class="search-tag">Dify</span>
-          <span class="search-tag">OpenWebUI</span>
-          <span class="search-tag">vLLM</span>
-          <span class="search-tag">+更多</span>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fab fa-foursquare"></i> <!-- 修改FOFA空间测绘图标 -->
+          </div>
+          <h3>FOFA空间测绘</h3>
+          <p class="feature-description">整合FOFA等网络空间搜索引擎数据，定位网络空间中的资产</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> IP、端口、协议、域名展示</li>
+            <li><i class="fas fa-check-circle"></i> 实时展示最新探测结果</li>
+            <li><i class="fas fa-check-circle"></i> 潜在风险漏洞识别</li>
+            
+          </ul>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-secret"></i> 
+          </div>
+          <h3>AI威胁分析报告</h3>
+          <p class="feature-description">利用AI技术，评估大模型服务的安全状况，提供风险评分和改进建议。</p>
+        <ul class="feature-list">
+          <li><i class="fas fa-check-circle"></i> 多维度安全评分</li>
+          <li><i class="fas fa-check-circle"></i> 智能识别常见安全漏洞</li>
+          <li><i class="fas fa-check-circle"></i> 提供针对性的安全加固建议</li>
+          <li><i class="fas fa-check-circle"></i> 及时发现新的安全隐患</li>
+        </ul>
         </div>
       </div>
       
@@ -1738,52 +2268,272 @@
     </div>
   </section>
 
-  <!-- 实时监控 Section -->
-  <section id="monitoring" class="feature-section alt-bg">
-    <div class="feature-container reverse">
-      <div class="feature-image">
-        <div class="monitor-demo">
-          <div class="monitor-header">
-            <div class="monitor-title">实时监控面板</div>
-            <div class="monitor-controls">
-              <span class="monitor-date">最后更新: <span id="last-update-time">2023-06-15 15:30</span></span>
+  <!-- 大模型服务监控 Section -->
+<section id="monitoring" class="feature-section alt-bg">
+  <div class="feature-container">
+    <div class="feature-header">
+      <h2 class="feature-title">大模型服务监控</h2>
+      <p class="feature-subtitle">专业的大模型服务探测与监控平台，支持多种主流AI服务的实时状态检测</p>
+    </div>
+    
+    <!-- 主要功能卡片 -->
+    <div class="monitoring-compact-grid">
+      <div class="monitoring-compact-card">
+        <div class="monitoring-compact-icon">
+          <i class="fas fa-search"></i>
+        </div>
+        <h4>智能服务发现</h4>
+        <p>自动识别和发现网络中的大模型服务，支持多种AI框架的智能识别</p>
+      </div>
+      
+      <div class="monitoring-compact-card">
+        <div class="monitoring-compact-icon">
+          <i class="fas fa-network-wired"></i>
+        </div>
+        <h4>Nmap深度扫描</h4>
+        <p>利用专业网络扫描工具进行深度探测，获取详细的服务信息和配置</p>
+      </div>
+      
+      <div class="monitoring-compact-card">
+        <div class="monitoring-compact-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h4>实时状态监控</h4>
+        <p>7×24小时不间断监控服务状态，实时展示运行状况和性能指标</p>
+      </div>
+    </div>
+
+    <!-- 底部信息区域 -->
+    <div class="monitoring-bottom-section">
+      <!-- 支持的AI服务 -->
+      <div class="services-section">
+        <h4>支持的AI服务平台</h4>
+        <div class="services-compact-grid">
+          <span class="service-compact-badge">backyard ai</span>
+          <span class="service-compact-badge">FastChat-WebUI</span>
+          <span class="service-compact-badge">GPT4ALL</span>
+          <span class="service-compact-badge">llama.cpp</span>
+          <span class="service-compact-badge">LocalAI</span>
+          <span class="service-compact-badge">Ollama</span>
+          <span class="service-compact-badge">OpenWebUI</span>
+          <span class="service-compact-badge">OpenLLM</span>
+          <span class="service-compact-badge">Triton Inference Server</span>
+          <span class="service-compact-badge">vLLM</span>
+          
+        </div>
+      </div>
+      
+      <!-- 功能特性 -->
+      <div class="features-section">
+        <div class="features-compact-list">
+          <div class="feature-compact-item">
+            <i class="fas fa-check-circle"></i>
+            <span>端口扫描与服务识别</span>
+          </div>
+          <div class="feature-compact-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Banner信息获取</span>
+          </div>
+          <div class="feature-compact-item">
+            <i class="fas fa-check-circle"></i>
+            <span>API端点检测</span>
+          </div>
+          <div class="feature-compact-item">
+            <i class="fas fa-check-circle"></i>
+            <span>认证机制分析</span>
+          </div>
+          <div class="feature-compact-item">
+            <i class="fas fa-check-circle"></i>
+            <span>一键探测功能</span>
+          </div>
+          <div class="feature-compact-item">
+            <i class="fas fa-check-circle"></i>
+            <span>可视化状态展示</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="feature-action">
+      <a href="/Probing" class="btn-secondary">进入监控平台 <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+  <!-- 平台优势 Section -->
+  <section id="advantages" class="advantages-section">
+    <div class="advantages-container">
+      <div class="advantages-header">
+        <h2 class="advantages-title">平台优势</h2>
+        <p class="advantages-subtitle">专业的大模型安全监控平台，为AI服务提供全方位的安全保障</p>
+      </div>
+      
+      <!-- 核心数据统计 -->
+      <div class="stats-showcase">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-server"></i>
+          </div>
+          <div class="stat-number">10+</div>
+          <div class="stat-label">支持AI服务类型</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="stat-number">50000+</div>
+          <div class="stat-label">威胁检测样本</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-globe"></i>
+          </div>
+          <div class="stat-number">200+</div>
+          <div class="stat-label">覆盖国家地区</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-number">7×24</div>
+          <div class="stat-label">小时实时监控</div>
+        </div>
+      </div>
+      
+      <!-- 核心优势 -->
+      <div class="advantages-grid">
+        <div class="advantage-card">
+          <div class="advantage-icon">
+            <i class="fas fa-search-plus"></i>
+          </div>
+          <h4>智能服务发现</h4>
+          <p>自动识别网络中的大模型服务，支持Ollama、vLLM、OpenLLM等主流AI框架的智能识别与监控</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon">
+            <i class="fas fa-bug"></i>
+          </div>
+          <h4>蜜罐攻击捕获</h4>
+          <p>部署LLM蜜罐系统，实时捕获针对AI服务的攻击行为，提供攻击来源和模式分析</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h4>AI威胁分析</h4>
+          <p>集成多种AI模型，自动生成专业的威胁分析报告，提供可操作的安全建议</p>
+        </div>
+      </div>
+      
+      <!-- 服务特色 -->
+      <div class="features-section">
+        <h3 class="section-subtitle">技术特色</h3>
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon-small">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <div class="feature-content">
+              <h5>FOFA空间测绘</h5>
+              <span>整合网络空间搜索引擎</span>
             </div>
           </div>
-          <div class="monitor-grid">
-            <div class="monitor-card">
-              <div class="monitor-card-header">新增暴露服务</div>
-              <div class="monitor-card-value">+28</div>
-              <div class="monitor-card-trend up">↑ 12%</div>
+          <div class="feature-item">
+            <div class="feature-icon-small">
+              <i class="fas fa-chart-line"></i>
             </div>
-            <div class="monitor-card">
-              <div class="monitor-card-header">安全事件</div>
-              <div class="monitor-card-value">5</div>
-              <div class="monitor-card-trend down">↓ 8%</div>
+            <div class="feature-content">
+              <h5>趋势分析</h5>
+              <span>追踪服务暴露变化趋势</span>
             </div>
-            <div class="monitor-card">
-              <div class="monitor-card-header">平均响应时间</div>
-              <div class="monitor-card-value">320ms</div>
-              <div class="monitor-card-trend stable">→ 0%</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon-small">
+              <i class="fas fa-filter"></i>
             </div>
-            <div class="monitor-card">
-              <div class="monitor-card-header">活跃模型数</div>
-              <div class="monitor-card-value">142</div>
-              <div class="monitor-card-trend up">↑ 5%</div>
+            <div class="feature-content">
+              <h5>多维度筛选</h5>
+              <span>按国家、地区、服务类型筛选</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon-small">
+              <i class="fas fa-eye"></i>
+            </div>
+            <div class="feature-content">
+              <h5>可视化展示</h5>
+              <span>交互式地图和图表展示</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon-small">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="feature-content">
+              <h5>AI模型集成</h5>
+              <span>支持多种AI分析模型</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon-small">
+              <i class="fas fa-database"></i>
+            </div>
+            <div class="feature-content">
+              <h5>大数据处理</h5>
+              <span>海量数据实时处理分析</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="feature-text">
-        <h2 class="feature-title">实时监控预警</h2>
-        <p class="feature-description">7×24小时不间断监控大模型服务状态，发现异常立即预警，让您安心无忧。</p>
-        <ul class="feature-list">
-          <li><i class="fas fa-check-circle"></i> 实时监测服务可用性、响应时间、请求量等关键指标</li>
-          <li><i class="fas fa-check-circle"></i> 智能识别异常流量和可疑访问模式</li>
-          <li><i class="fas fa-check-circle"></i> 多渠道告警通知，支持邮件、短信、企业微信等</li>
-          <li><i class="fas fa-check-circle"></i> 可自定义监控规则和告警阈值，灵活适应不同场景需求</li>
-        </ul>
-        <div class="feature-action text-left">
-          <a href="/monitoring" class="btn-secondary">查看监控面板 <i class="fas fa-arrow-right"></i></a>
+      
+      <!-- 应用场景 -->
+      <div class="clients-section">
+        <h3 class="section-subtitle">应用场景</h3>
+        <div class="clients-grid">
+          <div class="client-item">
+            <div class="client-logo">🏢</div>
+            <span>企业AI安全</span>
+          </div>
+          <div class="client-item">
+            <div class="client-logo">🔒</div>
+            <span>网络安全</span>
+          </div>
+          <div class="client-item">
+            <div class="client-logo">🎓</div>
+            <span>学术研究</span>
+          </div>
+          <div class="client-item">
+            <div class="client-logo">🛡️</div>
+            <span>安全运营</span>
+          </div>
+          <div class="client-item">
+            <div class="client-logo">📊</div>
+            <span>威胁情报</span>
+          </div>
+          <div class="client-item">
+            <div class="client-logo">⚡</div>
+            <span>应急响应</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 技术优势 -->
+      <div class="tech-advantages">
+        <div class="tech-item">
+          <div class="tech-number">99.9%</div>
+          <div class="tech-label">服务可用性</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-number">10+</div>
+          <div class="tech-label">AI服务支持</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-number">TB级</div>
+          <div class="tech-label">数据处理能力</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-number">实时</div>
+          <div class="tech-label">威胁检测</div>
         </div>
       </div>
     </div>
