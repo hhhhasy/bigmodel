@@ -47,10 +47,10 @@ def dashboard(request):
         'data': honeypot_timeline_data,
     }
 
-    print("Debug Info:") # Add print statements for debugging
-    print(f"Start Date: {start_date}")
-    print(f"End Date: {end_date}")
-    print(f"Honeypot Timeline Data: {honeypot_timeline_data_formatted}")
+    # print("Debug Info:") # Add print statements for debugging
+    # print(f"Start Date: {start_date}")
+    # print(f"End Date: {end_date}")
+    # print(f"Honeypot Timeline Data: {honeypot_timeline_data_formatted}")
 
     # 统计 Top N 攻击数据
     top_ports = OpenLLMHoneypot.objects.filter(
