@@ -854,6 +854,14 @@
             font-family: monospace;
             color: #3b82f6;
             font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .cve-id:hover {
+            color: #2563eb;
+            text-decoration: underline;
+            transform: translateY(-1px);
         }
 
         .attack-case {
@@ -863,7 +871,7 @@
         }
 
         .case-item {
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.8 rem;
             transition: transform 0.3s ease;
             cursor: pointer;
         }
@@ -1151,7 +1159,7 @@
 
             <div class="chart-container">
                 <!-- 历史漏洞利用案例 -->
-                <div class="neon-card chart-card" onclick="window.open('https://jyjszx.symc.edu.cn/info/1013/1962.htm','_blank')">
+                <div class="neon-card chart-card">
                     <div class="card-header">
                         <i class="fas fa-bug card-icon"></i>
                         <h3 class="card-title">历史漏洞武器化攻击</h3>
@@ -1160,24 +1168,24 @@
                         <div class="vulnerability-matrix">
                             <div class="vul-item critical">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                <span class="cve-id">CVE-2024-37032</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2024-37032" target="_blank" class="cve-id">CVE-2024-37032</a>
                                 <span class="vul-desc">路径遍历代码执行</span>
                             </div>
                             <div class="vul-item high">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span class="cve-id">CVE-2024-39720</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2024-39720" target="_blank" class="cve-id">CVE-2024-39720</a>
                                 <span class="vul-desc">越界读取导致DoS攻击</span>
                             </div>
                             <div class="vul-item medium">
                                 <i class="fas fa-exclamation"></i>
-                                <span class="cve-id">CVE-2024-39722</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2024-39722" target="_blank" class="cve-id">CVE-2024-39722</a>
                                 <span class="vul-desc">敏感信息泄露漏洞</span>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：国家漏洞库CNNVD/南京农业大学通报
+                        来源：CVE官网
                     </div>
                 </div>
 
@@ -1209,6 +1217,20 @@
                                     系统沦陷案例
                                 </div>
                                 <div class="case-detail">利用漏洞植入XMRig矿机程序</div>
+                            </div>
+                            <div class="case-item">
+                                <div class="case-title">
+                                    <i class="fas fa-caret-right"></i>
+                                    数据泄露事件
+                                </div>
+                                <div class="case-detail">敏感训练数据被恶意下载和传播</div>
+                            </div>
+                            <div class="case-item">
+                                <div class="case-title">
+                                    <i class="fas fa-caret-right"></i>
+                                    服务拒绝攻击
+                                </div>
+                                <div class="case-detail">大量恶意请求导致服务器崩溃</div>
                             </div>
                         </div>
                     </div>
