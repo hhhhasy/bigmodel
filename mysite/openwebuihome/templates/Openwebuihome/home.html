@@ -648,6 +648,13 @@
             width: 120px;
             font-family: monospace;
             color: #3b82f6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cve-id:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+            transform: translateY(-1px);
         }
         .attack-case {
             border-top: 1px solid rgba(203, 213, 225, 0.3);
@@ -854,6 +861,13 @@
             font-family: monospace;
             color: #3b82f6;
             font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cve-id:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+            transform: translateY(-1px);
         }
 
         .attack-case {
@@ -1024,7 +1038,7 @@
         <div class="nav-links">
             <a href="/"><i class="fas fa-home"></i>首页</a>
             <a href="/distribution/?server=openwebui"><i class="fas fa-globe-asia"></i>分布分析</a>
-            <a href="/ipsearch/?server=openwebui"><i class="fas fa-search-location"></i>模型检索</a>
+            <a href="/ipsearch/?server=openwebui"><i class="fas fa-search-location"></i>IP检索</a>
             <a href="#main-content"><i class="fas fa-chart-line"></i>数据统计</a>
         </div>
     </nav>
@@ -1063,22 +1077,20 @@
                 <div class="neon-card" onclick="location.href='/distribution/?server=openwebui'">
                     <div class="card-header">
                         <i class="fas fa-globe-asia card-icon"></i>
-                        <h2 class="card-title">界面分布分析</h2>
+                        <h2 class="card-title">服务分布分析</h2>
                     </div>
                     <p class="card-desc">
-                        实时追踪全球Web界面部署情况，可视化用户分布，
-                        支持多维度性能监控与资源利用率分析
+                        实时追踪全球服务部署情况，可视化节点分布
                     </p>
                 </div>
 
                 <div class="neon-card" onclick="location.href='/ipsearch/?server=openwebui'">
                     <div class="card-header">
                         <i class="fas fa-search-location card-icon"></i>
-                        <h2 class="card-title">智能组件检索</h2>
+                        <h2 class="card-title">智能IP检索</h2>
                     </div>
                     <p class="card-desc">
-                        支持自然语言检索与特征搜索，毫秒级匹配Web组件，
-                        提供版本追踪、性能指标与部署建议
+                        支持对指定IP进行检索
                     </p>
                 </div>
             </div>
@@ -1140,7 +1152,7 @@
 
             <div class="chart-container">
                 <!-- 历史漏洞利用案例 -->
-                <div class="neon-card chart-card" onclick="window.open('https://nvd.nist.gov/vuln/detail/CVE-2024-12537','_blank')">
+                <div class="neon-card chart-card">
                     <div class="card-header">
                         <i class="fas fa-bug card-icon"></i>
                         <h3 class="card-title">历史漏洞武器化攻击</h3>
@@ -1149,24 +1161,24 @@
                         <div class="vulnerability-matrix">
                             <div class="vul-item critical">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                <span class="cve-id">CVE-2024-12537</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2024-12537" target="_blank" class="cve-id">CVE-2024-12537</a>
                                 <span class="vul-desc">未认证访问导致拒绝服务（DoS）</span>
                             </div>
                             <div class="vul-item high">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span class="cve-id">CVE-2025-46571</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2025-46571" target="_blank" class="cve-id">CVE-2025-46571</a>
                                 <span class="vul-desc">低权限用户上传 HTML 文件导致 XSS 攻击</span>
                             </div>
                             <div class="vul-item medium">
                                 <i class="fas fa-exclamation"></i>
-                                <span class="cve-id">CVE-2024-8053</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2024-8053" target="_blank" class="cve-id">CVE-2024-8053</a>
                                 <span class="vul-desc">会话固定攻击导致管理员账户接管</span>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：NVD 国家漏洞数据库
+                        来源：CVE 官网
                     </div>
                 </div>
             
