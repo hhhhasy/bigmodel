@@ -652,6 +652,13 @@
             width: 120px;
             font-family: monospace;
             color: #3b82f6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cve-id:hover {
+            color: #2563eb;
+            text-decoration: underline;
+            transform: translateY(-1px);
         }
         .attack-case {
             border-top: 1px solid rgba(203, 213, 225, 0.3);
@@ -858,6 +865,13 @@
             font-family: monospace;
             color: #3b82f6;
             font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cve-id:hover {
+            color: #2563eb;
+            text-decoration: underline;
+            transform: translateY(-1px);
         }
 
         .attack-case {
@@ -1142,7 +1156,7 @@
 
             <div class="chart-container">
                 <!-- Dify 安全风险分析 -->
-                <div class="neon-card chart-card" onclick="window.open('https://deepseek.csdn.net/67e384ed552ea4594ed90c67.html','_blank')">
+                <div class="neon-card chart-card">
                     <div class="card-header">
                         <i class="fas fa-shield-alt card-icon"></i>
                         <h3 class="card-title">Dify 安全风险分析</h3>
@@ -1151,24 +1165,24 @@
                         <div class="vulnerability-matrix">
                             <div class="vul-item critical">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                <span class="cve-id">提示注入攻击</span>
-                                <span class="vul-desc">恶意输入绕过安全限制</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2025-29720" target="_blank" class="cve-id">CVE-2025-29720</a>
+                                <span class="vul-desc">严重提示注入攻击漏洞</span>
                             </div>
                             <div class="vul-item high">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span class="cve-id">数据中毒风险</span>
-                                <span class="vul-desc">训练数据被污染导致模型异常</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2025-49149" target="_blank" class="cve-id">CVE-2025-49149</a>
+                                <span class="vul-desc">高危数据中毒攻击漏洞</span>
                             </div>
                             <div class="vul-item medium">
                                 <i class="fas fa-exclamation"></i>
-                                <span class="cve-id">隐私信息泄露</span>
-                                <span class="vul-desc">敏感数据通过模型输出泄露</span>
+                                <a href="https://www.cve.org/CVERecord?id=CVE-2025-1796" target="_blank" class="cve-id">CVE-2025-1796</a>
+                                <span class="vul-desc">中危隐私信息泄露漏洞</span>
                             </div>
                         </div>
                     </div>
                     <div class="citation-tag">
                         <i class="fas fa-external-link-alt"></i>
-                        来源：DeepSeek技术社区/基于Dify的安全实践
+                        来源：CVE 官网
                     </div>
                 </div>
             
