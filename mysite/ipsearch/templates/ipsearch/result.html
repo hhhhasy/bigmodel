@@ -484,14 +484,15 @@
 
         /* JSON卡片 */
         .json-card {
+            height: 500px;
             padding: 20px;
             background: var(--glass-bg);
             border-radius: 12px;
             border: 20px solid var(--border-light);
             box-shadow: var(--shadow-sm);
-            height: 100%;
             display: flex;
             flex-direction: column;
+            overflow: hidden; /* 隐藏父容器滚动条 */
         }
 
         .json-card h3 {
@@ -509,15 +510,8 @@
 
         .raw-json-block {
             flex: 1;
-            background: rgba(0, 32, 63, 0.02);
-            color: #334155;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: "Consolas", monospace;
-            font-size: 0.85rem;
-            overflow-y: auto;
-            border: 1px solid rgba(74, 180, 244, 0.1);
-            margin: 0;
+            max-height: 380px; /* 或固定高度如 400px */
+            overflow-y: auto; /* 自动显示竖向滚动条 */
         }
 
         /* 表格容器 */

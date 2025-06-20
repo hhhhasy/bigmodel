@@ -8,6 +8,6 @@ class SearchForm(forms.Form):
         required=True,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': '输入IP地址、国家、城市等关键词'
+            'placeholder': '输入IP地址、CIDR网段(如192.168.1.0/24)、国家、城市等关键词'
         })
     )

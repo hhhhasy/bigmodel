@@ -9,12 +9,24 @@ import base64
 import json
 import requests
 import subprocess
+import ipaddress
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 def index(request):
     form = SearchForm()
     return render(request, 'ipsearch/index.html', {'form': form})
+
+def is_ip_in_cidr(ip_str, cidr_str):
+    """
+    检查IP是否在CIDR范围内
+    """
+    try:
+        ip = ipaddress.ip_address(ip_str)
+        network = ipaddress.ip_network(cidr_str, strict=False)
+        return ip in network
+    except (ValueError, ipaddress.AddressValueError):
+        return False
 
 def search(request):
     form = SearchForm(request.GET)
@@ -42,13 +54,50 @@ def search(request):
         
         if form.is_valid():
             query = form.cleaned_data['query']
+            
+            # 检查是否为CIDR格式
+            is_cidr_query = False
+            try:
+                # 尝试解析为CIDR格式
+                ipaddress.ip_network(query, strict=False)
+                is_cidr_query = True
+            except ValueError:
+                is_cidr_query = False
+            
             # 执行搜索
-            results = IPModel.objects.filter(
-                Q(ip_address__icontains=query) |
-                Q(country__icontains=query) |
-                Q(city__icontains=query) |
-                Q(postal_code__icontains=query)
-            ).order_by('-count')  # 按count降序排序
+            if is_cidr_query:
+                # CIDR查询：先获取所有IP，然后在Python中进行CIDR匹配
+                all_ips = IPModel.objects.all()
+                cidr_results = []
+                for item in all_ips:
+                    if item.ip_address and is_ip_in_cidr(item.ip_address, query):
+                        cidr_results.append(item)
+                # 按count降序排序CIDR结果
+                results = sorted(cidr_results, key=lambda x: x.count or 0, reverse=True)
+            else:
+                # 检查是否可能包含IP地址格式（用于混合搜索）
+                ip_like_query = False
+                if '.' in query and any(char.isdigit() for char in query):
+                    # 可能是IP地址，尝试模糊匹配IP字段
+                    ip_like_query = True
+                
+                # 构建查询条件
+                query_conditions = Q()
+                
+                # 如果看起来像IP地址，优先搜索IP字段
+                if ip_like_query:
+                    query_conditions |= Q(ip_address__icontains=query)
+                
+                # 添加其他字段的模糊匹配
+                query_conditions |= Q(country__icontains=query)
+                query_conditions |= Q(city__icontains=query)
+                query_conditions |= Q(postal_code__icontains=query)
+                
+                # 如果之前没有添加IP字段搜索，现在添加
+                if not ip_like_query:
+                    query_conditions |= Q(ip_address__icontains=query)
+                
+                results = IPModel.objects.filter(query_conditions).order_by('-count')
 
     # 序列化处理
     serialized_results = []
@@ -97,7 +146,8 @@ def search(request):
         'results': serialized_results,
         'current_server': server,
         'exposure_date': exposure_date,
-        'nmap_scans': nmap_scans  # 添加nmap扫描结果到context
+        'nmap_scans': nmap_scans,  # 添加nmap扫描结果到context
+        'is_cidr_query': is_cidr_query if 'is_cidr_query' in locals() else False
     }
 
     return render(request, 'ipsearch/result.html', context)
