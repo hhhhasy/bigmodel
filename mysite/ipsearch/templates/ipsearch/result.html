@@ -872,11 +872,382 @@
         </table>
     </div>
 
-    
+    <!-- 显示活动记录 -->
+     <!-- 显示活动记录 -->
+    <!-- 显示活动记录 -->
+    {% if all_dates %}
+    <div class="activity-records-section">
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="fas fa-history"></i>
+            </div>
+            <h3 class="section-title">活动记录</h3>
+            <div class="section-subtitle">该IP地址的历史活动时间线</div>
+        </div>
+        
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+            {% for date in all_dates %}
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="timeline-marker">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-pulse"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-date">
+                        <i class="fas fa-calendar-alt"></i>
+                        {{ date }}
+                    </div>
+                    <div class="timeline-time">
+                        {{ date }}
+                    </div>
+                    <div class="timeline-description">
+                        <span class="activity-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            威胁活动检测
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="activity-stats">
+            <div class="stat-item">
+                <div class="stat-number">{{ all_dates|length }}</div>
+                <div class="stat-label">总活动次数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ all_dates|last }}</div>
+                <div class="stat-label">首次发现</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ all_dates|first }}</div>
+                <div class="stat-label">最近活动</div>
+            </div>
+        </div>
     </div>
     
+    <style>
+    .activity-records-section {
+        background: var(--glass-bg);
+        border-radius: 20px;
+        padding: 40px;
+        margin: 40px 0;
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--border-light);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .activity-records-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent
+        );
+        transition: 0.8s;
+        z-index: 1;
+    }
+    
+    .activity-records-section:hover::before {
+        left: 100%;
+    }
+    
+    .section-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .section-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 30px rgba(74, 180, 244, 0.3);
+        animation: iconFloat 3s ease-in-out infinite;
+    }
+    
+    .section-icon i {
+        font-size: 2rem;
+        color: white;
+    }
+    
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+        letter-spacing: -1px;
+    }
+    
+    .section-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+    
+    .timeline-container {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto 40px;
+        padding: 20px 0;
+    }
+    
+    .timeline-line {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, var(--accent-blue), var(--accent-green));
+        transform: translateX(-50%);
+        border-radius: 2px;
+        box-shadow: 0 0 20px rgba(74, 180, 244, 0.3);
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .timeline-item:nth-child(odd) {
+        flex-direction: row;
+    }
+    
+    .timeline-item:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+    }
+    
+    .timeline-dot {
+        width: 20px;
+        height: 20px;
+        background: var(--accent-blue);
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 0 20px rgba(74, 180, 244, 0.5);
+        position: relative;
+        z-index: 2;
+    }
+    
+    .timeline-pulse {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: var(--accent-blue);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        animation: pulse 2s infinite;
+        z-index: 1;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 0;
+        }
+    }
+    
+    .timeline-content {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(74, 180, 244, 0.15);
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--border-light);
+        width: calc(50% - 40px);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-content {
+        margin-right: auto;
+        margin-left: 40px;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-content {
+        margin-left: auto;
+        margin-right: 40px;
+    }
+    
+    .timeline-content:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(74, 180, 244, 0.25);
+    }
+    
+    .timeline-date {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .timeline-date i {
+        color: var(--accent-blue);
+    }
+    
+    .timeline-time {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+    
+    .timeline-description {
+        margin-top: 10px;
+    }
+    
+    .activity-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--gradient-primary);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(74, 180, 244, 0.3);
+    }
+    
+    .activity-stats {
+        display: flex;
+        justify-content: space-around;
+        gap: 30px;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid var(--border-light);
+        position: relative;
+        z-index: 2;
+    }
+    
+    .stat-item {
+        text-align: center;
+        flex: 1;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 15px;
+        border: 1px solid var(--border-light);
+        transition: all 0.3s ease;
+    }
+    
+    .stat-item:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(74, 180, 244, 0.15);
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+    }
+    
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        .activity-records-section {
+            padding: 25px 20px;
+            margin: 20px 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .timeline-line {
+            left: 30px;
+        }
+        
+        .timeline-marker {
+            left: 30px;
+        }
+        
+        .timeline-item {
+            flex-direction: row !important;
+        }
+        
+        .timeline-content {
+            width: calc(100% - 80px);
+            margin-left: 60px !important;
+            margin-right: 0 !important;
+        }
+        
+        .activity-stats {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            padding: 15px;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+        }
+    }
+    </style>
+    {% endif %}
+     
+    
+
+
+
     <!-- 在表格下方添加数据传递 -->
     {{ results|json_script:"results-data" }}
+
+    {{ all_datas|json_script:"all-dates-data" }}
 
     <script>
         // 初始化粒子背景
