@@ -60,8 +60,11 @@ def search(request):
             'postal_code': item.postal_code,
             'latitude': float(item.latitude) if item.latitude else None,
             'longitude': float(item.longitude) if item.longitude else None,
-            'count': item.count
+            'count': item.count,
+            'exposure_date': exposure_date
         })
+    
+    print(exposure_date)
 
     # 服务端口映射
     service_ports = {
