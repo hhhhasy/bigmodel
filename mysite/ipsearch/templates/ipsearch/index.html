@@ -752,74 +752,20 @@
             </h1>
         </div>
 
-        <!-- 搜索卡片 -->
-        <div class="cyber-card glow-border">
-            <div class="cyber-form">
-                <form method="get" action="{% url 'ipsearch:search' %}">
-                    <input type="hidden" name="server" value="{{ request.GET.server|default:'ollama' }}">
-                    <div class="cyber-input-group">
-                        {{ form.query }}
-                        <i class="fas fa-radar input-icon"></i>
-                        <button type="submit" class="cyber-btn">
-                            <i class="fas fa-shield-alt"></i>
-                            威胁扫描
-                            <i class="fas fa-angle-right ms-1"></i>
-                        </button>
-                    </div>
-                </form>
-                
-                <!-- 实时威胁动态 -->
-                <div class="section-title">
-                    <i class="fas fa-chart-line"></i>
-                    <h3 class="mb-0">实时威胁动态</h3>
-                </div>
-                
-                <div class="threat-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-shield-virus"></i>
-                        </div>
-                        <div class="stat-value" id="events-counter">0</div>
-                        <div class="stat-label">今日检测事件</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <div class="stat-value" id="accuracy-counter">0%</div>
-                        <div class="stat-label">识别准确率</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <div class="stat-value" id="response-counter">0s</div>
-                        <div class="stat-label">平均响应时间</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-globe"></i>
-                        </div>
-                        <div class="stat-value" id="countries-counter">0</div>
-                        <div class="stat-label">受影响国家</div>
-                    </div>
-                </div>
-                
-                <!-- 威胁地图预览 -->
-                <div class="section-title">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <h3 class="mb-0">全球威胁态势</h3>
-                </div>
-                
-                <div class="threat-map-preview" id="preview-map">
-                    <!-- 地球仪效果 -->
-                    <div class="globe-container">
-                        <div class="globe" id="globe-3d"></div>
-                    </div>
-                    <!-- 数据流动动画效果 -->
-                </div>
+        <form method="get" action="{% url 'ipsearch:search' %}">
+            <input type="hidden" name="server" value="{{ request.GET.server|default:'ollama' }}">
+            <div class="cyber-input-group">
+                {{ form.query }}
+                <i class="fas fa-radar input-icon"></i>
+                <button type="submit" class="cyber-btn">
+                    <i class="fas fa-shield-alt"></i>
+                    威胁扫描
+                    <i class="fas fa-angle-right ms-1"></i>
+                </button>
             </div>
-        </div>
+        </form>
+
+        
     </div>
 
     <script>
