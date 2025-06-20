@@ -654,6 +654,13 @@
             width: 120px;
             font-family: monospace;
             color: #3b82f6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cve-id:hover {
+            color: #2563eb;
+            text-decoration: underline;
+            transform: translateY(-1px);
         }
         .attack-case {
             border-top: 1px solid rgba(203, 213, 225, 0.3);
@@ -860,6 +867,13 @@
             font-family: monospace;
             color: #3b82f6;
             font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cve-id:hover {
+            color: #2563eb;
+            text-decoration: underline;
+            transform: translateY(-1px);
         }
 
         .attack-case {
@@ -1145,7 +1159,7 @@
 
         <div class="chart-container">
             <!-- 历史漏洞利用案例 -->
-            <div class="neon-card chart-card" onclick="window.open('https://www.offsec.com/blog/cve-2024-13059/','_blank')">
+            <div class="neon-card chart-card">
                 <div class="card-header">
                     <i class="fas fa-bug card-icon"></i>
                     <h3 class="card-title">历史漏洞利用案例</h3>
@@ -1154,24 +1168,24 @@
                     <div class="vulnerability-matrix">
                         <div class="vul-item critical">
                             <i class="fas fa-exclamation-triangle"></i>
-                            <span class="cve-id">CVE-2024-13059</span>
+                            <a href="https://www.cve.org/CVERecord?id=CVE-2024-13059" target="_blank" class="cve-id">CVE-2024-13059</a>
                             <span class="vul-desc">路径遍历导致远程代码执行</span>
                         </div>
                         <div class="vul-item high">
                             <i class="fas fa-exclamation-circle"></i>
-                            <span class="cve-id">CVE-2024-3152</span>
+                            <a href="https://www.cve.org/CVERecord?id=CVE-2024-3152" target="_blank" class="cve-id">CVE-2024-3152</a>
                             <span class="vul-desc">权限提升与SSRF攻击</span>
                         </div>
                         <div class="vul-item medium">
                             <i class="fas fa-exclamation"></i>
-                            <span class="cve-id">CVE-2024-6842</span>
+                            <a href="https://www.cve.org/CVERecord?id=CVE-2024-6842" target="_blank" class="cve-id">CVE-2024-6842</a>
                             <span class="vul-desc">敏感信息泄露漏洞</span>
                         </div>
                     </div>
                 </div>
                 <div class="citation-tag">
                     <i class="fas fa-external-link-alt"></i>
-                    来源：OffSec 安全博客
+                    来源：CVE 官网
                 </div>
             </div>
         
