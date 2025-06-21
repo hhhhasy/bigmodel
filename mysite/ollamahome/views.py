@@ -1,6 +1,7 @@
 # views.py
 from django.shortcuts import render
 from .models import DailyExpose, get_latest_deepseek_counts_model, get_latest_models_counts_model
+from .models import get_latest_models_counts_asn, get_latest_models_counts_asn_org
 from .models import DailyExpose, OLLAMAHoneypot
 from django.db.models.functions import TruncDate
 from django.db.models import Count, Max
@@ -8,6 +9,8 @@ from datetime import datetime, timedelta
 
 DynamicModelsCounts = get_latest_models_counts_model()
 DynamicDeepseekCounts = get_latest_deepseek_counts_model()
+DynamicAsnCounts = get_latest_models_counts_asn()
+DynamicAsnorgCounts = get_latest_models_counts_asn_org()
 
 def dashboard(request):
     # 1. daily-active 数据
@@ -30,6 +33,22 @@ def dashboard(request):
         'labels': [row.mdver for row in version_qs],
         'data':   [row.count for row in version_qs],
     }
+
+    # 4. asn-top10 数据
+    asn_qs = DynamicAsnCounts.objects.order_by('-count')[:10]
+    asn_data = {
+        'labels': [row.asn_number for row in asn_qs],
+        'data':   [row.count for row in asn_qs],
+    }
+
+    # 5. asn-org-top10 数据
+    asn_org_qs = DynamicAsnorgCounts.objects.order_by('-count')[:10]
+    asn_org_data = {
+        'labels': [row.asn_organization for row in asn_org_qs],
+        'data':   [row.count for row in asn_org_qs],
+    }
+
+
     # 获取蜜罐数据的最新日期
     latest_honeypot = OLLAMAHoneypot.objects.aggregate(max_timestamp=Max('timestamp'))
     latest_date = latest_honeypot['max_timestamp']
@@ -86,11 +105,17 @@ def dashboard(request):
         timestamp__range=(start_date, end_date), domain__isnull=False
     ).values('domain').annotate(count=Count('domain')).order_by('-count')[:10]
 
+
+
+
+
+
     honeypot_stats = {
         'top_ports': list(top_ports),
         'top_locations': top_locations_sorted,
         'top_domains': list(top_domains),
     }
+
     return render(request, 'home/home.html', {
         'daily_data':   daily_data,
         'model_data':   model_data,
@@ -98,4 +123,6 @@ def dashboard(request):
         # … 如果还有别的上下文 …
         'honeypot_timeline_data': honeypot_timeline_data_formatted,
         'honeypot_stats': honeypot_stats,
+        'asn_data': asn_data,
+        'asn_org_data': asn_org_data,
     })
