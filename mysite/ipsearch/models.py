@@ -38,6 +38,30 @@ def get_latest_table_name(server_prefix):
 
     return row[0] if row else None
 
+def get_all_table_names(server_prefix):
+    """
+    返回所有匹配 <server_prefix>_YYYYMMDD_ip_location 格式的表名，
+    并按日期（YYYYMMDD）从大到小排序返回一个列表。
+    """
+    # 构造正则表达式，匹配 server_prefix_8位数字_ip_location
+    regexp_pattern = rf"^{re.escape(server_prefix)}_[0-9]{{8}}_ip_location$"
+    # 表名中日期子串起始位置：前缀长度 + "_" 占 1，再从 1 开始索引所以 +1 => +2
+    date_start = len(server_prefix) + 2
+
+    with connection.cursor() as cursor:
+        cursor.execute(f"""
+            SELECT table_name
+            FROM information_schema.tables
+            WHERE table_name REGEXP %s
+            ORDER BY CAST(
+                SUBSTR(table_name, {date_start}, 8)
+            AS UNSIGNED) DESC
+        """, [regexp_pattern])
+        rows = cursor.fetchall()
+
+    # 把结果从 [(name1,),(name2,)...] 转成 [name1, name2, ...]
+    return [row[0] for row in rows]
+
 
 
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Q
 # from .models import IPInfo
-from .models import get_latest_table_name, create_dynamic_ip_model
+from .models import get_latest_table_name, create_dynamic_ip_model,get_all_table_names
 from .models import OllamaSearch49
 from .forms import SearchForm
 
@@ -109,7 +109,8 @@ def search(request):
             'postal_code': item.postal_code,
             'latitude': float(item.latitude) if item.latitude else None,
             'longitude': float(item.longitude) if item.longitude else None,
-            'count': item.count
+            'count': item.count,
+            'exposure_date': exposure_date
         })
 
     # 服务端口映射
@@ -140,13 +141,39 @@ def search(request):
             nmap_scans.append({
                 'raw_output': f"Error during scan: {str(e)}"
             })
-    
+
+    # 获取全部日期
+    # 1) 拿到所有符合前缀的表名，按日期倒序
+    table_names = get_all_table_names(server)
+
+    matched_dates = []
+    # 2) 挨个表搜索
+    for table_name in table_names:
+        IPModel = create_dynamic_ip_model(table_name)
+        # 只在 form 验证通过且有 query 情况下才搜索
+        if query:
+            qs = IPModel.objects.filter(
+                Q(ip_address__icontains=query) |
+                Q(country__icontains=query) |
+                Q(city__icontains=query) |
+                Q(postal_code__icontains=query)
+            )
+            if qs.exists():
+                # 如果这张表里有任何命中，则提取日期并记录
+                try:
+                    date_str = table_name.split('_')[1]
+                    date_fmt = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
+                except Exception:
+                    date_fmt = None
+                if date_fmt:
+                    matched_dates.append(date_fmt)   
     context = {
         'form': form,
         'results': serialized_results,
         'current_server': server,
         'exposure_date': exposure_date,
         'nmap_scans': nmap_scans,  # 添加nmap扫描结果到context
+        'all_dates': matched_dates,
         'is_cidr_query': is_cidr_query if 'is_cidr_query' in locals() else False
     }
 
