@@ -23,27 +23,127 @@ def get_location_by_ip(ip_address, database_path):
         print(f"查询 {ip_address} 时发生错误: {e}")
         return None, None, None, None, None
 
-# ---------- 处理 IP 文件并写出地理位置 ----------
-def process_ip_file(input_file_path, output_file_path, database_path):
+# ---------- ASN查询函数 ----------
+def get_location_and_asn_by_ip(ip_address, database_path, asn_database_path):
+    # 初始化返回值
+    country, city, postal_code, latitude, longitude = None, None, None, None, None
+    asn_number, asn_org = None, None
+    
+    # 获取地理位置信息
+    try:
+        with geoip2.database.Reader(database_path) as reader:
+            response = reader.city(ip_address)
+            country = response.country.name
+            city = response.city.name
+            postal_code = response.postal.code
+            latitude = response.location.latitude
+            longitude = response.location.longitude
+    except geoip2.errors.AddressNotFoundError:
+        print(f"IP 地址 {ip_address} 地理位置未找到")
+    except Exception as e:
+        print(f"查询 {ip_address} 地理位置时发生错误: {e}")
+    
+    # 获取ASN信息
+    try:
+        with geoip2.database.Reader(asn_database_path) as reader:
+            response = reader.asn(ip_address)
+            asn_number = response.autonomous_system_number
+            asn_org = response.autonomous_system_organization
+    except geoip2.errors.AddressNotFoundError:
+        print(f"IP 地址 {ip_address} ASN未找到")
+    except Exception as e:
+        print(f"查询 {ip_address} ASN时发生错误: {e}")
+    
+    # 返回包含所有信息的列表
+    return [country, city, postal_code, latitude, longitude, asn_number, asn_org]
+
+# ---------- 处理 IP 文件并写出地理位置和ASN ----------
+# def process_ip_file(input_file_path, output_file_path, database_path, asn_database_path):
+#     try:
+#         with open(input_file_path, 'r', encoding='utf-8') as infile, open(output_file_path, 'w', newline='', encoding='utf-8') as outfile:
+#             writer = csv.writer(outfile)
+#             writer.writerow(['IP', '国家', '城市', '邮政编码', '纬度', '经度', 'ASN号码', 'ASN组织'])
+
+#             for line in infile:
+#                 ip = line.strip()
+#                 if ip:
+#                     print(f"正在处理 IP: {ip}")
+#                     country, city, postal_code, latitude, longitude = get_location_by_ip(ip, database_path)
+#                     asn_number, asn_org = get_asn_by_ip(ip, asn_database_path)
+#                     if country is not None:
+#                         writer.writerow([ip, country, city, postal_code, latitude, longitude, asn_number, asn_org])
+#                         print(f"IP: {ip} 写入成功")
+#                     else:
+#                         print(f"IP: {ip} 未找到，跳过")
+
+#         print(f"[✓] 地理和ASN信息完成：{output_file_path}")
+#     except Exception as e:
+#         print(f"[!] 地理和ASN信息处理失败：{e}")
+def process_ip_file(input_file_path, output_file_path, database_path, asn_database_path=None):
     try:
         with open(input_file_path, 'r', encoding='utf-8') as infile, open(output_file_path, 'w', newline='', encoding='utf-8') as outfile:
             writer = csv.writer(outfile)
-            writer.writerow(['IP', '国家', '城市', '邮政编码', '纬度', '经度'])
+            writer.writerow(['IP', '国家', '城市', '邮政编码', '纬度', '经度', 'ASN号码', 'ASN组织'])
 
             for line in infile:
                 ip = line.strip()
                 if ip:
                     print(f"正在处理 IP: {ip}")
-                    country, city, postal_code, latitude, longitude = get_location_by_ip(ip, database_path)
+                    country, city, postal_code, latitude, longitude, asn_number, asn_organization = get_location_and_asn_by_ip(ip, database_path, asn_database_path)
                     if country is not None:
-                        writer.writerow([ip, country, city, postal_code, latitude, longitude])
-                        print(f"IP: {ip} 写入成功")
+                        writer.writerow([ip, country, city, postal_code, latitude, longitude, asn_number, asn_organization])
+                        #print(f"IP: {ip} 写入成功")
                     else:
                         print(f"IP: {ip} 未找到，跳过")
 
         print(f"[✓] 地理信息完成：{output_file_path}")
     except Exception as e:
         print(f"[!] 地理信息处理失败：{e}")
+
+# def get_location_by_ip_with_asn(ip_address, database_path, asn_database_path=None):
+#     try:
+#         with geoip2.database.Reader(database_path) as reader:
+#             response = reader.city(ip_address)
+            
+#             # 添加ASN信息查询
+#             asn_number = None
+#             asn_organization = None
+#             if asn_database_path and os.path.exists(asn_database_path):
+#                 try:
+#                     with geoip2.database.Reader(asn_database_path) as asn_reader:
+#                         asn_response = asn_reader.asn(ip_address)
+#                         asn_number = asn_response.autonomous_system_number
+#                         asn_organization = asn_response.autonomous_system_organization
+#                 except Exception as asn_e:
+#                     print(f"ASN查询失败 {ip_address}: {asn_e}")
+#                     pass
+#             else:
+#                 # 如果没有提供ASN数据库路径，尝试自动推断
+#                 try:
+#                     auto_asn_path = database_path.replace('GeoLite2-City.mmdb', 'GeoLite2-ASN.mmdb')
+#                     if os.path.exists(auto_asn_path):
+#                         with geoip2.database.Reader(auto_asn_path) as asn_reader:
+#                             asn_response = asn_reader.asn(ip_address)
+#                             asn_number = asn_response.autonomous_system_number
+#                             asn_organization = asn_response.autonomous_system_organization
+#                 except Exception as asn_e:
+#                     pass
+                
+#             return (
+#                 response.country.name,
+#                 response.city.name,
+#                 response.postal.code,
+#                 response.location.latitude,
+#                 response.location.longitude,
+#                 asn_number,
+#                 asn_organization
+#             )
+#     except geoip2.errors.AddressNotFoundError:
+#         print(f"IP 地址 {ip_address} 未找到")
+#         return None, None, None, None, None, None, None
+#     except Exception as e:
+#         print(f"查询 {ip_address} 时发生错误: {e}")
+#         return None, None, None, None, None, None, None
 
 # ---------- 处理模型文件 ----------
 def extract_models(input_path, output_path):
@@ -99,6 +199,7 @@ def main():
     model_folder = os.path.join(base_dir, 'model')
     csv_folder = os.path.join(base_dir, 'CSV')
     db_path = os.path.join(base_dir, '..', 'GeoLite2-City.mmdb')
+    asn_db_path = r'E:\comp\frontcode\bigmodel-main\GeoLite2-ASN.mmdb'
 
     os.makedirs(csv_folder, exist_ok=True)
 
@@ -128,7 +229,7 @@ def main():
                 print(f"[✓] IP 文件已存在，跳过：{output_ip_csv}")
             else:
                 print(f"[+] 正在处理 IP 文件：{filename}")
-                process_ip_file(input_ip_path, output_ip_csv, db_path)
+                process_ip_file(input_ip_path, output_ip_csv, db_path, asn_db_path)
 
 if __name__ == '__main__':
     main()

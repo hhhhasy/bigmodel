@@ -35,7 +35,7 @@ for filename in os.listdir(data_dir):
                         print(f'已移动 {extracted_file} 到 IP/')
                     else:
                         print(f'跳过已存在文件（IP）：{extracted_file}')
-
+  
                 elif extracted_file.endswith('_alive_models.txt'):
                     target_path = os.path.join(model_dir, extracted_file)
                     if not os.path.exists(target_path):

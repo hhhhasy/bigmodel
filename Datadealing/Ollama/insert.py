@@ -32,6 +32,8 @@ def create_table(cursor, table_name, schema_type):
                 postal_code VARCHAR(20),
                 latitude DOUBLE,
                 longitude DOUBLE,
+                asn_number INT,
+                asn_organization VARCHAR(255),
                 count INT
             )
         """)
@@ -51,11 +53,26 @@ def create_table(cursor, table_name, schema_type):
                 count INT
             )
         """)
-
+    elif schema_type == 'asn':
+        cursor.execute(f"""
+            CREATE TABLE {table_name} (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                asn_number INT,
+                count INT
+            )
+        """)
+    elif schema_type == 'asn_org':
+        cursor.execute(f"""
+            CREATE TABLE {table_name} (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                asn_organization VARCHAR(255),
+                count INT
+            )
+        """)
 
 def create_daily_expose_table(cursor):
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS daily_expose (
+        CREATE TABLE IF NOT EXISTS Ollama_daily_expose (
             Date DATE PRIMARY KEY,
             counts INT
         )
@@ -64,12 +81,12 @@ def create_daily_expose_table(cursor):
 
 def insert_into_daily_expose(cursor, date_str, ip_set):
     create_daily_expose_table(cursor)
-    cursor.execute("SELECT * FROM daily_expose WHERE Date = %s", (date_str,))
+    cursor.execute("SELECT * FROM Ollama_daily_expose WHERE Date = %s", (date_str,))
     if cursor.fetchone():
-        print(f"[✓] daily_expose 已存在记录：{date_str}，跳过")
+        print(f"[✓] Ollama_daily_expose 已存在记录：{date_str}，跳过")
         return
-    cursor.execute("INSERT INTO daily_expose (Date, counts) VALUES (%s, %s)", (date_str, len(ip_set)))
-    print(f"[+] 插入到 daily_expose：{date_str} → {len(ip_set)} IPs")
+    cursor.execute("INSERT INTO Ollama_daily_expose (Date, counts) VALUES (%s, %s)", (date_str, len(ip_set)))
+    print(f"[+] 插入到 Ollama_daily_expose：{date_str} → {len(ip_set)} IPs")
 
 
 def insert_csv_data(cursor, table_name, csv_path, schema_type, date_str=None):
@@ -81,16 +98,17 @@ def insert_csv_data(cursor, table_name, csv_path, schema_type, date_str=None):
 
         if schema_type == 'ip':
             insert_query = f"""
-                INSERT INTO {table_name} (ip_address, country, city, postal_code, latitude, longitude, count)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO {table_name} (ip_address, country, city, postal_code, latitude, longitude, asn_number, asn_organization, count)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             for row in reader:
-                if len(row) == 6:
-                    ip, country, city, postal_code, lat, lon = row
+                if len(row) == 8:
+                    ip, country, city, postal_code, lat, lon, asn_num, asn_org = row
                     lat = lat or "0.0"
                     lon = lon or "0.0"
+                    asn_num = asn_num if asn_num and asn_num != 'None' else None
                     ip_set.add(ip)
-                    cursor.execute(insert_query, (ip, country, city, postal_code, lat, lon, 1))
+                    cursor.execute(insert_query, (ip, country, city, postal_code, lat, lon, asn_num, asn_org, 1))
 
             # 写入 daily_expose 表
             if date_str and ip_set:
@@ -110,6 +128,20 @@ def insert_csv_data(cursor, table_name, csv_path, schema_type, date_str=None):
                     mdver, count = row
                     cursor.execute(insert_query, (mdver, count))
 
+        elif schema_type == 'asn':
+            insert_query = f"INSERT INTO {table_name} (asn_number, count) VALUES (%s, %s)"
+            for row in reader:
+                if len(row) == 2:
+                    asn_num, count = row
+                    cursor.execute(insert_query, (asn_num, count))
+        
+        elif schema_type == 'asn_org':
+            insert_query = f"INSERT INTO {table_name} (asn_organization, count) VALUES (%s, %s)"
+            for row in reader:
+                if len(row) == 2:
+                    asn_org, count = row
+                    cursor.execute(insert_query, (asn_org, count))
+
 
 def main():
     try:
@@ -123,7 +155,7 @@ def main():
         for filename in os.listdir(CSV_FOLDER):
             filepath = os.path.join(CSV_FOLDER, filename)
 
-            match = re.match(r'ollama_(\d{8})_(ip_location|count_md|count_deepseek)\.csv', filename)
+            match = re.match(r'ollama_(\d{8})_(ip_location|count_md|count_deepseek|count_asn|count_asn_org)\.csv', filename)
             if not match:
                 continue
 
@@ -133,7 +165,9 @@ def main():
             schema_type = {
                 'ip_location': 'ip',
                 'count_md': 'md',
-                'count_deepseek': 'deepseek'
+                'count_deepseek': 'deepseek',
+                'count_asn': 'asn',
+                'count_asn_org': 'asn_org'
             }[file_type]
 
             # 检查是否存在
