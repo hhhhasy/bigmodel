@@ -100,51 +100,6 @@ def process_ip_file(input_file_path, output_file_path, database_path, asn_databa
     except Exception as e:
         print(f"[!] 地理信息处理失败：{e}")
 
-# def get_location_by_ip_with_asn(ip_address, database_path, asn_database_path=None):
-#     try:
-#         with geoip2.database.Reader(database_path) as reader:
-#             response = reader.city(ip_address)
-            
-#             # 添加ASN信息查询
-#             asn_number = None
-#             asn_organization = None
-#             if asn_database_path and os.path.exists(asn_database_path):
-#                 try:
-#                     with geoip2.database.Reader(asn_database_path) as asn_reader:
-#                         asn_response = asn_reader.asn(ip_address)
-#                         asn_number = asn_response.autonomous_system_number
-#                         asn_organization = asn_response.autonomous_system_organization
-#                 except Exception as asn_e:
-#                     print(f"ASN查询失败 {ip_address}: {asn_e}")
-#                     pass
-#             else:
-#                 # 如果没有提供ASN数据库路径，尝试自动推断
-#                 try:
-#                     auto_asn_path = database_path.replace('GeoLite2-City.mmdb', 'GeoLite2-ASN.mmdb')
-#                     if os.path.exists(auto_asn_path):
-#                         with geoip2.database.Reader(auto_asn_path) as asn_reader:
-#                             asn_response = asn_reader.asn(ip_address)
-#                             asn_number = asn_response.autonomous_system_number
-#                             asn_organization = asn_response.autonomous_system_organization
-#                 except Exception as asn_e:
-#                     pass
-                
-#             return (
-#                 response.country.name,
-#                 response.city.name,
-#                 response.postal.code,
-#                 response.location.latitude,
-#                 response.location.longitude,
-#                 asn_number,
-#                 asn_organization
-#             )
-#     except geoip2.errors.AddressNotFoundError:
-#         print(f"IP 地址 {ip_address} 未找到")
-#         return None, None, None, None, None, None, None
-#     except Exception as e:
-#         print(f"查询 {ip_address} 时发生错误: {e}")
-#         return None, None, None, None, None, None, None
-
 # ---------- 处理模型文件 ----------
 def extract_models(input_path, output_path):
     results = []
@@ -199,7 +154,7 @@ def main():
     model_folder = os.path.join(base_dir, 'model')
     csv_folder = os.path.join(base_dir, 'CSV')
     db_path = os.path.join(base_dir, '..', 'GeoLite2-City.mmdb')
-    asn_db_path = r'E:\comp\frontcode\bigmodel-main\GeoLite2-ASN.mmdb'
+    asn_db_path = os.path.join(base_dir, '..', 'GeoLite2-ASN.mmdb')
 
     os.makedirs(csv_folder, exist_ok=True)
 

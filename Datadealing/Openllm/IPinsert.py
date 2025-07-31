@@ -10,7 +10,7 @@ DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
     'password': '20031223',
-    'database': 'bigmodel'
+    'database': 'bigmodel-ollamatry'
 }
 
 CSV_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'CSV')
@@ -32,10 +32,28 @@ def create_table(cursor, table_name, schema_type):
                 postal_code VARCHAR(20),
                 latitude DOUBLE,
                 longitude DOUBLE,
+                asn_number INT,
+                asn_organization VARCHAR(255),
                 count INT
             )
         """)
 
+    elif schema_type == 'asn':
+        cursor.execute(f"""
+            CREATE TABLE {table_name} (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                asn_number INT,
+                count INT
+            )
+        """)
+    elif schema_type == 'asn_org':
+        cursor.execute(f"""
+            CREATE TABLE {table_name} (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                asn_organization VARCHAR(255),
+                count INT
+            )
+        """)
 
 def create_daily_expose_table(cursor):
     cursor.execute("""
@@ -65,20 +83,35 @@ def insert_csv_data(cursor, table_name, csv_path, schema_type, date_str=None):
 
         if schema_type == 'ip':
             insert_query = f"""
-                INSERT INTO {table_name} (ip_address, country, city, postal_code, latitude, longitude, count)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO {table_name} (ip_address, country, city, postal_code, latitude, longitude, asn_number, asn_organization, count)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             for row in reader:
-                if len(row) == 6:
-                    ip, country, city, postal_code, lat, lon = row
+                if len(row) == 8:
+                    ip, country, city, postal_code, lat, lon, asn_num, asn_org = row
                     lat = lat or "0.0"
                     lon = lon or "0.0"
+                    asn_num = asn_num if asn_num and asn_num != 'None' else None
                     ip_set.add(ip)
-                    cursor.execute(insert_query, (ip, country, city, postal_code, lat, lon, 1))
+                    cursor.execute(insert_query, (ip, country, city, postal_code, lat, lon, asn_num, asn_org, 1))
 
             # 写入 daily_expose 表
             if date_str and ip_set:
                 insert_into_daily_expose(cursor, date_str, ip_set)
+
+        elif schema_type == 'asn':
+            insert_query = f"INSERT INTO {table_name} (asn_number, count) VALUES (%s, %s)"
+            for row in reader:
+                if len(row) == 2:
+                    asn_num, count = row
+                    cursor.execute(insert_query, (asn_num, count))
+        
+        elif schema_type == 'asn_org':
+            insert_query = f"INSERT INTO {table_name} (asn_organization, count) VALUES (%s, %s)"
+            for row in reader:
+                if len(row) == 2:
+                    asn_org, count = row
+                    cursor.execute(insert_query, (asn_org, count))
 
 
 def main():
@@ -93,7 +126,7 @@ def main():
         for filename in os.listdir(CSV_FOLDER):
             filepath = os.path.join(CSV_FOLDER, filename)
 
-            match = re.match(r'Openllm_(\d{8})_(ip_location)\.csv', filename)
+            match = re.match(r'Openllm_(\d{8})_(ip_location|count_asn|count_asn_org)\.csv', filename)
             if not match:
                 continue
 
@@ -102,6 +135,8 @@ def main():
 
             schema_type = {
                 'ip_location': 'ip',
+                'count_asn': 'asn',
+                'count_asn_org': 'asn_org'                
             }[file_type]
 
             # 检查是否存在

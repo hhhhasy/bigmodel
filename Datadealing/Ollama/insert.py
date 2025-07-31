@@ -10,7 +10,7 @@ DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
     'password': '20031223',
-    'database': 'bigmodel'
+    'database': 'bigmodel-ollamatry'
 }
 
 CSV_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'CSV')
