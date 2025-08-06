@@ -1101,7 +1101,16 @@
                     <i class="fas fa-spinner fa-spin"></i>
                     数据加载中...
                 </div>
-
+                <!-- ollama部署asn Top 10图 -->
+                <div class="neon-card chart-card">
+                    <h3 class="chart-title">部署openwebui的ASN Top 10</h3>
+                    <canvas id="asnChart"></canvas>
+                </div>
+                <!-- ollama部署asn organization Top 10图 -->
+                <div class="neon-card chart-card">
+                    <h3 class="chart-title">部署openwebui的ASN Organization Top 10</h3>
+                    <canvas id="asnOrgChart"></canvas>
+                </div>
                 <!-- 日活量折线图 -->
                 <div class="neon-card chart-card">
                     <h3 class="chart-title">过去七天日活量</h3>
@@ -1248,6 +1257,8 @@
     {{ daily_data|json_script:"daily-data" }}
     {{ honeypot_timeline_data|json_script:"honeypot-timeline-data" }}
     {{ honeypot_stats|json_script:"honeypot-stats" }}
+    {{ asn_data|json_script:"asn-data" }}
+    {{ asn_org_data|json_script:"asn-org-data" }}
 
     <script>
     // 导航栏滚动效果
@@ -1355,7 +1366,8 @@
             const dailyData   = JSON.parse(document.getElementById('daily-data').textContent);
             const honeypotTimelineData = JSON.parse(document.getElementById('honeypot-timeline-data').textContent);
             const honeypotStats = JSON.parse(document.getElementById('honeypot-stats').textContent);
-            // 2. 销毁旧图表
+            const asnData = JSON.parse(document.getElementById('asn-data').textContent);
+            const asnOrgData = JSON.parse(document.getElementById('asn-org-data').textContent);
             Object.values(charts).forEach(c => c && c.destroy());
 
             // 3. 设置图表容器高度
@@ -1399,6 +1411,76 @@
                                     },
                                     label: function(context) {
                                         return `活跃用户: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+            // 5. 部署ollama的ASN Top 10图
+            const asnCtx = document.getElementById('asnChart').getContext('2d');
+            charts.asn = new Chart(
+                asnCtx,
+                {
+                    type: 'bar',
+                    data: {
+                        labels: asnData.labels,
+                        datasets: [{
+                            data: asnData.data,
+                            backgroundColor: createGradient(asnCtx, '#3b82f6', '#4f46e5'),
+                            borderWidth: 0,
+                            borderRadius: 6,
+                            maxBarThickness: 35
+                        }]
+                    },
+                    options: {
+                        ...chartOptions,
+                        plugins: {
+                            ...chartOptions.plugins,
+                            tooltip: {
+                                ...chartOptions.plugins.tooltip,
+                                callbacks: {
+                                    title: function(context) {
+                                        return `${context[0].label}`;
+                                    },
+                                    label: function(context) {
+                                        return `数量: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+            // 5. 部署ollama的ASN Organization Top 10图
+            const asnOrgCtx = document.getElementById('asnOrgChart').getContext('2d');
+            charts.asnOrg = new Chart(
+                asnOrgCtx,
+                {
+                    type: 'bar',
+                    data: {
+                        labels: asnOrgData.labels,
+                        datasets: [{
+                            data: asnOrgData.data,
+                            backgroundColor: createGradient(asnOrgCtx, '#3b82f6', '#4f46e5'),
+                            borderWidth: 0,
+                            borderRadius: 6,
+                            maxBarThickness: 35
+                        }]
+                    },
+                    options: {
+                        ...chartOptions,
+                        plugins: {
+                            ...chartOptions.plugins,
+                            tooltip: {
+                                ...chartOptions.plugins.tooltip,
+                                callbacks: {
+                                    title: function(context) {
+                                        return `${context[0].label}`;
+                                    },
+                                    label: function(context) {
+                                        return `数量: ${context.raw}`;
                                     }
                                 }
                             }

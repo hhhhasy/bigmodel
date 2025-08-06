@@ -4,6 +4,10 @@ from .models import DailyExpose, AnythingLLMHoneypot
 from django.db.models.functions import TruncDate
 from django.db.models import Count, Max
 from datetime import datetime, timedelta
+from .models import get_latest_models_counts_asn, get_latest_models_counts_asn_org
+DynamicAsnCounts = get_latest_models_counts_asn()
+DynamicAsnorgCounts = get_latest_models_counts_asn_org()
+
 def dashboard(request):
     # 获取最近七天的日活数据
     daily_qs = list(reversed(DailyExpose.objects.order_by('-date')[:7]))
@@ -11,6 +15,24 @@ def dashboard(request):
         'labels': [row.date.strftime('%Y-%m-%d') for row in reversed(daily_qs)],  # 反转顺序以保持时间顺序
         'data':   [row.counts for row in reversed(daily_qs)],  # 反转顺序以保持时间顺序
     }
+
+    # 4. asn-top10 数据
+    asn_qs = DynamicAsnCounts.objects.order_by('-count')[:10]
+    asn_data = {
+        'labels': [row.asn_number for row in asn_qs],
+        'data':   [row.count for row in asn_qs],
+    }
+
+    # 5. asn-org-top10 数据
+    asn_org_qs = DynamicAsnorgCounts.objects.order_by('-count')[:10]
+    asn_org_data = {
+        'labels': [row.asn_organization for row in asn_org_qs],
+        'data':   [row.count for row in asn_org_qs],
+    }
+
+
+
+    
         # 获取蜜罐数据的最新日期
     latest_honeypot = AnythingLLMHoneypot.objects.aggregate(max_timestamp=Max('timestamp'))
     latest_date = latest_honeypot['max_timestamp']
@@ -76,4 +98,6 @@ def dashboard(request):
         'daily_data': daily_data,
         'honeypot_timeline_data': honeypot_timeline_data_formatted,
         'honeypot_stats': honeypot_stats,
+        'asn_data': asn_data,
+        'asn_org_data': asn_org_data,
     })

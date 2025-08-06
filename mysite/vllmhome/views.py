@@ -5,12 +5,28 @@ from .models import DailyExpose, VLLMHoneypot
 from django.db.models.functions import TruncDate
 from django.db.models import Count, Max
 from datetime import datetime, timedelta
+from .models import get_latest_models_counts_asn, get_latest_models_counts_asn_org
+DynamicAsnCounts = get_latest_models_counts_asn()
+DynamicAsnorgCounts = get_latest_models_counts_asn_org()
 
 DynamicModelsCounts = get_latest_models_counts_model()
 
 def dashboard(request):
     # 获取最近7天的日活数据
     daily_qs = list(reversed(DailyExpose.objects.order_by('-date')[:7]))
+    # 4. asn-top10 数据
+    asn_qs = DynamicAsnCounts.objects.order_by('-count')[:10]
+    asn_data = {
+        'labels': [row.asn_number for row in asn_qs],
+        'data':   [row.count for row in asn_qs],
+    }
+
+    # 5. asn-org-top10 数据
+    asn_org_qs = DynamicAsnorgCounts.objects.order_by('-count')[:10]
+    asn_org_data = {
+        'labels': [row.asn_organization for row in asn_org_qs],
+        'data':   [row.count for row in asn_org_qs],
+    }
     
     # 准备图表数据
     daily_data = {
@@ -90,5 +106,7 @@ def dashboard(request):
         'model_data': model_data,
         'honeypot_timeline_data': honeypot_timeline_data_formatted,
         'honeypot_stats': honeypot_stats,
+        'asn_data': asn_data,
+        'asn_org_data': asn_org_data,
     })
 

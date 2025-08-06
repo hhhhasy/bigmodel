@@ -35,9 +35,12 @@ def get_world_data(request):
     # 创建动态模型
     IPModel = create_dynamic_ip_model(table_name)
     
-    # 统计每个国家的 IP 数量
-    world_data = IPModel.objects.values('country').annotate(count=Count('ip_address'))
+    # # 统计每个国家的 IP 数量
+    # world_data = IPModel.objects.values('country').annotate(count=Count('ip_address'))
+        # 统计每个国家的 IP 数量（排除Hong Kong）
+    world_data = IPModel.objects.exclude(country='Hong Kong').values('country').annotate(count=Count('ip_address'))
     
+
     # 返回数据
     countries = [item['country'] for item in world_data]
     counts = [item['count'] for item in world_data]

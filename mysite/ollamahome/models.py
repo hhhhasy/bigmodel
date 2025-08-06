@@ -27,6 +27,7 @@ def get_latest_count_deepseek_table():
     return latest_table
 
 
+
 def get_latest_count_asn():
     
     with connection.cursor() as cursor:

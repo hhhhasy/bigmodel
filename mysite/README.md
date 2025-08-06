@@ -50,17 +50,27 @@ mysite/
 - 风险评估功能
 - 集成Spark API
 
-### 7. LLM蜜罐信息捕获
+### 7. RAG智能问答系统 (raghome) 🆕
+- 基于Ollama本地部署的llama2:7b模型
+- 整合平台数据库信息的智能检索增强生成
+- 简约大气的聊天界面，支持实时对话
+- 自动构建知识库，包含IP地理信息、服务探测数据等
+- 支持知识库管理和系统状态监控
+
+### 8. LLM蜜罐信息捕获
 - 捕获针对LLM应用接口的网络扫描和攻击行为
 - 展示蜜罐访问（攻击）时间线图（最近七天）
 - 统计并展示Top 10攻击端口、Top 10攻击来源（IP/城市）和Top 10域名
+
 
 ## 技术栈
 
 - 后端框架：Django
 - 数据库：MySQL
 - 前端：HTML, CSS, JavaScript
-- 其他：Ollama API, Spark API
+- AI/ML：Ollama API, OpenAI API, Sentence Transformers
+- 向量检索：语义相似度搜索
+- 其他：Spark API, 文档处理库
 
 ## 安装和运行
 
@@ -130,11 +140,24 @@ DATABASES = {
    - 访问 `/Search/` 使用综合搜索功能
    - 支持IP和域名搜索
 
+5. RAG智能问答 🆕
+   - 访问 `/rag/` 进入RAG系统主页  
+   - 访问 `/rag/chat/` 开始智能问答
+   - 访问 `/rag/knowledge-base/` 管理知识库
+   - 支持基于本地Ollama部署的llama2:7b模型对话
+   - 自动整合平台数据库信息进行增强检索
+   - 使用管理命令 `python manage.py build_knowledge --clear --verbose` 重建知识库
+
 ## 注意事项
 
 1. 首次运行需要配置数据库
 2. 确保MySQL服务已启动
 3. 需要配置正确的API密钥（如果有使用外部API）
+4. **RAG系统要求**：
+   - 确保Ollama服务运行在 `http://localhost:11434` 
+   - 已部署llama2:7b模型：`ollama pull llama2:7b`
+   - 首次使用需运行：`python manage.py build_knowledge --clear --verbose` 构建知识库
+   - 数据库需要包含IP地理位置和服务探测等相关数据
 
 ## 更新日志
 
@@ -150,6 +173,11 @@ DATABASES = {
 3. 添加更多数据可视化功能（包括蜜罐统计的炫酷展示）
 4. 完善错误处理机制
 5. 增加API文档
+6. 集成向量数据库（如ChromaDB、FAISS）提升检索性能
+7. 增加更多文档格式支持（PDF、Word、Excel等）
+8. 实现实时流式对话响应
+9. 添加知识库版本管理和增量更新
+10. 集成更多大模型（Claude、Gemini等）
 
 ## 贡献指南
 

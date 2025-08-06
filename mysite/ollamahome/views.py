@@ -1,7 +1,7 @@
 # views.py
 from django.shortcuts import render
 from .models import DailyExpose, get_latest_deepseek_counts_model, get_latest_models_counts_model
-from .models import get_latest_models_counts_asn, get_latest_models_counts_asn_org
+
 from .models import DailyExpose, OLLAMAHoneypot
 from django.db.models.functions import TruncDate
 from django.db.models import Count, Max
@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 
 DynamicModelsCounts = get_latest_models_counts_model()
 DynamicDeepseekCounts = get_latest_deepseek_counts_model()
+from .models import get_latest_models_counts_asn, get_latest_models_counts_asn_org
 DynamicAsnCounts = get_latest_models_counts_asn()
 DynamicAsnorgCounts = get_latest_models_counts_asn_org()
 
