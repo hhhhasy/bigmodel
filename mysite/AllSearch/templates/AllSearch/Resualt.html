@@ -1549,7 +1549,7 @@
 
             <!-- 威胁时间线 -->
             <div class="timeline-wrapper">
-                <h3>威胁时间线</h3>
+                <h3>最新活跃时间</h3>
                 {% if ip_service_table_data %}
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
@@ -1834,8 +1834,10 @@
         function initMap() {
             const map = L.map('threatMap').setView([30, 110], 3);
             
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            // 使用高德地图瓦片服务（国内访问稳定）
+            L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+                subdomains: ['1', '2', '3', '4'],
+                attribution: '&copy; 高德地图'
             }).addTo(map);
 
             // 添加标记点 - 使用Django模板数据

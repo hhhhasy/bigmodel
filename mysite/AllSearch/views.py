@@ -168,25 +168,36 @@ def search_view(request):
     # FOFA 查询
     results2 = []
     if query:
-        fofa_query = f"{query} "
+        # 构建FOFA查询语句，支持IP地址查询
+        fofa_query = f'ip="{query}"'
         qbase64 = base64.b64encode(fofa_query.encode()).decode()
         params = {
-            'key': "m6sqfx3o7efx9qbbcxjzepisuo3tuk8r",
+            'key': "9428ff37f158a7d7550456915662f36d",
             'qbase64': qbase64,
             'size': 100,
             'full': 'false',
+            'fields': 'host,ip,port,protocol,server,domain'
         }
         try:
+            print(f"FOFA查询参数: {params}")
+            print(f"FOFA查询语句: {fofa_query}")
             resp = requests.get(
-                "https://fofoapi.com/",
+                "https://fofa.icu/api/v1/search/all",
                 params=params,
                 timeout=10
             )
+            print(f"FOFA响应状态码: {resp.status_code}")
             resp.raise_for_status()
             data = resp.json()
+            print(f"FOFA响应数据: {data}")
             results2 = data.get("results", [])
-        except requests.RequestException:
-            pass
+            print(f"FOFA结果数量: {len(results2)}")
+        except requests.RequestException as e:
+            print(f"FOFA查询失败: {e}")
+            results2 = []
+        except Exception as e:
+            print(f"FOFA数据处理失败: {e}")
+            results2 = []
 
     # 提取实际检测到的服务名并去重
     detected_services = list({row['service'] for row in ip_service_table_data if row.get('service')})
