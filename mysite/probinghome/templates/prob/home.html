@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>大模型服务监控平台</title>
-     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{% static 'cyraSafe.png' %}">
     <link rel="shortcut icon" href="{% static 'cyraSafe.png' %}">
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
@@ -75,6 +74,22 @@
 
         .list-item:hover::before {
             opacity: 1;
+        }
+
+        /* 选中状态样式 */
+        .list-item.selected {
+            background: rgba(67, 97, 238, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .list-item.selected::before {
+            opacity: 1;
+        }
+
+        .list-item.selected .service-icon {
+            background: var(--primary-color);
+            color: white;
         }
 
         .list-item-add {
@@ -328,7 +343,11 @@
                 <h4 class="mb-4 glow-header"><i class="fas fa-cloud me-2"></i>服务节点</h4>
                 <div class="service-nodes">
                     {% for service in services %}
-                        <div class="list-item animate__animated animate__fadeIn" style="animation-delay: {{ forloop.counter | divisibleby:10 }}00ms" onclick="loadServiceDetail('{{ service.name }}')">
+                        <div class="list-item animate__animated animate__fadeIn" 
+                             id="service-{{ service.name|slugify }}" 
+                             data-service-name="{{ service.name }}"
+                             style="animation-delay: {{ forloop.counter | divisibleby:10 }}00ms" 
+                             onclick="loadServiceDetail('{{ service.name }}', this)">
                             <div class="status-indicator online"></div>
                             <div class="service-icon">
                                 <i class="fas fa-microchip"></i>
@@ -385,9 +404,29 @@ document.addEventListener('DOMContentLoaded', function() {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+    
+    // 添加点击事件监听器用于测试选中状态
+    document.querySelectorAll('.list-item').forEach(item => {
+        item.addEventListener('click', function() {
+            // 移除所有选中状态
+            document.querySelectorAll('.list-item').forEach(listItem => {
+                listItem.classList.remove('selected');
+            });
+            // 为当前点击的项目添加选中状态
+            this.classList.add('selected');
+        });
+    });
 });
 
-function loadServiceDetail(serviceName) {
+function loadServiceDetail(serviceName, element) {
+    // 移除所有选中状态
+    document.querySelectorAll('.list-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    
+    // 为当前点击的项目添加选中状态
+    element.classList.add('selected');
+    
     // 加载动画
     document.getElementById('detail-content').innerHTML = `
         <div class="text-center py-4 animate__animated animate__pulse">
